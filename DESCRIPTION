@@ -3,6 +3,6 @@ Type: Book
 Title: Advent Of Code
 Version: 0.0.1
 Imports:
-  bookdown
-  markdown
-  tidyverse
+    bookdown,
+    markdown,
+    tidyverse
