@@ -1,0 +1,5 @@
+book_filename: "advent-of-code-2020 "
+language:
+  ui:
+    chapter_name: "Day "
+delete_merged_file: true

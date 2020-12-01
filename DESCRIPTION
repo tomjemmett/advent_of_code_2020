@@ -1,0 +1,7 @@
+Package: placeholder
+Type: Book
+Title: Advent Of Code
+Version: 0.0.1
+Imports:
+  bookdown
+  tidyverse
