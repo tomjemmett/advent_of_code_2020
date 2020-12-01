@@ -1,12 +1,8 @@
----
-
 # Day 1
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
-
-devtools::session_info()
 ```
 
 This is my attempt to solve [Day 1](https://adventofcode.com/2020/day/1).
