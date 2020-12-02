@@ -3,3 +3,4 @@ language:
   ui:
     chapter_name: "Day "
 delete_merged_file: true
+new_session: yes
