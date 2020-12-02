@@ -6,7 +6,8 @@ Imports:
     bookdown,
     markdown,
     tidyverse,
-    bench
+    bench,
+    unglue
 Suggests:
     withr,
     callr,

@@ -18,10 +18,12 @@ actual <- read_lines("day_02_input.txt")
 
 We need to convert each string into a list that contains the following:
 
- - minimum number of occurrences of the character
- - maximum number of occurrences of the character
- - the character that must be present
- - the password
+-   minimum number of occurrences of the character
+-   maximum number of occurrences of the character
+-   the character that must be present
+-   the password
+
+Originally, I wrote the following function to handle this step:
 
 ```{r part 1 split input}
 split_input <- function(input) {
@@ -50,6 +52,14 @@ split_input <- function(input) {
         password = .x[[2]]
       )
     })
+}
+```
+
+But, after seeing a post by [\@antoine_fabri](https://twitter.com/antoine_fabri/status/1334197196795879426) on Twitter I discovered the `{unglue}` package which makes this much easier, and neater!
+
+```{r part 1 split input (unglue)}
+split_input <- function(input) {
+  unglue::unglue(input, "{min}-{max} {character}: {password}", convert = TRUE)
 }
 ```
 
