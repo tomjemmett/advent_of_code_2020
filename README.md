@@ -1,5 +1,7 @@
 # Advent of Code 2020
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 This is my attempt to complete the [Advent of Code 2020][aoc2020] in R using RMarkdown, along with bookdown to render
 the site. The book will automatically be rebuilt using [GitHub actions][ghactions] and hosted using
 [GitHub Pages][ghpages].
