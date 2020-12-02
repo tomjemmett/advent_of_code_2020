@@ -5,7 +5,7 @@ on:
 name: deploy book
 
 jobs:
-  pkgdown:
+  deploy-book:
     runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
