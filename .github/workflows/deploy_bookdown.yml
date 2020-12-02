@@ -46,5 +46,6 @@ jobs:
           cd _book
           git add .
           git commit -m "deploy book"
+          git push origin gh-pages
           cd ..
           git worktree remove _book
