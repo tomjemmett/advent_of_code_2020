@@ -39,6 +39,7 @@ jobs:
         run: |
           git config --local user.email "tom.jemmett@gmail.com"
           git config --local user.name "Tom Jemmett"
+          git fetch
           git worktree add --track -B gh-pages _book origin/gh-pages
           Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
           git worktree remove _book
