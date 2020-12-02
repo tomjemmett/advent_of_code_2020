@@ -1,4 +1,4 @@
-# Day 1
+# Report Repair
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
