@@ -41,5 +41,10 @@ jobs:
           git config --local user.name "Tom Jemmett"
           git fetch
           git worktree add --track -B gh-pages _book origin/gh-pages
+          rm -rf _book/*
           Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
+          cd _book
+          git add .
+          git commit -m "deploy book"
+          cd ..
           git worktree remove _book
