@@ -132,7 +132,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Advent of Code 2020</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
 <li class="chapter" data-level="1" data-path="report-repair.html"><a href="report-repair.html"><i class="fa fa-check"></i><b>1</b> Report Repair</a><ul>
 <li class="chapter" data-level="1.1" data-path="report-repair.html"><a href="report-repair.html#part-1"><i class="fa fa-check"></i><b>1.1</b> Part 1</a><ul>
 <li class="chapter" data-level="1.1.1" data-path="report-repair.html"><a href="report-repair.html#is-the-improved-algorithm-any-better"><i class="fa fa-check"></i><b>1.1.1</b> is the improved algorithm any better?</a></li>
@@ -223,8 +223,8 @@ that the target we increase the lower number pointer.</p>
 <pre><code>## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m&lt;bch:expr&gt;[39m[23m                    [3m[90m&lt;bch:tm&gt;[39m[23m [3m[90m&lt;bch:tm&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;bch:byt&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m
-## [90m1[39m part_1_naive(sample, 2020)      2.66µs   3.38µs   [4m2[24m[4m5[24m[4m8[24m270.        0B     25.8
-## [90m2[39m part_1_improved(sample, 2020)  60.44µs  65.68µs    [4m1[24m[4m4[24m804.        0B     17.0</code></pre>
+## [90m1[39m part_1_naive(sample, 2020)      2.93µs   3.62µs   [4m2[24m[4m3[24m[4m6[24m802.        0B     23.7
+## [90m2[39m part_1_improved(sample, 2020)  62.02µs  65.72µs    [4m1[24m[4m4[24m823.        0B     17.0</code></pre>
 <p>For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
 sort the data, which is costly, and then it performs far more comparisons per iteration.</p>
 <p>However, when we have more data, these extra steps lead to big improvements, as can be seen when running with the actual
@@ -234,8 +234,8 @@ data.</p>
 <pre><code>## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m&lt;bch:expr&gt;[39m[23m                    [3m[90m&lt;bch:tm&gt;[39m[23m [3m[90m&lt;bch:tm&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;bch:byt&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m
-## [90m1[39m part_1_naive(actual, 2020)       700µs  711.7µs     [4m1[24m325.        0B     2.02
-## [90m2[39m part_1_improved(actual, 2020)   85.2µs   89.7µs    [4m1[24m[4m0[24m679.    1.66KB    14.9</code></pre>
+## [90m1[39m part_1_naive(actual, 2020)     818.7µs  830.6µs     [4m1[24m185.        0B     2.02
+## [90m2[39m part_1_improved(actual, 2020)   82.5µs   88.7µs    [4m1[24m[4m1[24m012.    1.66KB    14.8</code></pre>
 <p>The improved algorithm was roughly 10x faster for me on the actual data.</p>
 </div>
 </div>
@@ -324,8 +324,8 @@ continue the search by looping.</p>
 <pre><code>## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m&lt;bch:expr&gt;[39m[23m                    [3m[90m&lt;bch:tm&gt;[39m[23m [3m[90m&lt;bch:tm&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;bch:byt&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m
-## [90m1[39m part_2_naive(actual, 2020)     110.3ms  111.3ms      8.98        0B     2.25
-## [90m2[39m part_2_improved(actual, 2020)   15.1ms   15.1ms     66.0     1.66KB   793.</code></pre>
+## [90m1[39m part_2_naive(actual, 2020)       127ms  132.1ms      7.62        0B     2.54
+## [90m2[39m part_2_improved(actual, 2020)     15ms   16.1ms     61.5     1.66KB   472.</code></pre>
 <p>On my machine the improved approach is again about 10x quicker, though there are more memory allocations and GC
 (garbage collection’s) happening, so the total execution time is not quite 10x.</p>
 

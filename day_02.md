@@ -16,10 +16,12 @@ actual <- read_lines("day_02_input.txt")
 
 We need to convert each string into a list that contains the following:
 
- - minimum number of occurrences of the character
- - maximum number of occurrences of the character
- - the character that must be present
- - the password
+-   minimum number of occurrences of the character
+-   maximum number of occurrences of the character
+-   the character that must be present
+-   the password
+
+Originally, I wrote the following function to handle this step:
 
 
 ```r
@@ -52,6 +54,15 @@ split_input <- function(input) {
 }
 ```
 
+But, after seeing a post by [\@antoine_fabri](https://twitter.com/antoine_fabri/status/1334197196795879426) on Twitter I discovered the `{unglue}` package which makes this much easier, and neater!
+
+
+```r
+split_input <- function(input) {
+  unglue::unglue(input, "{min}-{max} {character}: {password}", convert = TRUE)
+}
+```
+
 We can see what our split_input function does to the sample data, looking at just the first item
 
 
@@ -60,7 +71,7 @@ str(split_input(sample)[[1]])
 ```
 
 ```
-## List of 4
+## 'data.frame':	1 obs. of  4 variables:
 ##  $ min      : int 1
 ##  $ max      : int 3
 ##  $ character: chr "a"
@@ -91,7 +102,8 @@ part_1_valid_passwords(sample)
 ```
 
 ```
-## [1] "abcde"     "ccccccccc"
+##           1           3 
+##     "abcde" "ccccccccc"
 ```
 
 This matches with the example given on the AOC website. We can now try to solve the first part:
@@ -129,7 +141,8 @@ part_2_valid_passwords(sample)
 ```
 
 ```
-## [1] "abcde"
+##       1 
+## "abcde"
 ```
 
 This matches the example, so we can now solve part 2.
