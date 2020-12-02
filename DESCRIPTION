@@ -7,3 +7,7 @@ Imports:
     markdown,
     tidyverse,
     bench
+Suggests:
+    withr,
+    callr,
+    fs
