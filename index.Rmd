@@ -12,6 +12,8 @@ github-repo: tomjemmett/advent-of-code-2020
 description: "My attempt to complete AOC 2020 in R"
 ---
 
-# Advent of Code 2020 {-}
+# Introduction {-}
 
-This is my attempt to complete the [Advent of Code 2020](https://adventofcode.com/2020/) in R.
+This is my attempt to complete the [Advent of Code 2020](https://adventofcode.com/2020/) in R using RMarkdown, along
+with bookdown to render the site. The book will automatically be rebuilt using
+[GitHub actions](https://github.com/features/actions) and hosted using [GitHub Pages](https://pages.github.com/).
