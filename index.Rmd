@@ -6,6 +6,11 @@ site: bookdown::bookdown_site
 output:
   bookdown::gitbook:
     df_print: "kable"
+    config:
+      toc:
+        collapse: section
+        before: |
+          <li><strong><a href="./">Advent of Code 2020</a></strong></li>
 documentclass: book
 link-citations: yes
 github-repo: tomjemmett/advent-of-code-2020
