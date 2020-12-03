@@ -8,8 +8,8 @@ library(tidyverse)
 This is my attempt to solve [Day 1](https://adventofcode.com/2020/day/1).
 
 ```{r load data}
-sample <- c(1721, 979, 366, 299, 675, 1456)
-actual <- read_lines("day_01_input.txt") %>% as.integer()
+sample <- read_lines("samples/day_01_sample.txt") %>% as.integer()
+actual <- read_lines("inputs/day_01_input.txt") %>% as.integer()
 ```
 
 ## Part 1

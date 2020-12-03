@@ -8,18 +8,8 @@ library(tidyverse)
 This is my attempt to solve [Day 3](https://adventofcode.com/2020/day/3).
 
 ```{r load data}
-sample <- c("..##.......",
-            "#...#...#..",
-            ".#....#..#.",
-            "..#.#...#.#",
-            ".#...##..#.",
-            "..#.##.....",
-            ".#.#.#....#",
-            ".#........#",
-            "#.##...#...",
-            "#...##....#",
-            ".#..#...#.#")
-actual <- read_lines("day_03_input.txt")
+sample <- read_lines("samples/day_03_sample.txt")
+actual <- read_lines("inputs/day_03_input.txt")
 ```
 
 ## Part 1
