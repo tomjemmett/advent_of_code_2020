@@ -143,6 +143,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2" data-path="report-repair.html"><a href="report-repair.html#part-2"><i class="fa fa-check"></i><b>1.2</b> Part 2</a><ul>
 <li class="chapter" data-level="1.2.1" data-path="report-repair.html"><a href="report-repair.html#is-our-improved-algorithm-better-this-time"><i class="fa fa-check"></i><b>1.2.1</b> Is our improved algorithm better this time?</a></li>
 </ul></li>
+<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: implementing in python</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="password-philosophy.html"><a href="password-philosophy.html"><i class="fa fa-check"></i><b>2</b> Password Philosophy</a><ul>
 <li class="chapter" data-level="2.1" data-path="password-philosophy.html"><a href="password-philosophy.html#part-1-1"><i class="fa fa-check"></i><b>2.1</b> Part 1</a></li>
@@ -173,24 +174,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="toboggan-trajectory" class="section level1">
 <h1><span class="header-section-number">Day 3</span> Toboggan Trajectory</h1>
 <p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/3">Day 3</a>.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="toboggan-trajectory.html#cb40-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_03_sample.txt&quot;</span>)</span>
-<span id="cb40-2"><a href="toboggan-trajectory.html#cb40-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_03_input.txt&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="toboggan-trajectory.html#cb44-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_03_sample.txt&quot;</span>)</span>
+<span id="cb44-2"><a href="toboggan-trajectory.html#cb44-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_03_input.txt&quot;</span>)</span></code></pre></div>
 <div id="part-1-2" class="section level2">
 <h2><span class="header-section-number">3.1</span> Part 1</h2>
 <p>I think it will be easier to convert the map to a 0-1 matrix to solve today’s problem. We won’t need to infinitely
 replicate the pattern to the right as we can just use modular arithmetic to index into the matrix.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="toboggan-trajectory.html#cb41-1"></a>input_to_matrix &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb41-2"><a href="toboggan-trajectory.html#cb41-2"></a>  input <span class="op">%&gt;%</span></span>
-<span id="cb41-3"><a href="toboggan-trajectory.html#cb41-3"></a><span class="st">    </span><span class="co"># extract each character from the input</span></span>
-<span id="cb41-4"><a href="toboggan-trajectory.html#cb41-4"></a><span class="st">    </span><span class="kw">str_extract_all</span>(<span class="st">&quot;.&quot;</span>, <span class="dt">simplify =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
-<span id="cb41-5"><a href="toboggan-trajectory.html#cb41-5"></a><span class="st">    </span><span class="co"># if a value is &quot;#&quot; then TRUE, else FALSE</span></span>
-<span id="cb41-6"><a href="toboggan-trajectory.html#cb41-6"></a><span class="st">    `</span><span class="dt">==</span><span class="st">`</span>(<span class="st">&quot;#&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb41-7"><a href="toboggan-trajectory.html#cb41-7"></a><span class="st">    </span><span class="co"># convert the TRUE&#39;s to 1, FALSE&#39;s to 0</span></span>
-<span id="cb41-8"><a href="toboggan-trajectory.html#cb41-8"></a><span class="st">    </span><span class="kw">apply</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), as.integer)</span>
-<span id="cb41-9"><a href="toboggan-trajectory.html#cb41-9"></a>}</span>
-<span id="cb41-10"><a href="toboggan-trajectory.html#cb41-10"></a>sample_matrix &lt;-<span class="st"> </span><span class="kw">input_to_matrix</span>(sample)</span>
-<span id="cb41-11"><a href="toboggan-trajectory.html#cb41-11"></a>actual_matrix &lt;-<span class="st"> </span><span class="kw">input_to_matrix</span>(actual)</span>
-<span id="cb41-12"><a href="toboggan-trajectory.html#cb41-12"></a>sample_matrix</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="toboggan-trajectory.html#cb45-1"></a>input_to_matrix &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb45-2"><a href="toboggan-trajectory.html#cb45-2"></a>  input <span class="op">%&gt;%</span></span>
+<span id="cb45-3"><a href="toboggan-trajectory.html#cb45-3"></a><span class="st">    </span><span class="co"># extract each character from the input</span></span>
+<span id="cb45-4"><a href="toboggan-trajectory.html#cb45-4"></a><span class="st">    </span><span class="kw">str_extract_all</span>(<span class="st">&quot;.&quot;</span>, <span class="dt">simplify =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb45-5"><a href="toboggan-trajectory.html#cb45-5"></a><span class="st">    </span><span class="co"># if a value is &quot;#&quot; then TRUE, else FALSE</span></span>
+<span id="cb45-6"><a href="toboggan-trajectory.html#cb45-6"></a><span class="st">    `</span><span class="dt">==</span><span class="st">`</span>(<span class="st">&quot;#&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb45-7"><a href="toboggan-trajectory.html#cb45-7"></a><span class="st">    </span><span class="co"># convert the TRUE&#39;s to 1, FALSE&#39;s to 0</span></span>
+<span id="cb45-8"><a href="toboggan-trajectory.html#cb45-8"></a><span class="st">    </span><span class="kw">apply</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), as.integer)</span>
+<span id="cb45-9"><a href="toboggan-trajectory.html#cb45-9"></a>}</span>
+<span id="cb45-10"><a href="toboggan-trajectory.html#cb45-10"></a>sample_matrix &lt;-<span class="st"> </span><span class="kw">input_to_matrix</span>(sample)</span>
+<span id="cb45-11"><a href="toboggan-trajectory.html#cb45-11"></a>actual_matrix &lt;-<span class="st"> </span><span class="kw">input_to_matrix</span>(actual)</span>
+<span id="cb45-12"><a href="toboggan-trajectory.html#cb45-12"></a>sample_matrix</span></code></pre></div>
 <pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11]
 ##  [1,]    0    0    1    1    0    0    0    0    0     0     0
 ##  [2,]    1    0    0    0    1    0    0    0    1     0     0
@@ -210,63 +211,63 @@ the right; however, we do not need to repeat the matrix at all. We can simply �
 <p>In this case, we want to start from 1, then move 3 to the right to 4, then to 7 and 10. But after that we would land at
 13, which is the same as being at position 2. We can achieve this using the “remainder” (<code>%%</code>) operator. This is 0
 based however, so we need to subtract 1 from the row number and add 1 at the end:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="toboggan-trajectory.html#cb43-1"></a>(<span class="dv">3</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">:</span><span class="dv">11</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">%%</span><span class="st"> </span><span class="dv">11</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="toboggan-trajectory.html#cb47-1"></a>(<span class="dv">3</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span><span class="op">:</span><span class="dv">11</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">%%</span><span class="st"> </span><span class="dv">11</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span></code></pre></div>
 <pre><code>##  [1]  1  4  7 10  2  5  8 11  3  6  9</code></pre>
 <p>We can now build a function to work out which “trees” we would land on by traversing the matrix.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="toboggan-trajectory.html#cb45-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb45-2"><a href="toboggan-trajectory.html#cb45-2"></a>  <span class="co"># create a matrix the same size as input, first filled with 0&#39;s</span></span>
-<span id="cb45-3"><a href="toboggan-trajectory.html#cb45-3"></a>  m &lt;-<span class="st"> </span>input <span class="op">*</span><span class="st"> </span><span class="dv">0</span></span>
-<span id="cb45-4"><a href="toboggan-trajectory.html#cb45-4"></a>  <span class="co"># but replace with a 1 where we would land on that row</span></span>
-<span id="cb45-5"><a href="toboggan-trajectory.html#cb45-5"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(m)) m[i, (<span class="dv">3</span> <span class="op">*</span><span class="st"> </span>(i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">%%</span><span class="st"> </span><span class="kw">ncol</span>(m) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb45-6"><a href="toboggan-trajectory.html#cb45-6"></a>  </span>
-<span id="cb45-7"><a href="toboggan-trajectory.html#cb45-7"></a>  <span class="co"># just standard multiplication, not matrix multiplication </span></span>
-<span id="cb45-8"><a href="toboggan-trajectory.html#cb45-8"></a>  <span class="kw">sum</span>(input <span class="op">*</span><span class="st"> </span>m)</span>
-<span id="cb45-9"><a href="toboggan-trajectory.html#cb45-9"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="toboggan-trajectory.html#cb49-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb49-2"><a href="toboggan-trajectory.html#cb49-2"></a>  <span class="co"># create a matrix the same size as input, first filled with 0&#39;s</span></span>
+<span id="cb49-3"><a href="toboggan-trajectory.html#cb49-3"></a>  m &lt;-<span class="st"> </span>input <span class="op">*</span><span class="st"> </span><span class="dv">0</span></span>
+<span id="cb49-4"><a href="toboggan-trajectory.html#cb49-4"></a>  <span class="co"># but replace with a 1 where we would land on that row</span></span>
+<span id="cb49-5"><a href="toboggan-trajectory.html#cb49-5"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(m)) m[i, (<span class="dv">3</span> <span class="op">*</span><span class="st"> </span>(i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) <span class="op">%%</span><span class="st"> </span><span class="kw">ncol</span>(m) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb49-6"><a href="toboggan-trajectory.html#cb49-6"></a>  </span>
+<span id="cb49-7"><a href="toboggan-trajectory.html#cb49-7"></a>  <span class="co"># just standard multiplication, not matrix multiplication </span></span>
+<span id="cb49-8"><a href="toboggan-trajectory.html#cb49-8"></a>  <span class="kw">sum</span>(input <span class="op">*</span><span class="st"> </span>m)</span>
+<span id="cb49-9"><a href="toboggan-trajectory.html#cb49-9"></a>}</span></code></pre></div>
 <p>We can check that this function matches the sample provided:</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="toboggan-trajectory.html#cb46-1"></a><span class="kw">part_1</span>(sample_matrix) <span class="op">==</span><span class="st"> </span><span class="dv">7</span></span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="toboggan-trajectory.html#cb50-1"></a><span class="kw">part_1</span>(sample_matrix) <span class="op">==</span><span class="st"> </span><span class="dv">7</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>We can now run the part 1 function on the actual data:</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="toboggan-trajectory.html#cb48-1"></a><span class="kw">part_1</span>(actual_matrix)</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="toboggan-trajectory.html#cb52-1"></a><span class="kw">part_1</span>(actual_matrix)</span></code></pre></div>
 <pre><code>## [1] 151</code></pre>
 </div>
 <div id="part-2-2" class="section level2">
 <h2><span class="header-section-number">3.2</span> Part 2</h2>
 <p>We now need to adapt our function from part 1 to work with different step sizes.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="toboggan-trajectory.html#cb50-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, down, right) {</span>
-<span id="cb50-2"><a href="toboggan-trajectory.html#cb50-2"></a>  <span class="co"># create a matrix the same size as input, first filled with 0&#39;s</span></span>
-<span id="cb50-3"><a href="toboggan-trajectory.html#cb50-3"></a>  m &lt;-<span class="st"> </span>input <span class="op">*</span><span class="st"> </span><span class="dv">0</span></span>
-<span id="cb50-4"><a href="toboggan-trajectory.html#cb50-4"></a>  <span class="co"># but replace with a 1 where we would land on that row</span></span>
-<span id="cb50-5"><a href="toboggan-trajectory.html#cb50-5"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">1</span>, <span class="kw">nrow</span>(m), down)) {</span>
-<span id="cb50-6"><a href="toboggan-trajectory.html#cb50-6"></a>    <span class="co"># our for loop now skips certain rows, but we need to alter our index to be</span></span>
-<span id="cb50-7"><a href="toboggan-trajectory.html#cb50-7"></a>    <span class="co"># based on the current step that we are on: so we divide (i - 1) by the down</span></span>
-<span id="cb50-8"><a href="toboggan-trajectory.html#cb50-8"></a>    <span class="co"># step size</span></span>
-<span id="cb50-9"><a href="toboggan-trajectory.html#cb50-9"></a>    m[i, (right <span class="op">*</span><span class="st"> </span>(i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">/</span><span class="st"> </span>down) <span class="op">%%</span><span class="st"> </span><span class="kw">ncol</span>(m) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb50-10"><a href="toboggan-trajectory.html#cb50-10"></a>  }</span>
-<span id="cb50-11"><a href="toboggan-trajectory.html#cb50-11"></a>  </span>
-<span id="cb50-12"><a href="toboggan-trajectory.html#cb50-12"></a>  <span class="co"># just standard multiplication, not matrix multiplication. because our trees</span></span>
-<span id="cb50-13"><a href="toboggan-trajectory.html#cb50-13"></a>  <span class="co"># are encoded by a 1, and the positions we land are encoded by a 1, we will</span></span>
-<span id="cb50-14"><a href="toboggan-trajectory.html#cb50-14"></a>  <span class="co"># find the trees that we encounter iff both positions in input and m are 1.</span></span>
-<span id="cb50-15"><a href="toboggan-trajectory.html#cb50-15"></a>  <span class="co"># The value in the resultant matrix will be a 1 in those positions,</span></span>
-<span id="cb50-16"><a href="toboggan-trajectory.html#cb50-16"></a>  <span class="co"># otherwise 0. We can then simply sum the matrix.</span></span>
-<span id="cb50-17"><a href="toboggan-trajectory.html#cb50-17"></a>  <span class="kw">sum</span>(input <span class="op">*</span><span class="st"> </span>m)</span>
-<span id="cb50-18"><a href="toboggan-trajectory.html#cb50-18"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="toboggan-trajectory.html#cb54-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, down, right) {</span>
+<span id="cb54-2"><a href="toboggan-trajectory.html#cb54-2"></a>  <span class="co"># create a matrix the same size as input, first filled with 0&#39;s</span></span>
+<span id="cb54-3"><a href="toboggan-trajectory.html#cb54-3"></a>  m &lt;-<span class="st"> </span>input <span class="op">*</span><span class="st"> </span><span class="dv">0</span></span>
+<span id="cb54-4"><a href="toboggan-trajectory.html#cb54-4"></a>  <span class="co"># but replace with a 1 where we would land on that row</span></span>
+<span id="cb54-5"><a href="toboggan-trajectory.html#cb54-5"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">1</span>, <span class="kw">nrow</span>(m), down)) {</span>
+<span id="cb54-6"><a href="toboggan-trajectory.html#cb54-6"></a>    <span class="co"># our for loop now skips certain rows, but we need to alter our index to be</span></span>
+<span id="cb54-7"><a href="toboggan-trajectory.html#cb54-7"></a>    <span class="co"># based on the current step that we are on: so we divide (i - 1) by the down</span></span>
+<span id="cb54-8"><a href="toboggan-trajectory.html#cb54-8"></a>    <span class="co"># step size</span></span>
+<span id="cb54-9"><a href="toboggan-trajectory.html#cb54-9"></a>    m[i, (right <span class="op">*</span><span class="st"> </span>(i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">/</span><span class="st"> </span>down) <span class="op">%%</span><span class="st"> </span><span class="kw">ncol</span>(m) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb54-10"><a href="toboggan-trajectory.html#cb54-10"></a>  }</span>
+<span id="cb54-11"><a href="toboggan-trajectory.html#cb54-11"></a>  </span>
+<span id="cb54-12"><a href="toboggan-trajectory.html#cb54-12"></a>  <span class="co"># just standard multiplication, not matrix multiplication. because our trees</span></span>
+<span id="cb54-13"><a href="toboggan-trajectory.html#cb54-13"></a>  <span class="co"># are encoded by a 1, and the positions we land are encoded by a 1, we will</span></span>
+<span id="cb54-14"><a href="toboggan-trajectory.html#cb54-14"></a>  <span class="co"># find the trees that we encounter iff both positions in input and m are 1.</span></span>
+<span id="cb54-15"><a href="toboggan-trajectory.html#cb54-15"></a>  <span class="co"># The value in the resultant matrix will be a 1 in those positions,</span></span>
+<span id="cb54-16"><a href="toboggan-trajectory.html#cb54-16"></a>  <span class="co"># otherwise 0. We can then simply sum the matrix.</span></span>
+<span id="cb54-17"><a href="toboggan-trajectory.html#cb54-17"></a>  <span class="kw">sum</span>(input <span class="op">*</span><span class="st"> </span>m)</span>
+<span id="cb54-18"><a href="toboggan-trajectory.html#cb54-18"></a>}</span></code></pre></div>
 <p>We can check that this function matches the sample provided:</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="toboggan-trajectory.html#cb51-1"></a><span class="kw">all</span>(</span>
-<span id="cb51-2"><a href="toboggan-trajectory.html#cb51-2"></a>  <span class="kw">part_2</span>(sample_matrix, <span class="dv">1</span>, <span class="dv">1</span>) <span class="op">==</span><span class="st"> </span><span class="dv">2</span>,</span>
-<span id="cb51-3"><a href="toboggan-trajectory.html#cb51-3"></a>  <span class="kw">part_2</span>(sample_matrix, <span class="dv">1</span>, <span class="dv">3</span>) <span class="op">==</span><span class="st"> </span><span class="dv">7</span>,</span>
-<span id="cb51-4"><a href="toboggan-trajectory.html#cb51-4"></a>  <span class="kw">part_2</span>(sample_matrix, <span class="dv">1</span>, <span class="dv">5</span>) <span class="op">==</span><span class="st"> </span><span class="dv">3</span>,</span>
-<span id="cb51-5"><a href="toboggan-trajectory.html#cb51-5"></a>  <span class="kw">part_2</span>(sample_matrix, <span class="dv">1</span>, <span class="dv">7</span>) <span class="op">==</span><span class="st"> </span><span class="dv">4</span>,</span>
-<span id="cb51-6"><a href="toboggan-trajectory.html#cb51-6"></a>  <span class="kw">part_2</span>(sample_matrix, <span class="dv">2</span>, <span class="dv">1</span>) <span class="op">==</span><span class="st"> </span><span class="dv">2</span></span>
-<span id="cb51-7"><a href="toboggan-trajectory.html#cb51-7"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="toboggan-trajectory.html#cb55-1"></a><span class="kw">all</span>(</span>
+<span id="cb55-2"><a href="toboggan-trajectory.html#cb55-2"></a>  <span class="kw">part_2</span>(sample_matrix, <span class="dv">1</span>, <span class="dv">1</span>) <span class="op">==</span><span class="st"> </span><span class="dv">2</span>,</span>
+<span id="cb55-3"><a href="toboggan-trajectory.html#cb55-3"></a>  <span class="kw">part_2</span>(sample_matrix, <span class="dv">1</span>, <span class="dv">3</span>) <span class="op">==</span><span class="st"> </span><span class="dv">7</span>,</span>
+<span id="cb55-4"><a href="toboggan-trajectory.html#cb55-4"></a>  <span class="kw">part_2</span>(sample_matrix, <span class="dv">1</span>, <span class="dv">5</span>) <span class="op">==</span><span class="st"> </span><span class="dv">3</span>,</span>
+<span id="cb55-5"><a href="toboggan-trajectory.html#cb55-5"></a>  <span class="kw">part_2</span>(sample_matrix, <span class="dv">1</span>, <span class="dv">7</span>) <span class="op">==</span><span class="st"> </span><span class="dv">4</span>,</span>
+<span id="cb55-6"><a href="toboggan-trajectory.html#cb55-6"></a>  <span class="kw">part_2</span>(sample_matrix, <span class="dv">2</span>, <span class="dv">1</span>) <span class="op">==</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb55-7"><a href="toboggan-trajectory.html#cb55-7"></a>)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>We can now run the part 1 function on the actual data:</p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="toboggan-trajectory.html#cb53-1"></a><span class="kw">prod</span>(</span>
-<span id="cb53-2"><a href="toboggan-trajectory.html#cb53-2"></a>  <span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb53-3"><a href="toboggan-trajectory.html#cb53-3"></a>  <span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">3</span>),</span>
-<span id="cb53-4"><a href="toboggan-trajectory.html#cb53-4"></a>  <span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">5</span>),</span>
-<span id="cb53-5"><a href="toboggan-trajectory.html#cb53-5"></a>  <span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">7</span>),</span>
-<span id="cb53-6"><a href="toboggan-trajectory.html#cb53-6"></a>  <span class="kw">part_2</span>(actual_matrix, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb53-7"><a href="toboggan-trajectory.html#cb53-7"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="toboggan-trajectory.html#cb57-1"></a><span class="kw">prod</span>(</span>
+<span id="cb57-2"><a href="toboggan-trajectory.html#cb57-2"></a>  <span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb57-3"><a href="toboggan-trajectory.html#cb57-3"></a>  <span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">3</span>),</span>
+<span id="cb57-4"><a href="toboggan-trajectory.html#cb57-4"></a>  <span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">5</span>),</span>
+<span id="cb57-5"><a href="toboggan-trajectory.html#cb57-5"></a>  <span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">7</span>),</span>
+<span id="cb57-6"><a href="toboggan-trajectory.html#cb57-6"></a>  <span class="kw">part_2</span>(actual_matrix, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb57-7"><a href="toboggan-trajectory.html#cb57-7"></a>)</span></code></pre></div>
 <pre><code>## [1] 7540141059</code></pre>
 </div>
 <div id="extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter" class="section level2">
@@ -277,10 +278,10 @@ and 2 right is the same as 1 down, 1 right. In this case we will only check 1 do
 maximum step right that is 1 less than the number of columns. Likewise, down must be between 1 and the number of rows.</p>
 <p>We can run our algorithm for any valid combination of movements down and right that match the constraints above. First,
 let’s consider what happens when we don’t go right, but we go straight down.</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="toboggan-trajectory.html#cb55-1"></a><span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">0</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="toboggan-trajectory.html#cb59-1"></a><span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">0</span>)</span></code></pre></div>
 <pre><code>## [1] 105</code></pre>
 <p>Now, what happens if we always go 1 right?</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="toboggan-trajectory.html#cb57-1"></a><span class="kw">map_dbl</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(actual_matrix), part_<span class="dv">2</span>, <span class="dt">input =</span> actual_matrix, <span class="dt">right =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="toboggan-trajectory.html#cb61-1"></a><span class="kw">map_dbl</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(actual_matrix), part_<span class="dv">2</span>, <span class="dt">input =</span> actual_matrix, <span class="dt">right =</span> <span class="dv">1</span>)</span></code></pre></div>
 <pre><code>##   [1] 103  59  29  27  18  13  23  12  10  10   9   9   6   6   6   4   7   3
 ##  [19]   9   8   8   1   2   3   3   3   2   1   3   7   1   3   2   3   0   1
 ##  [37]   5   1   4   1   3   1   2   2   2   1   1   3   3   1   1   3   2   0

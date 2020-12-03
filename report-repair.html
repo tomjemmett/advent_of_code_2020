@@ -143,6 +143,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2" data-path="report-repair.html"><a href="report-repair.html#part-2"><i class="fa fa-check"></i><b>1.2</b> Part 2</a><ul>
 <li class="chapter" data-level="1.2.1" data-path="report-repair.html"><a href="report-repair.html#is-our-improved-algorithm-better-this-time"><i class="fa fa-check"></i><b>1.2.1</b> Is our improved algorithm better this time?</a></li>
 </ul></li>
+<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: implementing in python</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="password-philosophy.html"><a href="password-philosophy.html"><i class="fa fa-check"></i><b>2</b> Password Philosophy</a><ul>
 <li class="chapter" data-level="2.1" data-path="password-philosophy.html"><a href="password-philosophy.html#part-1-1"><i class="fa fa-check"></i><b>2.1</b> Part 1</a></li>
@@ -231,8 +232,8 @@ that the target we increase the lower number pointer.</p>
 <pre><code>## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m&lt;bch:expr&gt;[39m[23m                    [3m[90m&lt;bch:tm&gt;[39m[23m [3m[90m&lt;bch:tm&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;bch:byt&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m
-## [90m1[39m part_1_naive(sample, 2020)      2.67µs   3.35µs   [4m2[24m[4m7[24m[4m1[24m962.        0B     27.2
-## [90m2[39m part_1_improved(sample, 2020)  61.87µs  66.07µs    [4m1[24m[4m3[24m690.        0B     17.1</code></pre>
+## [90m1[39m part_1_naive(sample, 2020)      2.95µs   3.63µs   [4m2[24m[4m5[24m[4m8[24m531.        0B     25.9
+## [90m2[39m part_1_improved(sample, 2020)  62.18µs  66.43µs    [4m1[24m[4m4[24m505.        0B     17.2</code></pre>
 <p>For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
 sort the data, which is costly, and then it performs far more comparisons per iteration.</p>
 <p>However, when we have more data, these extra steps lead to big improvements, as can be seen when running with the actual
@@ -242,8 +243,8 @@ data.</p>
 <pre><code>## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m&lt;bch:expr&gt;[39m[23m                    [3m[90m&lt;bch:tm&gt;[39m[23m [3m[90m&lt;bch:tm&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;bch:byt&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m
-## [90m1[39m part_1_naive(actual, 2020)     682.7µs  710.7µs     [4m1[24m371.        0B     2.02
-## [90m2[39m part_1_improved(actual, 2020)   81.9µs   88.6µs    [4m1[24m[4m0[24m860.    1.66KB    14.9</code></pre>
+## [90m1[39m part_1_naive(actual, 2020)     681.2µs  714.3µs     [4m1[24m326.        0B      0  
+## [90m2[39m part_1_improved(actual, 2020)   85.1µs   89.9µs    [4m1[24m[4m0[24m763.    1.66KB     14.9</code></pre>
 <p>The improved algorithm was roughly 10x faster for me on the actual data.</p>
 </div>
 </div>
@@ -332,12 +333,46 @@ continue the search by looping.</p>
 <pre><code>## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m&lt;bch:expr&gt;[39m[23m                    [3m[90m&lt;bch:tm&gt;[39m[23m [3m[90m&lt;bch:tm&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;bch:byt&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m
-## [90m1[39m part_2_naive(actual, 2020)     110.4ms  121.6ms      8.25        0B     2.06
-## [90m2[39m part_2_improved(actual, 2020)   15.3ms   15.9ms     63.1     1.66KB   483.</code></pre>
-<p>On my machine the improved approach is again about 10x quicker, though there are more memory allocations and GC
-(garbage collection’s) happening, so the total execution time is not quite 10x.</p>
-
+## [90m1[39m part_2_naive(actual, 2020)     119.1ms  124.6ms      8.06        0B     2.01
+## [90m2[39m part_2_improved(actual, 2020)   15.1ms   15.2ms     64.8     1.66KB   497.</code></pre>
+<p>On my machine the improved approach is again about 10x quicker.</p>
 </div>
+</div>
+<div id="extra-implementing-in-python" class="section level2">
+<h2><span class="header-section-number">1.3</span> Extra: implementing in python</h2>
+<p>I wanted to have a go at implementing my improved algorithm in python, but we can take advantage of sets to get even
+better performance and do away with the need to sort the list and perform binary search (asking if a value is in a set
+is a constant time operation in python - it’s near instantaneous).</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="report-repair.html#cb27-1"></a><span class="kw">library</span>(reticulate)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="report-repair.html#cb28-1"></a><span class="kw">def</span> part_2_py(input_values, target):</span>
+<span id="cb28-2"><a href="report-repair.html#cb28-2"></a>  <span class="co"># convert the </span></span>
+<span id="cb28-3"><a href="report-repair.html#cb28-3"></a>  s <span class="op">=</span> { i <span class="cf">for</span> i <span class="kw">in</span> input_values }</span>
+<span id="cb28-4"><a href="report-repair.html#cb28-4"></a>  </span>
+<span id="cb28-5"><a href="report-repair.html#cb28-5"></a>  <span class="co"># outer loop: we need to have at least 3 items to check</span></span>
+<span id="cb28-6"><a href="report-repair.html#cb28-6"></a>  <span class="cf">while</span> <span class="bu">len</span>(s) <span class="op">&gt;</span> <span class="dv">2</span>:</span>
+<span id="cb28-7"><a href="report-repair.html#cb28-7"></a>    <span class="co"># remove a value from the set</span></span>
+<span id="cb28-8"><a href="report-repair.html#cb28-8"></a>    j <span class="op">=</span> s.pop()</span>
+<span id="cb28-9"><a href="report-repair.html#cb28-9"></a>    <span class="co"># take a copy of the set: if we don&#39;t find a solution for j then we need to</span></span>
+<span id="cb28-10"><a href="report-repair.html#cb28-10"></a>    <span class="co"># continue with the set as it was at this point</span></span>
+<span id="cb28-11"><a href="report-repair.html#cb28-11"></a>    t <span class="op">=</span> s.copy()</span>
+<span id="cb28-12"><a href="report-repair.html#cb28-12"></a>    <span class="cf">while</span> <span class="bu">len</span>(t) <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb28-13"><a href="report-repair.html#cb28-13"></a>      <span class="co"># remove a value from the copied set</span></span>
+<span id="cb28-14"><a href="report-repair.html#cb28-14"></a>      i <span class="op">=</span> t.pop()</span>
+<span id="cb28-15"><a href="report-repair.html#cb28-15"></a>      <span class="co"># the value to reach the target</span></span>
+<span id="cb28-16"><a href="report-repair.html#cb28-16"></a>      k <span class="op">=</span> target <span class="op">-</span> i <span class="op">-</span> j</span>
+<span id="cb28-17"><a href="report-repair.html#cb28-17"></a>      <span class="co"># is k in the set? I.e. does i + j + k == target?</span></span>
+<span id="cb28-18"><a href="report-repair.html#cb28-18"></a>      <span class="cf">if</span> k <span class="kw">in</span> t:</span>
+<span id="cb28-19"><a href="report-repair.html#cb28-19"></a>        <span class="cf">return</span> i <span class="op">*</span> j <span class="op">*</span> k</span>
+<span id="cb28-20"><a href="report-repair.html#cb28-20"></a>  <span class="co"># no solution, return none</span></span>
+<span id="cb28-21"><a href="report-repair.html#cb28-21"></a>  <span class="cf">return</span> none</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="report-repair.html#cb29-1"></a>bench<span class="op">::</span><span class="kw">mark</span>(<span class="kw">part_2_improved</span>(actual, <span class="dv">2020</span>),</span>
+<span id="cb29-2"><a href="report-repair.html#cb29-2"></a>            py<span class="op">$</span><span class="kw">part_2_py</span>(actual, <span class="dv">2020</span>))</span></code></pre></div>
+<pre><code>## [90m# A tibble: 2 x 6[39m
+##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
+##   [3m[90m&lt;bch:expr&gt;[39m[23m                    [3m[90m&lt;bch:tm&gt;[39m[23m [3m[90m&lt;bch:tm&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;bch:byt&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m
+## [90m1[39m part_2_improved(actual, 2020)  15.14ms   15.6ms      63.1    1.66KB    38.5 
+## [90m2[39m py$part_2_py(actual, 2020)      1.23ms   1.27ms     765.    17.45KB     3.04</code></pre>
+
 </div>
 </div>
             </section>

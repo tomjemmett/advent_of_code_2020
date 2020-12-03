@@ -104,8 +104,8 @@ bench::mark(part_1_naive(sample, 2020),
 ## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_1_naive(sample, 2020)      2.67µs   3.35µs   [4m2[24m[4m7[24m[4m1[24m962.        0B     27.2
-## [90m2[39m part_1_improved(sample, 2020)  61.87µs  66.07µs    [4m1[24m[4m3[24m690.        0B     17.1
+## [90m1[39m part_1_naive(sample, 2020)      2.95µs   3.63µs   [4m2[24m[4m5[24m[4m8[24m531.        0B     25.9
+## [90m2[39m part_1_improved(sample, 2020)  62.18µs  66.43µs    [4m1[24m[4m4[24m505.        0B     17.2
 ```
 
 For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
@@ -124,8 +124,8 @@ bench::mark(part_1_naive(actual, 2020),
 ## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_1_naive(actual, 2020)     682.7µs  710.7µs     [4m1[24m371.        0B     2.02
-## [90m2[39m part_1_improved(actual, 2020)   81.9µs   88.6µs    [4m1[24m[4m0[24m860.    1.66KB    14.9
+## [90m1[39m part_1_naive(actual, 2020)     681.2µs  714.3µs     [4m1[24m326.        0B      0  
+## [90m2[39m part_1_improved(actual, 2020)   85.1µs   89.9µs    [4m1[24m[4m0[24m763.    1.66KB     14.9
 ```
 
 The improved algorithm was roughly 10x faster for me on the actual data.
@@ -268,9 +268,59 @@ bench::mark(part_2_naive(actual, 2020),
 ## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_2_naive(actual, 2020)     110.4ms  121.6ms      8.25        0B     2.06
-## [90m2[39m part_2_improved(actual, 2020)   15.3ms   15.9ms     63.1     1.66KB   483.
+## [90m1[39m part_2_naive(actual, 2020)     119.1ms  124.6ms      8.06        0B     2.01
+## [90m2[39m part_2_improved(actual, 2020)   15.1ms   15.2ms     64.8     1.66KB   497.
 ```
 
-On my machine the improved approach is again about 10x quicker, though there are more memory allocations and GC
-(garbage collection's) happening, so the total execution time is not quite 10x.
+On my machine the improved approach is again about 10x quicker.
+
+## Extra: implementing in python
+
+I wanted to have a go at implementing my improved algorithm in python, but we can take advantage of sets to get even
+better performance and do away with the need to sort the list and perform binary search (asking if a value is in a set
+is a constant time operation in python - it's near instantaneous).
+
+
+```r
+library(reticulate)
+```
+
+
+```python
+def part_2_py(input_values, target):
+  # convert the 
+  s = { i for i in input_values }
+  
+  # outer loop: we need to have at least 3 items to check
+  while len(s) > 2:
+    # remove a value from the set
+    j = s.pop()
+    # take a copy of the set: if we don't find a solution for j then we need to
+    # continue with the set as it was at this point
+    t = s.copy()
+    while len(t) > 1:
+      # remove a value from the copied set
+      i = t.pop()
+      # the value to reach the target
+      k = target - i - j
+      # is k in the set? I.e. does i + j + k == target?
+      if k in t:
+        return i * j * k
+  # no solution, return none
+  return none
+```
+
+
+
+```r
+bench::mark(part_2_improved(actual, 2020),
+            py$part_2_py(actual, 2020))
+```
+
+```
+## [90m# A tibble: 2 x 6[39m
+##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
+##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
+## [90m1[39m part_2_improved(actual, 2020)  15.14ms   15.6ms      63.1    1.66KB    38.5 
+## [90m2[39m py$part_2_py(actual, 2020)      1.23ms   1.27ms     765.    17.45KB     3.04
+```
