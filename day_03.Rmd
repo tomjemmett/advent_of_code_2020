@@ -119,3 +119,27 @@ prod(
   part_2(actual_matrix, 2, 1)
 )
 ```
+
+# Extra: Is there a path that minimises the number of trees you encounter?
+
+First, let's define some additional constraints. We must consider movements that are unique; for instance, going 2 down
+and 2 right is the same as 1 down, 1 right. In this case we will only check 1 down and 1 right.
+
+We also know that going 0 to the right is the same as going the number of columns to the right. So, we consider a
+maximum step right that is 1 less than the number of columns. Likewise, down must be between 1 and the number of rows.
+
+We can run our algorithm for any valid combination of movements down and right that match the constraints above. First,
+let's consider what happens when we don't go right, but we go straight down.
+
+```{r extra straight down}
+part_2(actual_matrix, 1, 0)
+```
+
+Now, what happens if we always go 1 right?
+
+```{r extra 1 right}
+map_dbl(1:nrow(actual_matrix), part_2, input = actual_matrix, right = 1)
+```
+
+We can see a number of options here where we can get to the bottom without hitting any trees. We can't get any better
+than 0, so we may as well give up now rather than try all of the other combinations!
