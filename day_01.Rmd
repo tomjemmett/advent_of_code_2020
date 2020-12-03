@@ -213,6 +213,11 @@ I wanted to have a go at implementing my improved algorithm in python, but we ca
 better performance and do away with the need to sort the list and perform binary search (asking if a value is in a set
 is a constant time operation in python - it's near instantaneous).
 
+```{r reticulate setup}
+library(reticulate)
+virtualenv_create("r-reticulate")
+```
+
 ```{python part 2 solution in python}
 def part_2_py(input_values, target):
   # convert the 
@@ -240,5 +245,5 @@ def part_2_py(input_values, target):
 
 ```{r eval python approach}
 bench::mark(part_2_improved(actual, 2020),
-            reticulate::py$part_2_py(actual, 2020))
+            py$part_2_py(actual, 2020))
 ```
