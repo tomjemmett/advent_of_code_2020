@@ -211,3 +211,8 @@ map_dbl(1:nrow(actual_matrix), part_2, input = actual_matrix, right = 1)
 
 We can see a number of options here where we can get to the bottom without hitting any trees. We can't get any better
 than 0, so we may as well give up now rather than try all of the other combinations!
+
+The other combinations would be going just 1 down at each step, and then all of the combinations of right and down such
+that the greatest common divisor of right and down is 1. This would give us all of the movements that don't violate the
+constraint above of a non-unique movement. For instance, 6 right, 2 down has a greatest common divisor of 2, and this
+combination is the same as 3 right, 1 down.

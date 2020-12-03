@@ -104,8 +104,8 @@ bench::mark(part_1_naive(sample, 2020),
 ## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_1_naive(sample, 2020)      2.75µs   3.32µs   [4m2[24m[4m8[24m[4m4[24m143.        0B     28.4
-## [90m2[39m part_1_improved(sample, 2020)  56.52µs  62.96µs    [4m1[24m[4m5[24m521.        0B     19.2
+## [90m1[39m part_1_naive(sample, 2020)      2.86µs   3.44µs   [4m2[24m[4m6[24m[4m5[24m703.        0B     26.6
+## [90m2[39m part_1_improved(sample, 2020)  59.84µs  64.55µs    [4m1[24m[4m5[24m188.        0B     19.2
 ```
 
 For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
@@ -124,8 +124,8 @@ bench::mark(part_1_naive(actual, 2020),
 ## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_1_naive(actual, 2020)     764.1µs  826.6µs     [4m1[24m197.        0B     2.03
-## [90m2[39m part_1_improved(actual, 2020)   78.4µs   86.4µs    [4m1[24m[4m1[24m286.    1.66KB    14.8
+## [90m1[39m part_1_naive(actual, 2020)     685.5µs  710.2µs     [4m1[24m403.        0B     2.02
+## [90m2[39m part_1_improved(actual, 2020)   83.3µs   88.2µs    [4m1[24m[4m1[24m198.    1.66KB    14.8
 ```
 
 The improved algorithm was roughly 10x faster for me on the actual data.
@@ -268,8 +268,8 @@ bench::mark(part_2_naive(actual, 2020),
 ## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_2_naive(actual, 2020)     124.3ms  125.7ms      7.96        0B     2.65
-## [90m2[39m part_2_improved(actual, 2020)   14.8ms   15.4ms     65.5     1.66KB   546.
+## [90m1[39m part_2_naive(actual, 2020)     109.7ms  109.8ms      9.10        0B     2.27
+## [90m2[39m part_2_improved(actual, 2020)   15.1ms   15.1ms     66.2     1.66KB   530.
 ```
 
 On my machine the improved approach is again about 10x quicker, though there are more memory allocations and GC
