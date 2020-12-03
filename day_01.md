@@ -6,8 +6,8 @@ This is my attempt to solve [Day 1](https://adventofcode.com/2020/day/1).
 
 
 ```r
-sample <- c(1721, 979, 366, 299, 675, 1456)
-actual <- read_lines("day_01_input.txt") %>% as.integer()
+sample <- read_lines("samples/day_01_sample.txt") %>% as.integer()
+actual <- read_lines("inputs/day_01_input.txt") %>% as.integer()
 ```
 
 ## Part 1
@@ -104,8 +104,8 @@ bench::mark(part_1_naive(sample, 2020),
 ## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_1_naive(sample, 2020)      2.93µs   3.62µs   [4m2[24m[4m3[24m[4m6[24m802.        0B     23.7
-## [90m2[39m part_1_improved(sample, 2020)  62.02µs  65.72µs    [4m1[24m[4m4[24m823.        0B     17.0
+## [90m1[39m part_1_naive(sample, 2020)      2.62µs   3.19µs   [4m2[24m[4m9[24m[4m1[24m213.        0B     29.1
+## [90m2[39m part_1_improved(sample, 2020)  57.03µs  64.31µs    [4m1[24m[4m5[24m430.        0B     19.2
 ```
 
 For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
@@ -124,8 +124,8 @@ bench::mark(part_1_naive(actual, 2020),
 ## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_1_naive(actual, 2020)     818.7µs  830.6µs     [4m1[24m185.        0B     2.02
-## [90m2[39m part_1_improved(actual, 2020)   82.5µs   88.7µs    [4m1[24m[4m1[24m012.    1.66KB    14.8
+## [90m1[39m part_1_naive(actual, 2020)     700.5µs    712µs     [4m1[24m398.        0B     2.02
+## [90m2[39m part_1_improved(actual, 2020)   77.4µs     86µs    [4m1[24m[4m1[24m424.    1.66KB    17.0
 ```
 
 The improved algorithm was roughly 10x faster for me on the actual data.
@@ -268,8 +268,8 @@ bench::mark(part_2_naive(actual, 2020),
 ## [90m# A tibble: 2 x 6[39m
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_2_naive(actual, 2020)       127ms  132.1ms      7.62        0B     2.54
-## [90m2[39m part_2_improved(actual, 2020)     15ms   16.1ms     61.5     1.66KB   472.
+## [90m1[39m part_2_naive(actual, 2020)     109.9ms    110ms      8.94        0B     2.24
+## [90m2[39m part_2_improved(actual, 2020)   15.1ms   15.3ms     65.6     1.66KB   525.
 ```
 
 On my machine the improved approach is again about 10x quicker, though there are more memory allocations and GC
