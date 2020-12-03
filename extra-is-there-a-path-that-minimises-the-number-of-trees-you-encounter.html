@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Advent of Code 2020</title>
+  <title>Day 4 Extra: Is there a path that minimises the number of trees you encounter? | Advent of Code 2020</title>
   <meta name="description" content="My attempt to complete AOC 2020 in R" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Advent of Code 2020" />
+  <meta property="og:title" content="Day 4 Extra: Is there a path that minimises the number of trees you encounter? | Advent of Code 2020" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Advent of Code 2020" />
+  <meta name="twitter:title" content="Day 4 Extra: Is there a path that minimises the number of trees you encounter? | Advent of Code 2020" />
   
   <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="toboggan-trajectory.html"/>
 
-<link rel="next" href="report-repair.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -170,16 +170,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Advent of Code 2020</h1>
-<p class="author"><em><a href="mailto:thomas.jemmett@nhs.net">Tom Jemmett</a></em></p>
-<p class="date"><em>2020-12-03</em></p>
-</div>
-<div id="introduction" class="section level1 unnumbered">
-<h1>Introduction</h1>
-<p>This is my attempt to complete the <a href="https://adventofcode.com/2020/">Advent of Code 2020</a> in R using RMarkdown, along
-with bookdown to render the site. The book will automatically be rebuilt using
-<a href="https://github.com/features/actions">GitHub actions</a> and hosted using <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+<div id="extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter" class="section level1">
+<h1><span class="header-section-number">Day 4</span> Extra: Is there a path that minimises the number of trees you encounter?</h1>
+<p>First, let’s define some additional constraints. We must consider movements that are unique; for instance, going 2 down
+and 2 right is the same as 1 down, 1 right. In this case we will only check 1 down and 1 right.</p>
+<p>We also know that going 0 to the right is the same as going the number of columns to the right. So, we consider a
+maximum step right that is 1 less than the number of columns. Likewise, down must be between 1 and the number of rows.</p>
+<p>We can run our algorithm for any valid combination of movements down and right that match the constraints above. First,
+let’s consider what happens when we don’t go right, but we go straight down.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter.html#cb55-1"></a><span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] 105</code></pre>
+<p>Now, what happens if we always go 1 right?</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter.html#cb57-1"></a><span class="kw">map_dbl</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(actual_matrix), part_<span class="dv">2</span>, <span class="dt">input =</span> actual_matrix, <span class="dt">right =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>##   [1] 103  59  29  27  18  13  23  12  10  10   9   9   6   6   6   4   7   3
+##  [19]   9   8   8   1   2   3   3   3   2   1   3   7   1   3   2   3   0   1
+##  [37]   5   1   4   1   3   1   2   2   2   1   1   3   3   1   1   3   2   0
+##  [55]   2   1   1   2   1   2   2   1   2   4   0   2   1   0   1   0   1   0
+##  [73]   3   2   2   1   2   1   0   1   2   0   1   2   2   1   0   1   0   1
+##  [91]   1   1   1   1   0   0   0   1   1   0   3   0   2   1   1   0   1   1
+## [109]   1   1   1   0   1   0   0   0   1   0   0   0   0   0   0   0   0   1
+## [127]   0   0   0   0   0   0   1   0   1   0   0   0   1   1   0   0   1   0
+## [145]   1   1   1   0   1   0   0   0   1   0   0   0   1   0   0   1   1   0
+## [163]   0   0   1   0   1   0   0   0   1   0   0   0   0   0   0   0   0   0
+## [181]   0   1   0   0   1   0   0   0   0   0   1   0   0   1   0   0   0   1
+## [199]   0   0   0   0   0   0   1   1   0   0   0   1   0   0   0   0   0   0
+## [217]   0   0   0   1   0   0   0   0   0   0   0   0   1   1   1   0   0   1
+## [235]   0   0   0   1   0   0   0   1   0   0   1   0   0   0   0   1   0   1
+## [253]   1   1   0   0   0   0   1   1   1   0   0   1   0   0   1   1   0   1
+## [271]   0   0   0   0   0   1   0   0   0   0   0   0   1   0   1   0   0   0
+## [289]   1   0   0   0   1   0   0   0   1   0   0   1   0   0   1   1   1   0
+## [307]   1   0   0   1   1   0   0   1   0   0   0   0   1   0   0   0   0</code></pre>
+<p>We can see a number of options here where we can get to the bottom without hitting any trees. We can’t get any better
+than 0, so we may as well give up now rather than try all of the other combinations!</p>
 
 </div>
             </section>
@@ -187,8 +209,8 @@ with bookdown to render the site. The book will automatically be rebuilt using
           </div>
         </div>
       </div>
+<a href="toboggan-trajectory.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="report-repair.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

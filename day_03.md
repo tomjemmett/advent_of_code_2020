@@ -160,3 +160,54 @@ prod(
 ```
 ## [1] 7540141059
 ```
+
+# Extra: Is there a path that minimises the number of trees you encounter?
+
+First, let's define some additional constraints. We must consider movements that are unique; for instance, going 2 down
+and 2 right is the same as 1 down, 1 right. In this case we will only check 1 down and 1 right.
+
+We also know that going 0 to the right is the same as going the number of columns to the right. So, we consider a
+maximum step right that is 1 less than the number of columns. Likewise, down must be between 1 and the number of rows.
+
+We can run our algorithm for any valid combination of movements down and right that match the constraints above. First,
+let's consider what happens when we don't go right, but we go straight down.
+
+
+```r
+part_2(actual_matrix, 1, 0)
+```
+
+```
+## [1] 105
+```
+
+Now, what happens if we always go 1 right?
+
+
+```r
+map_dbl(1:nrow(actual_matrix), part_2, input = actual_matrix, right = 1)
+```
+
+```
+##   [1] 103  59  29  27  18  13  23  12  10  10   9   9   6   6   6   4   7   3
+##  [19]   9   8   8   1   2   3   3   3   2   1   3   7   1   3   2   3   0   1
+##  [37]   5   1   4   1   3   1   2   2   2   1   1   3   3   1   1   3   2   0
+##  [55]   2   1   1   2   1   2   2   1   2   4   0   2   1   0   1   0   1   0
+##  [73]   3   2   2   1   2   1   0   1   2   0   1   2   2   1   0   1   0   1
+##  [91]   1   1   1   1   0   0   0   1   1   0   3   0   2   1   1   0   1   1
+## [109]   1   1   1   0   1   0   0   0   1   0   0   0   0   0   0   0   0   1
+## [127]   0   0   0   0   0   0   1   0   1   0   0   0   1   1   0   0   1   0
+## [145]   1   1   1   0   1   0   0   0   1   0   0   0   1   0   0   1   1   0
+## [163]   0   0   1   0   1   0   0   0   1   0   0   0   0   0   0   0   0   0
+## [181]   0   1   0   0   1   0   0   0   0   0   1   0   0   1   0   0   0   1
+## [199]   0   0   0   0   0   0   1   1   0   0   0   1   0   0   0   0   0   0
+## [217]   0   0   0   1   0   0   0   0   0   0   0   0   1   1   1   0   0   1
+## [235]   0   0   0   1   0   0   0   1   0   0   1   0   0   0   0   1   0   1
+## [253]   1   1   0   0   0   0   1   1   1   0   0   1   0   0   1   1   0   1
+## [271]   0   0   0   0   0   1   0   0   0   0   0   0   1   0   1   0   0   0
+## [289]   1   0   0   0   1   0   0   0   1   0   0   1   0   0   1   1   1   0
+## [307]   1   0   0   1   1   0   0   1   0   0   0   0   1   0   0   0   0
+```
+
+We can see a number of options here where we can get to the bottom without hitting any trees. We can't get any better
+than 0, so we may as well give up now rather than try all of the other combinations!
