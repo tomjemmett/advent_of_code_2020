@@ -215,7 +215,6 @@ is a constant time operation in python - it's near instantaneous).
 
 ```{r reticulate setup}
 library(reticulate)
-virtualenv_create("r-reticulate")
 ```
 
 ```{python part 2 solution in python}
