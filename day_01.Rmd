@@ -205,5 +205,40 @@ bench::mark(part_2_naive(actual, 2020),
             part_2_improved(actual, 2020))
 ```
 
-On my machine the improved approach is again about 10x quicker, though there are more memory allocations and GC
-(garbage collection's) happening, so the total execution time is not quite 10x.
+On my machine the improved approach is again about 10x quicker.
+
+## Extra: implementing in python
+
+I wanted to have a go at implementing my improved algorithm in python, but we can take advantage of sets to get even
+better performance and do away with the need to sort the list and perform binary search (asking if a value is in a set
+is a constant time operation in python - it's near instantaneous).
+
+```{python part 2 solution in python}
+def part_2_py(input_values, target):
+  # convert the 
+  s = { i for i in input_values }
+  
+  # outer loop: we need to have at least 3 items to check
+  while len(s) > 2:
+    # remove a value from the set
+    j = s.pop()
+    # take a copy of the set: if we don't find a solution for j then we need to
+    # continue with the set as it was at this point
+    t = s.copy()
+    while len(t) > 1:
+      # remove a value from the copied set
+      i = t.pop()
+      # the value to reach the target
+      k = target - i - j
+      # is k in the set? I.e. does i + j + k == target?
+      if k in t:
+        return i * j * k
+  # no solution, return none
+  return none
+```
+
+
+```{r eval python approach}
+bench::mark(part_2_improved(actual, 2020),
+            reticulate::py$part_2_py(actual, 2020))
+```
