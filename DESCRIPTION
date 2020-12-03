@@ -13,3 +13,5 @@ Suggests:
     withr,
     callr,
     fs
+Remotes:
+    rstudio/reticulate
