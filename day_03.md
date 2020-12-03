@@ -161,7 +161,7 @@ prod(
 ## [1] 7540141059
 ```
 
-# Extra: Is there a path that minimises the number of trees you encounter?
+## Extra: Is there a path that minimises the number of trees you encounter?
 
 First, let's define some additional constraints. We must consider movements that are unique; for instance, going 2 down
 and 2 right is the same as 1 down, 1 right. In this case we will only check 1 down and 1 right.

@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="password-philosophy.html"/>
-<link rel="next" href="extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -151,8 +151,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html"><i class="fa fa-check"></i><b>3</b> Toboggan Trajectory</a><ul>
 <li class="chapter" data-level="3.1" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-1-2"><i class="fa fa-check"></i><b>3.1</b> Part 1</a></li>
 <li class="chapter" data-level="3.2" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-2-2"><i class="fa fa-check"></i><b>3.2</b> Part 2</a></li>
+<li class="chapter" data-level="3.3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter"><i class="fa fa-check"></i><b>3.3</b> Extra: Is there a path that minimises the number of trees you encounter?</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter.html"><a href="extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter.html"><i class="fa fa-check"></i><b>4</b> Extra: Is there a path that minimises the number of trees you encounter?</a></li>
 </ul>
 
       </nav>
@@ -269,14 +269,52 @@ based however, so we need to subtract 1 from the row number and add 1 at the end
 <span id="cb53-7"><a href="toboggan-trajectory.html#cb53-7"></a>)</span></code></pre></div>
 <pre><code>## [1] 7540141059</code></pre>
 </div>
+<div id="extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter" class="section level2">
+<h2><span class="header-section-number">3.3</span> Extra: Is there a path that minimises the number of trees you encounter?</h2>
+<p>First, let’s define some additional constraints. We must consider movements that are unique; for instance, going 2 down
+and 2 right is the same as 1 down, 1 right. In this case we will only check 1 down and 1 right.</p>
+<p>We also know that going 0 to the right is the same as going the number of columns to the right. So, we consider a
+maximum step right that is 1 less than the number of columns. Likewise, down must be between 1 and the number of rows.</p>
+<p>We can run our algorithm for any valid combination of movements down and right that match the constraints above. First,
+let’s consider what happens when we don’t go right, but we go straight down.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="toboggan-trajectory.html#cb55-1"></a><span class="kw">part_2</span>(actual_matrix, <span class="dv">1</span>, <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] 105</code></pre>
+<p>Now, what happens if we always go 1 right?</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="toboggan-trajectory.html#cb57-1"></a><span class="kw">map_dbl</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(actual_matrix), part_<span class="dv">2</span>, <span class="dt">input =</span> actual_matrix, <span class="dt">right =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>##   [1] 103  59  29  27  18  13  23  12  10  10   9   9   6   6   6   4   7   3
+##  [19]   9   8   8   1   2   3   3   3   2   1   3   7   1   3   2   3   0   1
+##  [37]   5   1   4   1   3   1   2   2   2   1   1   3   3   1   1   3   2   0
+##  [55]   2   1   1   2   1   2   2   1   2   4   0   2   1   0   1   0   1   0
+##  [73]   3   2   2   1   2   1   0   1   2   0   1   2   2   1   0   1   0   1
+##  [91]   1   1   1   1   0   0   0   1   1   0   3   0   2   1   1   0   1   1
+## [109]   1   1   1   0   1   0   0   0   1   0   0   0   0   0   0   0   0   1
+## [127]   0   0   0   0   0   0   1   0   1   0   0   0   1   1   0   0   1   0
+## [145]   1   1   1   0   1   0   0   0   1   0   0   0   1   0   0   1   1   0
+## [163]   0   0   1   0   1   0   0   0   1   0   0   0   0   0   0   0   0   0
+## [181]   0   1   0   0   1   0   0   0   0   0   1   0   0   1   0   0   0   1
+## [199]   0   0   0   0   0   0   1   1   0   0   0   1   0   0   0   0   0   0
+## [217]   0   0   0   1   0   0   0   0   0   0   0   0   1   1   1   0   0   1
+## [235]   0   0   0   1   0   0   0   1   0   0   1   0   0   0   0   1   0   1
+## [253]   1   1   0   0   0   0   1   1   1   0   0   1   0   0   1   1   0   1
+## [271]   0   0   0   0   0   1   0   0   0   0   0   0   1   0   1   0   0   0
+## [289]   1   0   0   0   1   0   0   0   1   0   0   1   0   0   1   1   1   0
+## [307]   1   0   0   1   1   0   0   1   0   0   0   0   1   0   0   0   0</code></pre>
+<p>We can see a number of options here where we can get to the bottom without hitting any trees. We can’t get any better
+than 0, so we may as well give up now rather than try all of the other combinations!</p>
+<p>The other combinations would be going just 1 down at each step, and then all of the combinations of right and down such
+that the greatest common divisor of right and down is 1. This would give us all of the movements that don’t violate the
+constraint above of a non-unique movement. For instance, 6 right, 2 down has a greatest common divisor of 2, and this
+combination is the same as 3 right, 1 down.</p>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="password-philosophy.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="password-philosophy.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
