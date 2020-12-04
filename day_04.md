@@ -198,3 +198,71 @@ nrow(part_2(actual))
 ```
 ## [1] 111
 ```
+
+## Extra: solving with regex's
+
+This could be reduced to simply solving with regular expressions. First let's create a function to convert the input
+into a single string.
+
+
+```r
+records_as_strings <- function(input) {
+  input %>%
+    str_replace("^$", "\n") %>%
+    paste(collapse = " ") %>%
+    str_split(" \n ") %>%
+    pluck(1)
+}
+records_as_strings(sample)
+```
+
+```
+## [1] "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd byr:1937 iyr:2017 cid:147 hgt:183cm"
+## [2] "iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884 hcl:#cfa07d byr:1929"          
+## [3] "hcl:#ae17e1 iyr:2013 eyr:2024 ecl:brn pid:760753108 byr:1931 hgt:179cm"        
+## [4] "hcl:#cfa07d eyr:2025 pid:166559648 iyr:2011 ecl:brn hgt:59in"
+```
+
+Now, for part 1 we just need to run a regular expression for each of the different fields on each record. Using map
+gives us a list for each of the different fields, so we transpose to get the results of the regex's for each record. We
+can then flatten these lists and run the `all` function to check to see if every regex was matched for that record.
+
+
+```r
+actual %>%
+  records_as_strings() %>%
+  map(c("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"),
+      str_detect,
+      string = .) %>%
+  transpose() %>%
+  map_lgl(compose(all, flatten_lgl)) %>%
+  sum()
+```
+
+```
+## [1] 233
+```
+
+Part 2 is similar, but we need to match the value after the field name.
+
+
+```r
+actual %>%
+  records_as_strings() %>%
+  map(c("byr:(19[2-9][0-9]|200[0-2])",
+        "iyr:20(1[0-9]|20)",
+        "eyr:20(2[0-9]|30)",
+        "hgt:(1([5-8][0-9]|9[0-3])cm|(59|6[0-9]|7[0-6])in)",
+        "hcl:#[0-9a-f]{6}",
+        "ecl:(amb|blu|brn|gry|grn|hzl|oth)",
+        "pid:\\d{9}(?!\\d)"), # negative lookahead: make sure the character that follows the 9th digit is not a digit
+      str_detect,
+      string = .) %>%
+  transpose() %>%
+  map_lgl(compose(all, flatten_lgl)) %>%
+  sum()
+```
+
+```
+## [1] 111
+```
