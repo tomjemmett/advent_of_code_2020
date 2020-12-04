@@ -2,7 +2,7 @@
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-options(crayon.enabled = FALSE)
+options(crayon.enabled = NULL)
 library(tidyverse)
 ```
 
