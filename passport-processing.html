@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Day 4 Passport Processing | Advent of Code 2020</title>
+  <meta name="description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Day 4 Passport Processing | Advent of Code 2020" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Day 4 Passport Processing | Advent of Code 2020" />
+  
+  <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
+  
+
+<meta name="author" content="Tom Jemmett" />
+
+
+<meta name="date" content="2020-12-04" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="toboggan-trajectory.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">Advent of Code 2020</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="report-repair.html"><a href="report-repair.html"><i class="fa fa-check"></i><b>1</b> Report Repair</a><ul>
+<li class="chapter" data-level="1.1" data-path="report-repair.html"><a href="report-repair.html#part-1"><i class="fa fa-check"></i><b>1.1</b> Part 1</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="report-repair.html"><a href="report-repair.html#is-the-improved-algorithm-any-better"><i class="fa fa-check"></i><b>1.1.1</b> is the improved algorithm any better?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="report-repair.html"><a href="report-repair.html#part-2"><i class="fa fa-check"></i><b>1.2</b> Part 2</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="report-repair.html"><a href="report-repair.html#is-our-improved-algorithm-better-this-time"><i class="fa fa-check"></i><b>1.2.1</b> Is our improved algorithm better this time?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: implementing in python</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="password-philosophy.html"><a href="password-philosophy.html"><i class="fa fa-check"></i><b>2</b> Password Philosophy</a><ul>
+<li class="chapter" data-level="2.1" data-path="password-philosophy.html"><a href="password-philosophy.html#part-1-1"><i class="fa fa-check"></i><b>2.1</b> Part 1</a></li>
+<li class="chapter" data-level="2.2" data-path="password-philosophy.html"><a href="password-philosophy.html#part-2-1"><i class="fa fa-check"></i><b>2.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html"><i class="fa fa-check"></i><b>3</b> Toboggan Trajectory</a><ul>
+<li class="chapter" data-level="3.1" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-1-2"><i class="fa fa-check"></i><b>3.1</b> Part 1</a></li>
+<li class="chapter" data-level="3.2" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-2-2"><i class="fa fa-check"></i><b>3.2</b> Part 2</a></li>
+<li class="chapter" data-level="3.3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter"><i class="fa fa-check"></i><b>3.3</b> Extra: Is there a path that minimises the number of trees you encounter?</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="passport-processing.html"><a href="passport-processing.html"><i class="fa fa-check"></i><b>4</b> Passport Processing</a><ul>
+<li class="chapter" data-level="4.1" data-path="passport-processing.html"><a href="passport-processing.html#part-1-3"><i class="fa fa-check"></i><b>4.1</b> Part 1</a></li>
+<li class="chapter" data-level="4.2" data-path="passport-processing.html"><a href="passport-processing.html#part-2-3"><i class="fa fa-check"></i><b>4.2</b> Part 2</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Advent of Code 2020</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="passport-processing" class="section level1">
+<h1><span class="header-section-number">Day 4</span> Passport Processing</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/4">Day 4</a>.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="passport-processing.html#cb63-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_04_sample.txt&quot;</span>)</span>
+<span id="cb63-2"><a href="passport-processing.html#cb63-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_04_input.txt&quot;</span>)</span></code></pre></div>
+<div id="part-1-3" class="section level2">
+<h2><span class="header-section-number">4.1</span> Part 1</h2>
+<p>The fields for todays puzzle are:</p>
+<ul>
+<li>byr (Birth Year)</li>
+<li>iyr (Issue Year)</li>
+<li>eyr (Expiration Year)</li>
+<li>hgt (Height)</li>
+<li>hcl (Hair Color)</li>
+<li>ecl (Eye Color)</li>
+<li>pid (Passport ID)</li>
+<li>cid (Country ID)</li>
+</ul>
+<p>For a record to be treated as valid we must have all of the fields present, except for the country id which is optional.</p>
+<p>Records are separated by blank new lines. I am going to first collapse the data into a single string, separated by “,”.
+The blank lines will then be “,,”, so we can simply split our input there. This will give us one string per records. We
+then need to sort out each record by splitting each string at either a space or a comma, then using the <code>unglue_data</code>
+function to extra a data frame with a column “key” for the left hand part and a column “value” for the right hand part.</p>
+<p>By using <code>map_dfr</code> we will be able to combine each record’s key/value pairs into a single dataframe, but we add a
+column “record” to keep track of which record we are dealing with.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="passport-processing.html#cb64-1"></a>process_data &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb64-2"><a href="passport-processing.html#cb64-2"></a>  input <span class="op">%&gt;%</span></span>
+<span id="cb64-3"><a href="passport-processing.html#cb64-3"></a><span class="st">    </span><span class="kw">paste</span>(<span class="dt">collapse =</span> <span class="st">&quot;,&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb64-4"><a href="passport-processing.html#cb64-4"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;,,&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb64-5"><a href="passport-processing.html#cb64-5"></a><span class="st">    </span><span class="co"># take just the first result returned by str_split, it will return a list</span></span>
+<span id="cb64-6"><a href="passport-processing.html#cb64-6"></a><span class="st">    </span><span class="co"># with one item which contains the results</span></span>
+<span id="cb64-7"><a href="passport-processing.html#cb64-7"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb64-8"><a href="passport-processing.html#cb64-8"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;[, ]&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb64-9"><a href="passport-processing.html#cb64-9"></a><span class="st">    </span><span class="kw">map_dfr</span>(unglue<span class="op">::</span>unglue_data, <span class="st">&quot;{key}:{value}&quot;</span>, <span class="dt">.id =</span> <span class="st">&quot;record&quot;</span>)</span>
+<span id="cb64-10"><a href="passport-processing.html#cb64-10"></a>}</span>
+<span id="cb64-11"><a href="passport-processing.html#cb64-11"></a><span class="kw">process_data</span>(sample)</span></code></pre></div>
+<pre><code>##    record key     value
+## 1       1 ecl       gry
+## 2       1 pid 860033327
+## 3       1 eyr      2020
+## 4       1 hcl   #fffffd
+## 5       1 byr      1937
+## 6       1 iyr      2017
+## 7       1 cid       147
+## 8       1 hgt     183cm
+## 9       2 iyr      2013
+## 10      2 ecl       amb
+## 11      2 cid       350
+## 12      2 eyr      2023
+## 13      2 pid 028048884
+## 14      2 hcl   #cfa07d
+## 15      2 byr      1929
+## 16      3 hcl   #ae17e1
+## 17      3 iyr      2013
+## 18      3 eyr      2024
+## 19      3 ecl       brn
+## 20      3 pid 760753108
+## 21      3 byr      1931
+## 22      3 hgt     179cm
+## 23      4 hcl   #cfa07d
+## 24      4 eyr      2025
+## 25      4 pid 166559648
+## 26      4 iyr      2011
+## 27      4 ecl       brn
+## 28      4 hgt      59in</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="passport-processing.html#cb66-1"></a>get_valid_records &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb66-2"><a href="passport-processing.html#cb66-2"></a>  input <span class="op">%&gt;%</span></span>
+<span id="cb66-3"><a href="passport-processing.html#cb66-3"></a><span class="st">    </span><span class="kw">process_data</span>() <span class="op">%&gt;%</span></span>
+<span id="cb66-4"><a href="passport-processing.html#cb66-4"></a><span class="st">    </span><span class="kw">filter</span>(key <span class="op">!=</span><span class="st"> &quot;cid&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb66-5"><a href="passport-processing.html#cb66-5"></a><span class="st">    </span><span class="kw">group_by</span>(record) <span class="op">%&gt;%</span></span>
+<span id="cb66-6"><a href="passport-processing.html#cb66-6"></a><span class="st">    </span><span class="kw">filter</span>(<span class="kw">n</span>() <span class="op">==</span><span class="st"> </span><span class="dv">7</span>) <span class="op">%&gt;%</span></span>
+<span id="cb66-7"><a href="passport-processing.html#cb66-7"></a><span class="st">    </span><span class="kw">ungroup</span>()</span>
+<span id="cb66-8"><a href="passport-processing.html#cb66-8"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="passport-processing.html#cb67-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb67-2"><a href="passport-processing.html#cb67-2"></a>  input <span class="op">%&gt;%</span></span>
+<span id="cb67-3"><a href="passport-processing.html#cb67-3"></a><span class="st">    </span><span class="kw">get_valid_records</span>() <span class="op">%&gt;%</span></span>
+<span id="cb67-4"><a href="passport-processing.html#cb67-4"></a><span class="st">    </span><span class="kw">distinct</span>(record) <span class="op">%&gt;%</span></span>
+<span id="cb67-5"><a href="passport-processing.html#cb67-5"></a><span class="st">    </span><span class="kw">nrow</span>()</span>
+<span id="cb67-6"><a href="passport-processing.html#cb67-6"></a>}</span></code></pre></div>
+<p>We can test our function on the sample:</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="passport-processing.html#cb68-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Now we can run our function on the actual data:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="passport-processing.html#cb70-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 233</code></pre>
+</div>
+<div id="part-2-3" class="section level2">
+<h2><span class="header-section-number">4.2</span> Part 2</h2>
+<p>We now need to validate the data in the passports:</p>
+<ul>
+<li>byr (Birth Year) - four digits; at least 1920 and at most 2002.</li>
+<li>iyr (Issue Year) - four digits; at least 2010 and at most 2020.</li>
+<li>eyr (Expiration Year) - four digits; at least 2020 and at most 2030.</li>
+<li>hgt (Height) - a number followed by either cm or in:
+<ul>
+<li>If cm, the number must be at least 150 and at most 193.</li>
+<li>If in, the number must be at least 59 and at most 76.</li>
+</ul></li>
+<li>hcl (Hair Color) - a # followed by exactly six characters 0-9 or a-f.</li>
+<li>ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.</li>
+<li>pid (Passport ID) - a nine-digit number, including leading zeroes.</li>
+<li>cid (Country ID) - ignored, missing or not.</li>
+</ul>
+<p>The approach I am going to take for part 2 is to build some helper validation functions for the years and the height
+parts of the record, and then <code>filter</code> the rows to just retain valid records. To make it easier to do this I will first
+pivot the data from long format to wide, so each passport is one row of data.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="passport-processing.html#cb72-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb72-2"><a href="passport-processing.html#cb72-2"></a>  validate_years &lt;-<span class="st"> </span><span class="cf">function</span>(y, min, max) {</span>
+<span id="cb72-3"><a href="passport-processing.html#cb72-3"></a>    yi &lt;-<span class="st"> </span><span class="kw">suppressWarnings</span>(<span class="kw">as.integer</span>(y))</span>
+<span id="cb72-4"><a href="passport-processing.html#cb72-4"></a>    <span class="kw">ifelse</span>(<span class="kw">is.na</span>(yi), <span class="ot">FALSE</span>, min <span class="op">&lt;=</span><span class="st"> </span>yi <span class="op">&amp;</span><span class="st"> </span>yi <span class="op">&lt;=</span><span class="st"> </span>max)</span>
+<span id="cb72-5"><a href="passport-processing.html#cb72-5"></a>  }</span>
+<span id="cb72-6"><a href="passport-processing.html#cb72-6"></a>  </span>
+<span id="cb72-7"><a href="passport-processing.html#cb72-7"></a>  validate_height &lt;-<span class="st"> </span><span class="cf">function</span>(h) {</span>
+<span id="cb72-8"><a href="passport-processing.html#cb72-8"></a>    hv &lt;-<span class="st"> </span><span class="kw">suppressWarnings</span>(<span class="kw">as.integer</span>(<span class="kw">str_sub</span>(h, <span class="dv">1</span>, <span class="dv">-3</span>)))</span>
+<span id="cb72-9"><a href="passport-processing.html#cb72-9"></a>    ht &lt;-<span class="st"> </span><span class="kw">str_sub</span>(h, <span class="dv">-2</span>, <span class="dv">-1</span>)</span>
+<span id="cb72-10"><a href="passport-processing.html#cb72-10"></a>    <span class="kw">case_when</span>(<span class="kw">is.na</span>(hv) <span class="op">~</span><span class="st"> </span><span class="ot">FALSE</span>,</span>
+<span id="cb72-11"><a href="passport-processing.html#cb72-11"></a>              ht <span class="op">==</span><span class="st"> &quot;cm&quot;</span> <span class="op">~</span><span class="st"> </span><span class="dv">150</span> <span class="op">&lt;=</span><span class="st"> </span>hv <span class="op">&amp;</span><span class="st"> </span>hv <span class="op">&lt;=</span><span class="st"> </span><span class="dv">193</span>,</span>
+<span id="cb72-12"><a href="passport-processing.html#cb72-12"></a>              ht <span class="op">==</span><span class="st"> &quot;in&quot;</span> <span class="op">~</span><span class="st">  </span><span class="dv">59</span> <span class="op">&lt;=</span><span class="st"> </span>hv <span class="op">&amp;</span><span class="st"> </span>hv <span class="op">&lt;=</span><span class="st">  </span><span class="dv">76</span>,</span>
+<span id="cb72-13"><a href="passport-processing.html#cb72-13"></a>              <span class="ot">TRUE</span> <span class="op">~</span><span class="st"> </span><span class="ot">FALSE</span>)</span>
+<span id="cb72-14"><a href="passport-processing.html#cb72-14"></a>  }</span>
+<span id="cb72-15"><a href="passport-processing.html#cb72-15"></a>  </span>
+<span id="cb72-16"><a href="passport-processing.html#cb72-16"></a>  input <span class="op">%&gt;%</span></span>
+<span id="cb72-17"><a href="passport-processing.html#cb72-17"></a><span class="st">    </span><span class="kw">get_valid_records</span>() <span class="op">%&gt;%</span></span>
+<span id="cb72-18"><a href="passport-processing.html#cb72-18"></a><span class="st">    </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> key, <span class="dt">values_from =</span> value) <span class="op">%&gt;%</span></span>
+<span id="cb72-19"><a href="passport-processing.html#cb72-19"></a><span class="st">    </span><span class="kw">filter</span>(<span class="kw">validate_years</span>(byr, <span class="dv">1920</span>, <span class="dv">2002</span>),</span>
+<span id="cb72-20"><a href="passport-processing.html#cb72-20"></a>           <span class="kw">validate_years</span>(iyr, <span class="dv">2010</span>, <span class="dv">2020</span>),</span>
+<span id="cb72-21"><a href="passport-processing.html#cb72-21"></a>           <span class="kw">validate_years</span>(eyr, <span class="dv">2020</span>, <span class="dv">2030</span>),</span>
+<span id="cb72-22"><a href="passport-processing.html#cb72-22"></a>           <span class="kw">validate_height</span>(hgt),</span>
+<span id="cb72-23"><a href="passport-processing.html#cb72-23"></a>           <span class="kw">str_detect</span>(hcl, <span class="st">&quot;^#[0-9a-f]{6}$&quot;</span>),</span>
+<span id="cb72-24"><a href="passport-processing.html#cb72-24"></a>           ecl <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;amb&quot;</span>, <span class="st">&quot;blu&quot;</span>, <span class="st">&quot;brn&quot;</span>, <span class="st">&quot;gry&quot;</span>, <span class="st">&quot;grn&quot;</span>, <span class="st">&quot;hzl&quot;</span>, <span class="st">&quot;oth&quot;</span>),</span>
+<span id="cb72-25"><a href="passport-processing.html#cb72-25"></a>           <span class="kw">str_detect</span>(pid, <span class="st">&quot;^</span><span class="ch">\\</span><span class="st">d{9}$&quot;</span>))</span>
+<span id="cb72-26"><a href="passport-processing.html#cb72-26"></a>}</span></code></pre></div>
+<p>The provided test cases don’t use the initial sample data, so let’s just run the function and see if it does not error.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="passport-processing.html#cb73-1"></a><span class="kw">part_2</span>(sample)</span></code></pre></div>
+<pre><code>## [90m# A tibble: 2 x 8[39m
+##   record ecl   pid       eyr   hcl     byr   iyr   hgt  
+##   [3m[90m&lt;chr&gt;[39m[23m  [3m[90m&lt;chr&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m     [3m[90m&lt;chr&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m   [3m[90m&lt;chr&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m
+## [90m1[39m 1      gry   860033327 2020  #fffffd 1937  2017  183cm
+## [90m2[39m 3      brn   760753108 2024  #ae17e1 1931  2013  179cm</code></pre>
+<p>It seems to work, so let’s run on our actual data</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="passport-processing.html#cb75-1"></a><span class="kw">nrow</span>(<span class="kw">part_2</span>(actual))</span></code></pre></div>
+<pre><code>## [1] 111</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="toboggan-trajectory.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
