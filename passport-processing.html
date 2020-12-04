@@ -310,11 +310,11 @@ pivot the data from long format to wide, so each passport is one row of data.</p
 <span id="cb72-26"><a href="passport-processing.html#cb72-26"></a>}</span></code></pre></div>
 <p>The provided test cases don’t use the initial sample data, so let’s just run the function and see if it does not error.</p>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="passport-processing.html#cb73-1"></a><span class="kw">part_2</span>(sample)</span></code></pre></div>
-<pre><code>## [90m# A tibble: 2 x 8[39m
+<pre><code>## # A tibble: 2 x 8
 ##   record ecl   pid       eyr   hcl     byr   iyr   hgt  
-##   [3m[90m&lt;chr&gt;[39m[23m  [3m[90m&lt;chr&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m     [3m[90m&lt;chr&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m   [3m[90m&lt;chr&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m [3m[90m&lt;chr&gt;[39m[23m
-## [90m1[39m 1      gry   860033327 2020  #fffffd 1937  2017  183cm
-## [90m2[39m 3      brn   760753108 2024  #ae17e1 1931  2013  179cm</code></pre>
+##   &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+## 1 1      gry   860033327 2020  #fffffd 1937  2017  183cm
+## 2 3      brn   760753108 2024  #ae17e1 1931  2013  179cm</code></pre>
 <p>It seems to work, so let’s run on our actual data</p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="passport-processing.html#cb75-1"></a><span class="kw">nrow</span>(<span class="kw">part_2</span>(actual))</span></code></pre></div>
 <pre><code>## [1] 111</code></pre>

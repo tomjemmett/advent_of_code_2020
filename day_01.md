@@ -101,11 +101,11 @@ bench::mark(part_1_naive(sample, 2020),
 ```
 
 ```
-## [90m# A tibble: 2 x 6[39m
+## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
-##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_1_naive(sample, 2020)      2.52µs   3.19µs   [4m2[24m[4m8[24m[4m9[24m002.        0B     28.9
-## [90m2[39m part_1_improved(sample, 2020)  59.93µs  66.03µs    [4m1[24m[4m4[24m847.        0B     17.0
+##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+## 1 part_1_naive(sample, 2020)       2.8µs   3.35µs   275680.        0B     27.6
+## 2 part_1_improved(sample, 2020)   59.6µs  65.09µs    15213.        0B     19.1
 ```
 
 For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
@@ -121,11 +121,11 @@ bench::mark(part_1_naive(actual, 2020),
 ```
 
 ```
-## [90m# A tibble: 2 x 6[39m
+## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
-##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_1_naive(actual, 2020)     646.6µs  707.1µs     [4m1[24m373.        0B     2.02
-## [90m2[39m part_1_improved(actual, 2020)   84.4µs   89.6µs    [4m1[24m[4m0[24m879.    1.66KB    14.8
+##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+## 1 part_1_naive(actual, 2020)     683.2µs    712µs     1392.        0B     2.02
+## 2 part_1_improved(actual, 2020)   84.1µs   89.4µs    10936.    1.66KB    14.8
 ```
 
 The improved algorithm was roughly 10x faster for me on the actual data.
@@ -265,11 +265,11 @@ bench::mark(part_2_naive(actual, 2020),
 ```
 
 ```
-## [90m# A tibble: 2 x 6[39m
+## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
-##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_2_naive(actual, 2020)     110.3ms  112.7ms      8.90        0B     5.94
-## [90m2[39m part_2_improved(actual, 2020)   15.2ms   15.3ms     65.3     1.66KB   523.
+##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+## 1 part_2_naive(actual, 2020)     111.1ms  114.2ms      8.77        0B     2.19
+## 2 part_2_improved(actual, 2020)   15.1ms   15.3ms     65.5     1.66KB   524.
 ```
 
 On my machine the improved approach is again about 10x quicker.
@@ -318,9 +318,9 @@ bench::mark(part_2_improved(actual, 2020),
 ```
 
 ```
-## [90m# A tibble: 2 x 6[39m
+## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
-##   [3m[90m<bch:expr>[39m[23m                    [3m[90m<bch:tm>[39m[23m [3m[90m<bch:tm>[39m[23m     [3m[90m<dbl>[39m[23m [3m[90m<bch:byt>[39m[23m    [3m[90m<dbl>[39m[23m
-## [90m1[39m part_2_improved(actual, 2020)  14.75ms  15.14ms      65.6    1.66KB     40.1
-## [90m2[39m py$part_2_py(actual, 2020)      1.23ms   1.26ms     768.    17.45KB      0
+##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
+## 1 part_2_improved(actual, 2020)  14.71ms  15.22ms      65.3    1.66KB     38.4
+## 2 py$part_2_py(actual, 2020)      1.19ms   1.27ms     772.    17.45KB      0
 ```

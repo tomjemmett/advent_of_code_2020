@@ -181,11 +181,11 @@ part_2(sample)
 ```
 
 ```
-## [90m# A tibble: 2 x 8[39m
+## # A tibble: 2 x 8
 ##   record ecl   pid       eyr   hcl     byr   iyr   hgt  
-##   [3m[90m<chr>[39m[23m  [3m[90m<chr>[39m[23m [3m[90m<chr>[39m[23m     [3m[90m<chr>[39m[23m [3m[90m<chr>[39m[23m   [3m[90m<chr>[39m[23m [3m[90m<chr>[39m[23m [3m[90m<chr>[39m[23m
-## [90m1[39m 1      gry   860033327 2020  #fffffd 1937  2017  183cm
-## [90m2[39m 3      brn   760753108 2024  #ae17e1 1931  2013  179cm
+##   <chr>  <chr> <chr>     <chr> <chr>   <chr> <chr> <chr>
+## 1 1      gry   860033327 2020  #fffffd 1937  2017  183cm
+## 2 3      brn   760753108 2024  #ae17e1 1931  2013  179cm
 ```
 
 It seems to work, so let's run on our actual data

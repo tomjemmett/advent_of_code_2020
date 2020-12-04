@@ -234,22 +234,22 @@ that the target we increase the lower number pointer.</p>
 <h3><span class="header-section-number">1.1.1</span> is the improved algorithm any better?</h3>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="report-repair.html#cb10-1"></a>bench<span class="op">::</span><span class="kw">mark</span>(<span class="kw">part_1_naive</span>(sample, <span class="dv">2020</span>),</span>
 <span id="cb10-2"><a href="report-repair.html#cb10-2"></a>            <span class="kw">part_1_improved</span>(sample, <span class="dv">2020</span>))</span></code></pre></div>
-<pre><code>## [90m# A tibble: 2 x 6[39m
+<pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
-##   [3m[90m&lt;bch:expr&gt;[39m[23m                    [3m[90m&lt;bch:tm&gt;[39m[23m [3m[90m&lt;bch:tm&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;bch:byt&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m
-## [90m1[39m part_1_naive(sample, 2020)      2.52µs   3.19µs   [4m2[24m[4m8[24m[4m9[24m002.        0B     28.9
-## [90m2[39m part_1_improved(sample, 2020)  59.93µs  66.03µs    [4m1[24m[4m4[24m847.        0B     17.0</code></pre>
+##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
+## 1 part_1_naive(sample, 2020)       2.8µs   3.35µs   275680.        0B     27.6
+## 2 part_1_improved(sample, 2020)   59.6µs  65.09µs    15213.        0B     19.1</code></pre>
 <p>For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
 sort the data, which is costly, and then it performs far more comparisons per iteration.</p>
 <p>However, when we have more data, these extra steps lead to big improvements, as can be seen when running with the actual
 data.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="report-repair.html#cb12-1"></a>bench<span class="op">::</span><span class="kw">mark</span>(<span class="kw">part_1_naive</span>(actual, <span class="dv">2020</span>),</span>
 <span id="cb12-2"><a href="report-repair.html#cb12-2"></a>            <span class="kw">part_1_improved</span>(actual, <span class="dv">2020</span>))</span></code></pre></div>
-<pre><code>## [90m# A tibble: 2 x 6[39m
+<pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
-##   [3m[90m&lt;bch:expr&gt;[39m[23m                    [3m[90m&lt;bch:tm&gt;[39m[23m [3m[90m&lt;bch:tm&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;bch:byt&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m
-## [90m1[39m part_1_naive(actual, 2020)     646.6µs  707.1µs     [4m1[24m373.        0B     2.02
-## [90m2[39m part_1_improved(actual, 2020)   84.4µs   89.6µs    [4m1[24m[4m0[24m879.    1.66KB    14.8</code></pre>
+##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
+## 1 part_1_naive(actual, 2020)     683.2µs    712µs     1392.        0B     2.02
+## 2 part_1_improved(actual, 2020)   84.1µs   89.4µs    10936.    1.66KB    14.8</code></pre>
 <p>The improved algorithm was roughly 10x faster for me on the actual data.</p>
 </div>
 </div>
@@ -335,11 +335,11 @@ continue the search by looping.</p>
 <p>Once again, we can benchmark the two approaches.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="report-repair.html#cb25-1"></a>bench<span class="op">::</span><span class="kw">mark</span>(<span class="kw">part_2_naive</span>(actual, <span class="dv">2020</span>),</span>
 <span id="cb25-2"><a href="report-repair.html#cb25-2"></a>            <span class="kw">part_2_improved</span>(actual, <span class="dv">2020</span>))</span></code></pre></div>
-<pre><code>## [90m# A tibble: 2 x 6[39m
+<pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
-##   [3m[90m&lt;bch:expr&gt;[39m[23m                    [3m[90m&lt;bch:tm&gt;[39m[23m [3m[90m&lt;bch:tm&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;bch:byt&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m
-## [90m1[39m part_2_naive(actual, 2020)     110.3ms  112.7ms      8.90        0B     5.94
-## [90m2[39m part_2_improved(actual, 2020)   15.2ms   15.3ms     65.3     1.66KB   523.</code></pre>
+##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
+## 1 part_2_naive(actual, 2020)     111.1ms  114.2ms      8.77        0B     2.19
+## 2 part_2_improved(actual, 2020)   15.1ms   15.3ms     65.5     1.66KB   524.</code></pre>
 <p>On my machine the improved approach is again about 10x quicker.</p>
 </div>
 </div>
@@ -372,11 +372,11 @@ is a constant time operation in python - it’s near instantaneous).</p>
 <span id="cb28-21"><a href="report-repair.html#cb28-21"></a>  <span class="cf">return</span> none</span></code></pre></div>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="report-repair.html#cb29-1"></a>bench<span class="op">::</span><span class="kw">mark</span>(<span class="kw">part_2_improved</span>(actual, <span class="dv">2020</span>),</span>
 <span id="cb29-2"><a href="report-repair.html#cb29-2"></a>            py<span class="op">$</span><span class="kw">part_2_py</span>(actual, <span class="dv">2020</span>))</span></code></pre></div>
-<pre><code>## [90m# A tibble: 2 x 6[39m
+<pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
-##   [3m[90m&lt;bch:expr&gt;[39m[23m                    [3m[90m&lt;bch:tm&gt;[39m[23m [3m[90m&lt;bch:tm&gt;[39m[23m     [3m[90m&lt;dbl&gt;[39m[23m [3m[90m&lt;bch:byt&gt;[39m[23m    [3m[90m&lt;dbl&gt;[39m[23m
-## [90m1[39m part_2_improved(actual, 2020)  14.75ms  15.14ms      65.6    1.66KB     40.1
-## [90m2[39m py$part_2_py(actual, 2020)      1.23ms   1.26ms     768.    17.45KB      0</code></pre>
+##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
+## 1 part_2_improved(actual, 2020)  14.71ms  15.22ms      65.3    1.66KB     38.4
+## 2 py$part_2_py(actual, 2020)      1.19ms   1.27ms     772.    17.45KB      0</code></pre>
 
 </div>
 </div>
