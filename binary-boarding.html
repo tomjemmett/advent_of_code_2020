@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Advent of Code 2020</title>
+  <title>Day 5 Binary Boarding | Advent of Code 2020</title>
   <meta name="description" content="My attempt to complete AOC 2020 in R" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Advent of Code 2020" />
+  <meta property="og:title" content="Day 5 Binary Boarding | Advent of Code 2020" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Advent of Code 2020" />
+  <meta name="twitter:title" content="Day 5 Binary Boarding | Advent of Code 2020" />
   
   <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="passport-processing.html"/>
 
-<link rel="next" href="report-repair.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -181,25 +181,103 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Advent of Code 2020</h1>
-<p class="author"><em><a href="mailto:thomas.jemmett@nhs.net">Tom Jemmett</a></em></p>
-<p class="date"><em>2020-12-05</em></p>
+<div id="binary-boarding" class="section level1">
+<h1><span class="header-section-number">Day 5</span> Binary Boarding</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/5">Day 5</a>.</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="binary-boarding.html#cb83-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_05_sample.txt&quot;</span>)</span>
+<span id="cb83-2"><a href="binary-boarding.html#cb83-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_05_input.txt&quot;</span>)</span></code></pre></div>
+<div id="part-1-4" class="section level2">
+<h2><span class="header-section-number">5.1</span> Part 1</h2>
+<p>Today’s challenge can be solved with a recursive function where at each step we divide the search space in half. The
+same algorithm (<code>partition()</code>) will work for both the rows and the columns, we just need to adjust the starting point
+(<code>i</code>) and the <code>min</code> and <code>max</code> values. Because we are dividing the search space in half at each iteration when the <code>min</code>
+and <code>max</code> values are equal we can simply return either value.</p>
+<p>The <code>s</code> argument to <code>partition()</code> should be a vector of individual characters, e.g. <code>c("a", "b", "c")</code>.</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="binary-boarding.html#cb84-1"></a>partition &lt;-<span class="st"> </span><span class="cf">function</span>(s, i, min, max) {</span>
+<span id="cb84-2"><a href="binary-boarding.html#cb84-2"></a>  <span class="cf">if</span> (min <span class="op">==</span><span class="st"> </span>max) {</span>
+<span id="cb84-3"><a href="binary-boarding.html#cb84-3"></a>    <span class="kw">return</span> (min)</span>
+<span id="cb84-4"><a href="binary-boarding.html#cb84-4"></a>  }</span>
+<span id="cb84-5"><a href="binary-boarding.html#cb84-5"></a>  </span>
+<span id="cb84-6"><a href="binary-boarding.html#cb84-6"></a>  <span class="co"># what is the distance between min and max?</span></span>
+<span id="cb84-7"><a href="binary-boarding.html#cb84-7"></a>  d &lt;-<span class="st"> </span>max <span class="op">-</span><span class="st"> </span>min <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb84-8"><a href="binary-boarding.html#cb84-8"></a>  <span class="co"># find the half way point</span></span>
+<span id="cb84-9"><a href="binary-boarding.html#cb84-9"></a>  m &lt;-<span class="st"> </span>d <span class="op">%/%</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb84-10"><a href="binary-boarding.html#cb84-10"></a>  </span>
+<span id="cb84-11"><a href="binary-boarding.html#cb84-11"></a>  <span class="co"># update either the min or max position</span></span>
+<span id="cb84-12"><a href="binary-boarding.html#cb84-12"></a>  <span class="cf">if</span> (s[[i]] <span class="op">==</span><span class="st"> &quot;F&quot;</span> <span class="op">|</span><span class="st"> </span>s[[i]] <span class="op">==</span><span class="st"> &quot;L&quot;</span>) {</span>
+<span id="cb84-13"><a href="binary-boarding.html#cb84-13"></a>    max &lt;-<span class="st"> </span>max <span class="op">-</span><span class="st"> </span>m</span>
+<span id="cb84-14"><a href="binary-boarding.html#cb84-14"></a>  } <span class="cf">else</span> {</span>
+<span id="cb84-15"><a href="binary-boarding.html#cb84-15"></a>    min &lt;-<span class="st"> </span>min <span class="op">+</span><span class="st"> </span>m</span>
+<span id="cb84-16"><a href="binary-boarding.html#cb84-16"></a>  }</span>
+<span id="cb84-17"><a href="binary-boarding.html#cb84-17"></a>  </span>
+<span id="cb84-18"><a href="binary-boarding.html#cb84-18"></a>  <span class="co"># call partition on the next character</span></span>
+<span id="cb84-19"><a href="binary-boarding.html#cb84-19"></a>  <span class="kw">partition</span>(s, i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, min, max)</span>
+<span id="cb84-20"><a href="binary-boarding.html#cb84-20"></a>}</span></code></pre></div>
+<p>We can now build a function to process each string and return the data as a list.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="binary-boarding.html#cb85-1"></a>process_string &lt;-<span class="st"> </span><span class="cf">function</span>(string) {</span>
+<span id="cb85-2"><a href="binary-boarding.html#cb85-2"></a>  s &lt;-<span class="st"> </span><span class="kw">str_extract_all</span>(string, <span class="st">&quot;.&quot;</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb85-3"><a href="binary-boarding.html#cb85-3"></a>  </span>
+<span id="cb85-4"><a href="binary-boarding.html#cb85-4"></a>  row &lt;-<span class="st"> </span><span class="kw">partition</span>(s, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">127</span>)</span>
+<span id="cb85-5"><a href="binary-boarding.html#cb85-5"></a>  col &lt;-<span class="st"> </span><span class="kw">partition</span>(s, <span class="dv">8</span>, <span class="dv">0</span>, <span class="dv">7</span>)</span>
+<span id="cb85-6"><a href="binary-boarding.html#cb85-6"></a>  </span>
+<span id="cb85-7"><a href="binary-boarding.html#cb85-7"></a>  <span class="kw">list</span>(</span>
+<span id="cb85-8"><a href="binary-boarding.html#cb85-8"></a>    <span class="dt">row =</span> row,</span>
+<span id="cb85-9"><a href="binary-boarding.html#cb85-9"></a>    <span class="dt">col =</span> col,</span>
+<span id="cb85-10"><a href="binary-boarding.html#cb85-10"></a>    <span class="dt">seat =</span> row <span class="op">*</span><span class="st"> </span><span class="dv">8</span> <span class="op">+</span><span class="st"> </span>col</span>
+<span id="cb85-11"><a href="binary-boarding.html#cb85-11"></a>  )</span>
+<span id="cb85-12"><a href="binary-boarding.html#cb85-12"></a>}</span></code></pre></div>
+<p>And now we can our function on the sample data.</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="binary-boarding.html#cb86-1"></a>sample <span class="op">%&gt;%</span></span>
+<span id="cb86-2"><a href="binary-boarding.html#cb86-2"></a><span class="st">  </span><span class="kw">map_dfr</span>(process_string) <span class="op">%&gt;%</span></span>
+<span id="cb86-3"><a href="binary-boarding.html#cb86-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">str =</span> sample, <span class="dt">.before =</span> <span class="kw">everything</span>())</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 4
+##   str          row   col  seat
+##   &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 BFFFBBFRRR    70     7   567
+## 2 FFFBBBFRRR    14     7   119
+## 3 BBFFBBFRLL   102     4   820</code></pre>
+<p>This matches the provided example, so we can run the function on our actual data.</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="binary-boarding.html#cb88-1"></a>actual <span class="op">%&gt;%</span></span>
+<span id="cb88-2"><a href="binary-boarding.html#cb88-2"></a><span class="st">  </span><span class="kw">map_dfr</span>(process_string) <span class="op">%&gt;%</span></span>
+<span id="cb88-3"><a href="binary-boarding.html#cb88-3"></a><span class="st">  </span><span class="kw">pull</span>(seat) <span class="op">%&gt;%</span></span>
+<span id="cb88-4"><a href="binary-boarding.html#cb88-4"></a><span class="st">  </span><span class="kw">max</span>()</span></code></pre></div>
+<pre><code>## [1] 816</code></pre>
 </div>
-<div id="introduction" class="section level1 unnumbered">
-<h1>Introduction</h1>
-<p>This is my attempt to complete the <a href="https://adventofcode.com/2020/">Advent of Code 2020</a> in R using RMarkdown, along
-with bookdown to render the site. The book will automatically be rebuilt using
-<a href="https://github.com/features/actions">GitHub actions</a> and hosted using <a href="https://pages.github.com/">GitHub Pages</a>.</p>
+<div id="part-2-4" class="section level2">
+<h2><span class="header-section-number">5.2</span> Part 2</h2>
+<p>For part 2 we can use the same function from part 1 to get the list of seats. Then, we can find the minimum and maximum
+seat number and create the range of values, then simply find the seat that isn’t in this range.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="binary-boarding.html#cb90-1"></a>seats &lt;-<span class="st"> </span>actual <span class="op">%&gt;%</span></span>
+<span id="cb90-2"><a href="binary-boarding.html#cb90-2"></a><span class="st">  </span><span class="kw">map_dfr</span>(process_string) <span class="op">%&gt;%</span></span>
+<span id="cb90-3"><a href="binary-boarding.html#cb90-3"></a><span class="st">  </span><span class="kw">pull</span>(seat)</span>
+<span id="cb90-4"><a href="binary-boarding.html#cb90-4"></a></span>
+<span id="cb90-5"><a href="binary-boarding.html#cb90-5"></a>range &lt;-<span class="st"> </span><span class="kw">min</span>(seats)<span class="op">:</span><span class="kw">max</span>(seats)</span>
+<span id="cb90-6"><a href="binary-boarding.html#cb90-6"></a>range[<span class="op">!</span>range <span class="op">%in%</span><span class="st"> </span>seats]</span></code></pre></div>
+<pre><code>## [1] 539</code></pre>
+</div>
+<div id="extra-solving-algebraicly" class="section level2">
+<h2><span class="header-section-number">5.3</span> Extra: Solving algebraicly</h2>
+<p>Triangle numbers are defined as:</p>
+<p><span class="math display">\[
+\sum_{n=1}^{N} n = \frac{n(n + 1)}{2}
+\]</span></p>
+<p>If we were to find the triangle number of the maximum value and subtract the triangle number of one less than the
+smallest seat that would give us the sum of the seats if all were occupied. So if we simply subtract the sum of the
+seats this will leave us with the empty seat.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="binary-boarding.html#cb92-1"></a>triangle_number &lt;-<span class="st"> </span><span class="cf">function</span>(n) <span class="fl">0.5</span> <span class="op">*</span><span class="st"> </span>n <span class="op">*</span><span class="st"> </span>(n <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb92-2"><a href="binary-boarding.html#cb92-2"></a></span>
+<span id="cb92-3"><a href="binary-boarding.html#cb92-3"></a><span class="kw">triangle_number</span>(<span class="kw">max</span>(seats)) <span class="op">-</span><span class="st"> </span><span class="kw">triangle_number</span>(<span class="kw">min</span>(seats) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">-</span><span class="st"> </span><span class="kw">sum</span>(seats)</span></code></pre></div>
+<pre><code>## [1] 539</code></pre>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
+<a href="passport-processing.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="report-repair.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
