@@ -143,7 +143,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2" data-path="report-repair.html"><a href="report-repair.html#part-2"><i class="fa fa-check"></i><b>1.2</b> Part 2</a><ul>
 <li class="chapter" data-level="1.2.1" data-path="report-repair.html"><a href="report-repair.html#is-our-improved-algorithm-better-this-time"><i class="fa fa-check"></i><b>1.2.1</b> Is our improved algorithm better this time?</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: implementing in python</a></li>
+<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: Implementing in Python</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="password-philosophy.html"><a href="password-philosophy.html"><i class="fa fa-check"></i><b>2</b> Password Philosophy</a><ul>
 <li class="chapter" data-level="2.1" data-path="password-philosophy.html"><a href="password-philosophy.html#part-1-1"><i class="fa fa-check"></i><b>2.1</b> Part 1</a></li>
@@ -157,7 +157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4" data-path="passport-processing.html"><a href="passport-processing.html"><i class="fa fa-check"></i><b>4</b> Passport Processing</a><ul>
 <li class="chapter" data-level="4.1" data-path="passport-processing.html"><a href="passport-processing.html#part-1-3"><i class="fa fa-check"></i><b>4.1</b> Part 1</a></li>
 <li class="chapter" data-level="4.2" data-path="passport-processing.html"><a href="passport-processing.html#part-2-3"><i class="fa fa-check"></i><b>4.2</b> Part 2</a></li>
-<li class="chapter" data-level="4.3" data-path="passport-processing.html"><a href="passport-processing.html#extra-solving-with-regexs"><i class="fa fa-check"></i><b>4.3</b> Extra: solving with regex’s</a></li>
+<li class="chapter" data-level="4.3" data-path="passport-processing.html"><a href="passport-processing.html#extra-solving-with-regular-expressions"><i class="fa fa-check"></i><b>4.3</b> Extra: Solving with regular expressions</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="binary-boarding.html"><a href="binary-boarding.html"><i class="fa fa-check"></i><b>5</b> Binary Boarding</a><ul>
 <li class="chapter" data-level="5.1" data-path="binary-boarding.html"><a href="binary-boarding.html#part-1-4"><i class="fa fa-check"></i><b>5.1</b> Part 1</a></li>
@@ -242,8 +242,8 @@ that the target we increase the lower number pointer.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_1_naive(sample, 2020)      2.73µs   3.33µs   278691.        0B     27.9
-## 2 part_1_improved(sample, 2020)  60.44µs  65.31µs    14693.        0B     17.0</code></pre>
+## 1 part_1_naive(sample, 2020)      2.86µs   3.47µs   265219.        0B     26.5
+## 2 part_1_improved(sample, 2020)  60.48µs  66.06µs    14370.        0B     17.1</code></pre>
 <p>For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
 sort the data, which is costly, and then it performs far more comparisons per iteration.</p>
 <p>However, when we have more data, these extra steps lead to big improvements, as can be seen when running with the actual
@@ -253,8 +253,8 @@ data.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_1_naive(actual, 2020)     681.5µs    708µs     1337.        0B     2.02
-## 2 part_1_improved(actual, 2020)   84.8µs     89µs    10139.    1.66KB    12.7</code></pre>
+## 1 part_1_naive(actual, 2020)       682µs  709.7µs     1392.        0B      0  
+## 2 part_1_improved(actual, 2020)   83.3µs   90.3µs    10562.    1.66KB     14.9</code></pre>
 <p>The improved algorithm was roughly 10x faster for me on the actual data.</p>
 </div>
 </div>
@@ -343,13 +343,13 @@ continue the search by looping.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_2_naive(actual, 2020)     120.1ms  145.5ms      6.71        0B     2.24
-## 2 part_2_improved(actual, 2020)   15.3ms   17.1ms     59.1     1.66KB   414.</code></pre>
+## 1 part_2_naive(actual, 2020)       111ms  114.5ms      8.78        0B     2.20
+## 2 part_2_improved(actual, 2020)     15ms   15.1ms     61.9     1.66KB   474.</code></pre>
 <p>On my machine the improved approach is again about 10x quicker.</p>
 </div>
 </div>
 <div id="extra-implementing-in-python" class="section level2">
-<h2><span class="header-section-number">1.3</span> Extra: implementing in python</h2>
+<h2><span class="header-section-number">1.3</span> Extra: Implementing in Python</h2>
 <p>I wanted to have a go at implementing my improved algorithm in python, but we can take advantage of sets to get even
 better performance and do away with the need to sort the list and perform binary search (asking if a value is in a set
 is a constant time operation in python - it’s near instantaneous).</p>
@@ -380,8 +380,8 @@ is a constant time operation in python - it’s near instantaneous).</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_2_improved(actual, 2020)   14.9ms   15.9ms      59.7    1.66KB    33.2 
-## 2 py$part_2_py(actual, 2020)      1.26ms    1.3ms     749.    17.45KB     4.11</code></pre>
+## 1 part_2_improved(actual, 2020)  14.76ms  15.47ms      56.4    1.66KB    33.2 
+## 2 py$part_2_py(actual, 2020)      1.22ms   1.27ms     725.    17.45KB     2.02</code></pre>
 
 </div>
 </div>

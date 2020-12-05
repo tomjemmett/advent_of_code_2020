@@ -199,7 +199,7 @@ nrow(part_2(actual))
 ## [1] 111
 ```
 
-## Extra: solving with regex's
+## Extra: Solving with regular expressions
 
 This could be reduced to simply solving with regular expressions. First let's create a function to convert the input
 into a single string.

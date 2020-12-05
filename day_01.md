@@ -104,8 +104,8 @@ bench::mark(part_1_naive(sample, 2020),
 ## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-## 1 part_1_naive(sample, 2020)      2.73µs   3.33µs   278691.        0B     27.9
-## 2 part_1_improved(sample, 2020)  60.44µs  65.31µs    14693.        0B     17.0
+## 1 part_1_naive(sample, 2020)      2.86µs   3.47µs   265219.        0B     26.5
+## 2 part_1_improved(sample, 2020)  60.48µs  66.06µs    14370.        0B     17.1
 ```
 
 For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
@@ -124,8 +124,8 @@ bench::mark(part_1_naive(actual, 2020),
 ## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-## 1 part_1_naive(actual, 2020)     681.5µs    708µs     1337.        0B     2.02
-## 2 part_1_improved(actual, 2020)   84.8µs     89µs    10139.    1.66KB    12.7
+## 1 part_1_naive(actual, 2020)       682µs  709.7µs     1392.        0B      0  
+## 2 part_1_improved(actual, 2020)   83.3µs   90.3µs    10562.    1.66KB     14.9
 ```
 
 The improved algorithm was roughly 10x faster for me on the actual data.
@@ -268,13 +268,13 @@ bench::mark(part_2_naive(actual, 2020),
 ## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-## 1 part_2_naive(actual, 2020)     120.1ms  145.5ms      6.71        0B     2.24
-## 2 part_2_improved(actual, 2020)   15.3ms   17.1ms     59.1     1.66KB   414.
+## 1 part_2_naive(actual, 2020)       111ms  114.5ms      8.78        0B     2.20
+## 2 part_2_improved(actual, 2020)     15ms   15.1ms     61.9     1.66KB   474.
 ```
 
 On my machine the improved approach is again about 10x quicker.
 
-## Extra: implementing in python
+## Extra: Implementing in Python
 
 I wanted to have a go at implementing my improved algorithm in python, but we can take advantage of sets to get even
 better performance and do away with the need to sort the list and perform binary search (asking if a value is in a set
@@ -321,6 +321,6 @@ bench::mark(part_2_improved(actual, 2020),
 ## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-## 1 part_2_improved(actual, 2020)   14.9ms   15.9ms      59.7    1.66KB    33.2 
-## 2 py$part_2_py(actual, 2020)      1.26ms    1.3ms     749.    17.45KB     4.11
+## 1 part_2_improved(actual, 2020)  14.76ms  15.47ms      56.4    1.66KB    33.2 
+## 2 py$part_2_py(actual, 2020)      1.22ms   1.27ms     725.    17.45KB     2.02
 ```
