@@ -142,7 +142,7 @@ It seems to work, so let's run on our actual data
 nrow(part_2(actual))
 ```
 
-## Extra: solving with regex's
+## Extra: Solving with regular expressions
 
 This could be reduced to simply solving with regular expressions. First let's create a function to convert the input
 into a single string.

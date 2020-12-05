@@ -208,7 +208,7 @@ bench::mark(part_2_naive(actual, 2020),
 
 On my machine the improved approach is again about 10x quicker.
 
-## Extra: implementing in python
+## Extra: Implementing in Python
 
 I wanted to have a go at implementing my improved algorithm in python, but we can take advantage of sets to get even
 better performance and do away with the need to sort the list and perform binary search (asking if a value is in a set
