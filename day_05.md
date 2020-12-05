@@ -117,7 +117,7 @@ range[!range %in% seats]
 Triangle numbers are defined as:
 
 $$
-\sum_{n=1}^{N} n = \frac{n(n + 1)}{2}
+\sum_{i=1}^{n} i = \frac{n(n + 1)}{2}
 $$
 
 If we were to find the triangle number of the maximum value and subtract the triangle number of one less than the
