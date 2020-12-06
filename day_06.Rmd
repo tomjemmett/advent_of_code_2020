@@ -1,0 +1,91 @@
+# Custom Customs
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(crayon.enabled = NULL)
+library(tidyverse)
+```
+
+This is my attempt to solve [Day 6](https://adventofcode.com/2020/day/6).
+
+```{r load data}
+load_file <- function(file) {
+  file %>%
+    read_file() %>%
+    # strip windows added carriage returns
+    str_remove_all("\r") %>%
+    # clear trailing whitespace
+    str_trim() %>%
+    # split where we have two new lines
+    str_split("\n\n") %>%
+    # take only the first results (the input is just one string)
+    pluck(1) %>%
+    # split each result into individual lines
+    str_split("\n")
+}
+
+sample <- load_file("samples/day_06_sample.txt")
+actual <- load_file("inputs/day_06_input.txt")
+```
+
+## Part 1
+
+For part 1 I am going to first split each respondents response into the individual answers (`str_extract_all()`). This
+will return a list of character vectors, so I will use `flatten_chr()` to turn these into vectors containing all of the
+answers for each group as a character vector. Then I can simply take the `unique()` values and work out the `length()`
+of the resulting vector. I tie all of this together with the `compose()` function from `{purrr}`: this is similar to
+`%>%`, except it chains the functions together before you evaluate them into a single chain.
+
+Like mathematical composition, `compose()` works with the "outer-most" function first, e.g. `str_extract_all()` runs
+before `flatten_chr()`, etc. 
+
+```{r part 1 function}
+part_1 <- function(input) {
+  input %>%
+    map_dbl(compose(length,
+                    unique,
+                    flatten_chr,
+                    str_extract_all), ".") %>%
+    sum()
+}
+```
+
+Now I can check that this function behaves as expected:
+
+```{r part 1 test sample}
+part_1(sample) == 11
+```
+
+And we can run on our actual data
+
+```{r part 1 actual}
+part_1(actual)
+```
+
+## Part 2
+
+For part 2 I am going to start as in part 1, split each respondents response into individual answers. But then I will
+use `reduce()` to go through pairs of responses at a time and only select the questions which were answered by both as
+"yes". We can then simply take the `length()` of each groups responses.
+
+```{r part 2 function}
+part_2 <- function(input) {
+  input %>%
+    map(str_extract_all, ".") %>%
+    map(reduce, ~.y[.y %in% .x]) %>%
+    map_dbl(length) %>%
+    sum()
+}
+```
+
+We can test to see if the function works as expected::
+
+```{r part 2 test sample}
+part_2(sample) == 6
+```
+
+And run the function on the actual data.
+
+```{r part 2 actual}
+part_2(actual)
+```
