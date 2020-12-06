@@ -108,3 +108,39 @@ part_2(actual)
 ```
 ## [1] 3254
 ```
+
+## Extra: solving part 1 & 2 with set functions
+
+We could solve part 1 and 2 with the same function. Part 1 is essentially just the union of set's in each group, whereas
+part 2 is the intersection of set's. So we can instead write a function that accepted a set function as an argument,
+like so:
+
+
+```r
+extra <- function(input, fn) {
+  input %>%
+    map(str_extract_all, ".") %>%
+    map(reduce, fn) %>%
+    map_dbl(length) %>%
+    sum()
+}
+```
+
+We can now check that this new function works as expected:
+
+
+```r
+extra(actual, union) == part_1(actual)
+```
+
+```
+## [1] TRUE
+```
+
+```r
+extra(actual, intersect) == part_2(actual)
+```
+
+```
+## [1] TRUE
+```

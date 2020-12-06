@@ -167,6 +167,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="custom-customs.html"><a href="custom-customs.html"><i class="fa fa-check"></i><b>6</b> Custom Customs</a><ul>
 <li class="chapter" data-level="6.1" data-path="custom-customs.html"><a href="custom-customs.html#part-1-5"><i class="fa fa-check"></i><b>6.1</b> Part 1</a></li>
 <li class="chapter" data-level="6.2" data-path="custom-customs.html"><a href="custom-customs.html#part-2-5"><i class="fa fa-check"></i><b>6.2</b> Part 2</a></li>
+<li class="chapter" data-level="6.3" data-path="custom-customs.html"><a href="custom-customs.html#extra-solving-part-1-2-with-set-functions"><i class="fa fa-check"></i><b>6.3</b> Extra: solving part 1 &amp; 2 with set functions</a></li>
 </ul></li>
 </ul>
 
@@ -247,6 +248,24 @@ use <code>reduce()</code> to go through pairs of responses at a time and only se
 <p>And run the function on the actual data.</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="custom-customs.html#cb103-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
 <pre><code>## [1] 3254</code></pre>
+</div>
+<div id="extra-solving-part-1-2-with-set-functions" class="section level2">
+<h2><span class="header-section-number">6.3</span> Extra: solving part 1 &amp; 2 with set functions</h2>
+<p>We could solve part 1 and 2 with the same function. Part 1 is essentially just the union of set’s in each group, whereas
+part 2 is the intersection of set’s. So we can instead write a function that accepted a set function as an argument,
+like so:</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="custom-customs.html#cb105-1"></a>extra &lt;-<span class="st"> </span><span class="cf">function</span>(input, fn) {</span>
+<span id="cb105-2"><a href="custom-customs.html#cb105-2"></a>  input <span class="op">%&gt;%</span></span>
+<span id="cb105-3"><a href="custom-customs.html#cb105-3"></a><span class="st">    </span><span class="kw">map</span>(str_extract_all, <span class="st">&quot;.&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb105-4"><a href="custom-customs.html#cb105-4"></a><span class="st">    </span><span class="kw">map</span>(reduce, fn) <span class="op">%&gt;%</span></span>
+<span id="cb105-5"><a href="custom-customs.html#cb105-5"></a><span class="st">    </span><span class="kw">map_dbl</span>(length) <span class="op">%&gt;%</span></span>
+<span id="cb105-6"><a href="custom-customs.html#cb105-6"></a><span class="st">    </span><span class="kw">sum</span>()</span>
+<span id="cb105-7"><a href="custom-customs.html#cb105-7"></a>}</span></code></pre></div>
+<p>We can now check that this new function works as expected:</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="custom-customs.html#cb106-1"></a><span class="kw">extra</span>(actual, union) <span class="op">==</span><span class="st"> </span><span class="kw">part_1</span>(actual)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="custom-customs.html#cb108-1"></a><span class="kw">extra</span>(actual, intersect) <span class="op">==</span><span class="st"> </span><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
 
 </div>
 </div>
