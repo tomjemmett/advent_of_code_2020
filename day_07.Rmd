@@ -1,0 +1,133 @@
+# Handy Haversacks
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(crayon.enabled = NULL)
+library(tidyverse)
+library(igraph)
+library(ggraph)
+library(unglue)
+```
+
+This is my attempt to solve [Day 7](https://adventofcode.com/2020/day/7).
+
+```{r load data}
+sample <- read_lines("samples/day_07_sample.txt")
+actual <- read_lines("inputs/day_07_input.txt")
+```
+
+## Part 1
+
+I think today's problem is naturally solved with using graph's, so I'm going to use the `{igraph}` package. The easiest
+way to create a graph is to first create a data frame that contains the columns `from` and `to` that indicate which
+edges are in the graph. Any additional columns will be added as properties to the edge.
+
+```{r part 1 convert input}
+convert_input_to_tibble <- function(input) {
+  input %>%
+    # we don't need to keep the word's "bag" or "bags". In our data these words
+    # always have a space before, and sometimes have a "." at the end. We can
+    # use the following regex to remove these words
+    str_remove_all(" bags?\\.?") %>%
+    # we can now split our data at the word "contains"
+    unglue_data("{from} contain {contains}") %>%
+    # now we can split the contains column by comma's
+    mutate(across(contains, str_split, ", ")) %>%
+    # and expand the nested "contains" column
+    unnest_longer(contains) %>%
+    # handle edge case: if the string is no other need to insert a 0 at the start
+    mutate(across(contains, ~if_else(.x == "no other", "0 no other", .x))) %>%
+    # now we can split the contains column into the "n" part and the "to" part
+    separate(contains, c("n", "to"), "(?<=\\d) ", convert = TRUE) %>%
+    # reorder the columns
+    select(from, to, n)
+}
+sample_df <- convert_input_to_tibble(sample)
+actual_df <- convert_input_to_tibble(actual)
+sample_df
+```
+We can create a graph using the `graph_from_data_frame()` function:
+
+```{r create sample graph}
+sample_g <- graph_from_data_frame(sample_df)
+sample_g
+```
+
+and visualise this graph using `{igraph}`:
+
+```{r show sample graph}
+ggraph(sample_g, layout = "igraph", algorithm = "nicely") +
+  geom_edge_link(aes(label = n), 
+                 angle_calc = "along",
+                 label_dodge = unit(2.5, "mm"),
+                 arrow = arrow(length = unit(3, "mm")), 
+                 end_cap = circle(10, "mm")) + 
+  geom_node_label(aes(label = str_replace(name, " ", "\n")))
+```
+
+Our challenge is to find all of the vertices that have a path in to "shiny gold". The `subcomponent()` function can
+tell us all of the vertices in a graph which reach a given vertex. We can simply take the length of this subcomponent
+and subtract 1 (as the subcomponent includes "shiny gold").
+
+```{r part 1 sample test}
+length(subcomponent(sample_g, "shiny gold", "in")) - 1 == 4
+```
+
+We now just need to solve for the actual data.
+
+```{r part 1 actual}
+actual_g <- graph_from_data_frame(actual_df)
+length(subcomponent(actual_g, "shiny gold", "in")) - 1
+```
+
+## Part 2
+
+Part 2 sounds like a recursive function. We can first find the subgraph that includes all of the vertices from "shiny
+gold". We can then convert this graph to an adjacency matrix and iterate through each vertex, recursively calling a
+function that sums how many bags this bag will contain.
+
+```{r}
+part_2 <- function(input) {
+  sg <- induced_subgraph(input, subcomponent(input, "shiny gold", "out"))
+  am <- as_adjacency_matrix(sg, attr = "n") %>%
+    as.matrix()
+  
+  fn <- function(am, v = "shiny gold", n = 1) {
+    a <- am[v, ] * n
+    a <- a[a > 0] # keep as separate step, otherwise can end up with just scalar
+    
+    # now, iterate over each item in a and recursively call this function
+    sum(map_dbl(names(a), ~fn(am, .x, a[[.x]]))) + sum(a)
+  }
+  
+  # call this function on the base case
+  fn(am)
+}
+```
+
+We can test that our function works against the sample case:
+
+```{part 2 test sample}
+part_2(sample_g) == 32
+```
+
+A second sample is provided, so we can test against that also:
+
+```{r part 2 second sample test}
+c("shiny gold bags contain 2 dark red bags.",
+  "dark red bags contain 2 dark orange bags.",
+  "dark orange bags contain 2 dark yellow bags.",
+  "dark yellow bags contain 2 dark green bags.",
+  "dark green bags contain 2 dark blue bags.",
+  "dark blue bags contain 2 dark violet bags.",
+  "dark violet bags contain no other bags.") %>%
+  convert_input_to_tibble() %>%
+  graph_from_data_frame() %>%
+  part_2() == 126
+```
+
+Now we can run against the actual data:
+
+```{r part 2 actual}
+part_2(actual_g)
+```

@@ -8,7 +8,9 @@ Imports:
     tidyverse,
     bench,
     unglue,
-    reticulate
+    reticulate,
+    igraph,
+    ggraph
 Suggests:
     withr,
     callr,
