@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Day 7 Handy Haversacks | Advent of Code 2020</title>
+  <meta name="description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Day 7 Handy Haversacks | Advent of Code 2020" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Day 7 Handy Haversacks | Advent of Code 2020" />
+  
+  <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
+  
+
+<meta name="author" content="Tom Jemmett" />
+
+
+<meta name="date" content="2020-12-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="custom-customs.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">Advent of Code 2020</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="report-repair.html"><a href="report-repair.html"><i class="fa fa-check"></i><b>1</b> Report Repair</a><ul>
+<li class="chapter" data-level="1.1" data-path="report-repair.html"><a href="report-repair.html#part-1"><i class="fa fa-check"></i><b>1.1</b> Part 1</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="report-repair.html"><a href="report-repair.html#is-the-improved-algorithm-any-better"><i class="fa fa-check"></i><b>1.1.1</b> is the improved algorithm any better?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="report-repair.html"><a href="report-repair.html#part-2"><i class="fa fa-check"></i><b>1.2</b> Part 2</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="report-repair.html"><a href="report-repair.html#is-our-improved-algorithm-better-this-time"><i class="fa fa-check"></i><b>1.2.1</b> Is our improved algorithm better this time?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: Implementing in Python</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="password-philosophy.html"><a href="password-philosophy.html"><i class="fa fa-check"></i><b>2</b> Password Philosophy</a><ul>
+<li class="chapter" data-level="2.1" data-path="password-philosophy.html"><a href="password-philosophy.html#part-1-1"><i class="fa fa-check"></i><b>2.1</b> Part 1</a></li>
+<li class="chapter" data-level="2.2" data-path="password-philosophy.html"><a href="password-philosophy.html#part-2-1"><i class="fa fa-check"></i><b>2.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html"><i class="fa fa-check"></i><b>3</b> Toboggan Trajectory</a><ul>
+<li class="chapter" data-level="3.1" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-1-2"><i class="fa fa-check"></i><b>3.1</b> Part 1</a></li>
+<li class="chapter" data-level="3.2" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-2-2"><i class="fa fa-check"></i><b>3.2</b> Part 2</a></li>
+<li class="chapter" data-level="3.3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter"><i class="fa fa-check"></i><b>3.3</b> Extra: Is there a path that minimises the number of trees you encounter?</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="passport-processing.html"><a href="passport-processing.html"><i class="fa fa-check"></i><b>4</b> Passport Processing</a><ul>
+<li class="chapter" data-level="4.1" data-path="passport-processing.html"><a href="passport-processing.html#part-1-3"><i class="fa fa-check"></i><b>4.1</b> Part 1</a></li>
+<li class="chapter" data-level="4.2" data-path="passport-processing.html"><a href="passport-processing.html#part-2-3"><i class="fa fa-check"></i><b>4.2</b> Part 2</a></li>
+<li class="chapter" data-level="4.3" data-path="passport-processing.html"><a href="passport-processing.html#extra-solving-with-regular-expressions"><i class="fa fa-check"></i><b>4.3</b> Extra: Solving with regular expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="binary-boarding.html"><a href="binary-boarding.html"><i class="fa fa-check"></i><b>5</b> Binary Boarding</a><ul>
+<li class="chapter" data-level="5.1" data-path="binary-boarding.html"><a href="binary-boarding.html#part-1-4"><i class="fa fa-check"></i><b>5.1</b> Part 1</a></li>
+<li class="chapter" data-level="5.2" data-path="binary-boarding.html"><a href="binary-boarding.html#part-2-4"><i class="fa fa-check"></i><b>5.2</b> Part 2</a></li>
+<li class="chapter" data-level="5.3" data-path="binary-boarding.html"><a href="binary-boarding.html#extra-solving-algebraicly"><i class="fa fa-check"></i><b>5.3</b> Extra: Solving algebraicly</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="custom-customs.html"><a href="custom-customs.html"><i class="fa fa-check"></i><b>6</b> Custom Customs</a><ul>
+<li class="chapter" data-level="6.1" data-path="custom-customs.html"><a href="custom-customs.html#part-1-5"><i class="fa fa-check"></i><b>6.1</b> Part 1</a></li>
+<li class="chapter" data-level="6.2" data-path="custom-customs.html"><a href="custom-customs.html#part-2-5"><i class="fa fa-check"></i><b>6.2</b> Part 2</a></li>
+<li class="chapter" data-level="6.3" data-path="custom-customs.html"><a href="custom-customs.html#extra-solving-part-1-2-with-set-functions"><i class="fa fa-check"></i><b>6.3</b> Extra: solving part 1 &amp; 2 with set functions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="handy-haversacks.html"><a href="handy-haversacks.html"><i class="fa fa-check"></i><b>7</b> Handy Haversacks</a><ul>
+<li class="chapter" data-level="7.1" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-1-6"><i class="fa fa-check"></i><b>7.1</b> Part 1</a></li>
+<li class="chapter" data-level="7.2" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-2-6"><i class="fa fa-check"></i><b>7.2</b> Part 2</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Advent of Code 2020</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="handy-haversacks" class="section level1">
+<h1><span class="header-section-number">Day 7</span> Handy Haversacks</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/7">Day 7</a>.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="handy-haversacks.html#cb110-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_07_sample.txt&quot;</span>)</span>
+<span id="cb110-2"><a href="handy-haversacks.html#cb110-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_07_input.txt&quot;</span>)</span></code></pre></div>
+<div id="part-1-6" class="section level2">
+<h2><span class="header-section-number">7.1</span> Part 1</h2>
+<p>I think today’s problem is naturally solved with using graph’s, so I’m going to use the <code>{igraph}</code> package. The easiest
+way to create a graph is to first create a data frame that contains the columns <code>from</code> and <code>to</code> that indicate which
+edges are in the graph. Any additional columns will be added as properties to the edge.</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="handy-haversacks.html#cb111-1"></a>convert_input_to_tibble &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb111-2"><a href="handy-haversacks.html#cb111-2"></a>  input <span class="op">%&gt;%</span></span>
+<span id="cb111-3"><a href="handy-haversacks.html#cb111-3"></a><span class="st">    </span><span class="co"># we don&#39;t need to keep the word&#39;s &quot;bag&quot; or &quot;bags&quot;. In our data these words</span></span>
+<span id="cb111-4"><a href="handy-haversacks.html#cb111-4"></a><span class="st">    </span><span class="co"># always have a space before, and sometimes have a &quot;.&quot; at the end. We can</span></span>
+<span id="cb111-5"><a href="handy-haversacks.html#cb111-5"></a><span class="st">    </span><span class="co"># use the following regex to remove these words</span></span>
+<span id="cb111-6"><a href="handy-haversacks.html#cb111-6"></a><span class="st">    </span><span class="kw">str_remove_all</span>(<span class="st">&quot; bags?</span><span class="ch">\\</span><span class="st">.?&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb111-7"><a href="handy-haversacks.html#cb111-7"></a><span class="st">    </span><span class="co"># we can now split our data at the word &quot;contains&quot;</span></span>
+<span id="cb111-8"><a href="handy-haversacks.html#cb111-8"></a><span class="st">    </span><span class="kw">unglue_data</span>(<span class="st">&quot;{from} contain {contains}&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb111-9"><a href="handy-haversacks.html#cb111-9"></a><span class="st">    </span><span class="co"># now we can split the contains column by comma&#39;s</span></span>
+<span id="cb111-10"><a href="handy-haversacks.html#cb111-10"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="kw">across</span>(contains, str_split, <span class="st">&quot;, &quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb111-11"><a href="handy-haversacks.html#cb111-11"></a><span class="st">    </span><span class="co"># and expand the nested &quot;contains&quot; column</span></span>
+<span id="cb111-12"><a href="handy-haversacks.html#cb111-12"></a><span class="st">    </span><span class="kw">unnest_longer</span>(contains) <span class="op">%&gt;%</span></span>
+<span id="cb111-13"><a href="handy-haversacks.html#cb111-13"></a><span class="st">    </span><span class="co"># handle edge case: if the string is no other need to insert a 0 at the start</span></span>
+<span id="cb111-14"><a href="handy-haversacks.html#cb111-14"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="kw">across</span>(contains, <span class="op">~</span><span class="kw">if_else</span>(.x <span class="op">==</span><span class="st"> &quot;no other&quot;</span>, <span class="st">&quot;0 no other&quot;</span>, .x))) <span class="op">%&gt;%</span></span>
+<span id="cb111-15"><a href="handy-haversacks.html#cb111-15"></a><span class="st">    </span><span class="co"># now we can split the contains column into the &quot;n&quot; part and the &quot;to&quot; part</span></span>
+<span id="cb111-16"><a href="handy-haversacks.html#cb111-16"></a><span class="st">    </span><span class="kw">separate</span>(contains, <span class="kw">c</span>(<span class="st">&quot;n&quot;</span>, <span class="st">&quot;to&quot;</span>), <span class="st">&quot;(?&lt;=</span><span class="ch">\\</span><span class="st">d) &quot;</span>, <span class="dt">convert =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb111-17"><a href="handy-haversacks.html#cb111-17"></a><span class="st">    </span><span class="co"># reorder the columns</span></span>
+<span id="cb111-18"><a href="handy-haversacks.html#cb111-18"></a><span class="st">    </span><span class="kw">select</span>(from, to, n)</span>
+<span id="cb111-19"><a href="handy-haversacks.html#cb111-19"></a>}</span>
+<span id="cb111-20"><a href="handy-haversacks.html#cb111-20"></a>sample_df &lt;-<span class="st"> </span><span class="kw">convert_input_to_tibble</span>(sample)</span>
+<span id="cb111-21"><a href="handy-haversacks.html#cb111-21"></a>actual_df &lt;-<span class="st"> </span><span class="kw">convert_input_to_tibble</span>(actual)</span>
+<span id="cb111-22"><a href="handy-haversacks.html#cb111-22"></a>sample_df</span></code></pre></div>
+<pre><code>## # A tibble: 15 x 3
+##    from         to               n
+##    &lt;chr&gt;        &lt;chr&gt;        &lt;int&gt;
+##  1 light red    bright white     1
+##  2 light red    muted yellow     2
+##  3 dark orange  bright white     3
+##  4 dark orange  muted yellow     4
+##  5 bright white shiny gold       1
+##  6 muted yellow shiny gold       2
+##  7 muted yellow faded blue       9
+##  8 shiny gold   dark olive       1
+##  9 shiny gold   vibrant plum     2
+## 10 dark olive   faded blue       3
+## 11 dark olive   dotted black     4
+## 12 vibrant plum faded blue       5
+## 13 vibrant plum dotted black     6
+## 14 faded blue   no other         0
+## 15 dotted black no other         0</code></pre>
+<p>We can create a graph using the <code>graph_from_data_frame()</code> function:</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="handy-haversacks.html#cb113-1"></a>sample_g &lt;-<span class="st"> </span><span class="kw">graph_from_data_frame</span>(sample_df)</span>
+<span id="cb113-2"><a href="handy-haversacks.html#cb113-2"></a>sample_g</span></code></pre></div>
+<pre><code>## IGRAPH 2af038c DN-- 10 15 -- 
+## + attr: name (v/c), n (e/n)
+## + edges from 2af038c (vertex names):
+##  [1] light red   -&gt;bright white light red   -&gt;muted yellow
+##  [3] dark orange -&gt;bright white dark orange -&gt;muted yellow
+##  [5] bright white-&gt;shiny gold   muted yellow-&gt;shiny gold  
+##  [7] muted yellow-&gt;faded blue   shiny gold  -&gt;dark olive  
+##  [9] shiny gold  -&gt;vibrant plum dark olive  -&gt;faded blue  
+## [11] dark olive  -&gt;dotted black vibrant plum-&gt;faded blue  
+## [13] vibrant plum-&gt;dotted black faded blue  -&gt;no other    
+## [15] dotted black-&gt;no other</code></pre>
+<p>and visualise this graph using <code>{igraph}</code>:</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="handy-haversacks.html#cb115-1"></a><span class="kw">ggraph</span>(sample_g, <span class="dt">layout =</span> <span class="st">&quot;igraph&quot;</span>, <span class="dt">algorithm =</span> <span class="st">&quot;nicely&quot;</span>) <span class="op">+</span></span>
+<span id="cb115-2"><a href="handy-haversacks.html#cb115-2"></a><span class="st">  </span><span class="kw">geom_edge_link</span>(<span class="kw">aes</span>(<span class="dt">label =</span> n), </span>
+<span id="cb115-3"><a href="handy-haversacks.html#cb115-3"></a>                 <span class="dt">angle_calc =</span> <span class="st">&quot;along&quot;</span>,</span>
+<span id="cb115-4"><a href="handy-haversacks.html#cb115-4"></a>                 <span class="dt">label_dodge =</span> <span class="kw">unit</span>(<span class="fl">2.5</span>, <span class="st">&quot;mm&quot;</span>),</span>
+<span id="cb115-5"><a href="handy-haversacks.html#cb115-5"></a>                 <span class="dt">arrow =</span> <span class="kw">arrow</span>(<span class="dt">length =</span> <span class="kw">unit</span>(<span class="dv">3</span>, <span class="st">&quot;mm&quot;</span>)), </span>
+<span id="cb115-6"><a href="handy-haversacks.html#cb115-6"></a>                 <span class="dt">end_cap =</span> <span class="kw">circle</span>(<span class="dv">10</span>, <span class="st">&quot;mm&quot;</span>)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb115-7"><a href="handy-haversacks.html#cb115-7"></a><span class="st">  </span><span class="kw">geom_node_label</span>(<span class="kw">aes</span>(<span class="dt">label =</span> <span class="kw">str_replace</span>(name, <span class="st">&quot; &quot;</span>, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)))</span></code></pre></div>
+<p><img src="day_07_files/figure-html/show%20sample%20graph-1.png" width="672" /></p>
+<p>Our challenge is to find all of the vertices that have a path in to “shiny gold”. The <code>subcomponent()</code> function can
+tell us all of the vertices in a graph which reach a given vertex. We can simply take the length of this subcomponent
+and subtract 1 (as the subcomponent includes “shiny gold”).</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="handy-haversacks.html#cb116-1"></a><span class="kw">length</span>(<span class="kw">subcomponent</span>(sample_g, <span class="st">&quot;shiny gold&quot;</span>, <span class="st">&quot;in&quot;</span>)) <span class="op">-</span><span class="st"> </span><span class="dv">1</span> <span class="op">==</span><span class="st"> </span><span class="dv">4</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>We now just need to solve for the actual data.</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="handy-haversacks.html#cb118-1"></a>actual_g &lt;-<span class="st"> </span><span class="kw">graph_from_data_frame</span>(actual_df)</span>
+<span id="cb118-2"><a href="handy-haversacks.html#cb118-2"></a><span class="kw">length</span>(<span class="kw">subcomponent</span>(actual_g, <span class="st">&quot;shiny gold&quot;</span>, <span class="st">&quot;in&quot;</span>)) <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span></code></pre></div>
+<pre><code>## [1] 278</code></pre>
+</div>
+<div id="part-2-6" class="section level2">
+<h2><span class="header-section-number">7.2</span> Part 2</h2>
+<p>Part 2 sounds like a recursive function. We can first find the subgraph that includes all of the vertices from “shiny
+gold”. We can then convert this graph to an adjacency matrix and iterate through each vertex, recursively calling a
+function that sums how many bags this bag will contain.</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="handy-haversacks.html#cb120-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb120-2"><a href="handy-haversacks.html#cb120-2"></a>  sg &lt;-<span class="st"> </span><span class="kw">induced_subgraph</span>(input, <span class="kw">subcomponent</span>(input, <span class="st">&quot;shiny gold&quot;</span>, <span class="st">&quot;out&quot;</span>))</span>
+<span id="cb120-3"><a href="handy-haversacks.html#cb120-3"></a>  am &lt;-<span class="st"> </span><span class="kw">as_adjacency_matrix</span>(sg, <span class="dt">attr =</span> <span class="st">&quot;n&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb120-4"><a href="handy-haversacks.html#cb120-4"></a><span class="st">    </span><span class="kw">as.matrix</span>()</span>
+<span id="cb120-5"><a href="handy-haversacks.html#cb120-5"></a>  </span>
+<span id="cb120-6"><a href="handy-haversacks.html#cb120-6"></a>  fn &lt;-<span class="st"> </span><span class="cf">function</span>(am, <span class="dt">v =</span> <span class="st">&quot;shiny gold&quot;</span>, <span class="dt">n =</span> <span class="dv">1</span>) {</span>
+<span id="cb120-7"><a href="handy-haversacks.html#cb120-7"></a>    a &lt;-<span class="st"> </span>am[v, ] <span class="op">*</span><span class="st"> </span>n</span>
+<span id="cb120-8"><a href="handy-haversacks.html#cb120-8"></a>    a &lt;-<span class="st"> </span>a[a <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>] <span class="co"># keep as separate step, otherwise can end up with just scalar</span></span>
+<span id="cb120-9"><a href="handy-haversacks.html#cb120-9"></a>    </span>
+<span id="cb120-10"><a href="handy-haversacks.html#cb120-10"></a>    <span class="co"># now, iterate over each item in a and recursively call this function</span></span>
+<span id="cb120-11"><a href="handy-haversacks.html#cb120-11"></a>    <span class="kw">sum</span>(<span class="kw">map_dbl</span>(<span class="kw">names</span>(a), <span class="op">~</span><span class="kw">fn</span>(am, .x, a[[.x]]))) <span class="op">+</span><span class="st"> </span><span class="kw">sum</span>(a)</span>
+<span id="cb120-12"><a href="handy-haversacks.html#cb120-12"></a>  }</span>
+<span id="cb120-13"><a href="handy-haversacks.html#cb120-13"></a>  </span>
+<span id="cb120-14"><a href="handy-haversacks.html#cb120-14"></a>  <span class="co"># call this function on the base case</span></span>
+<span id="cb120-15"><a href="handy-haversacks.html#cb120-15"></a>  <span class="kw">fn</span>(am)</span>
+<span id="cb120-16"><a href="handy-haversacks.html#cb120-16"></a>}</span></code></pre></div>
+<p>We can test that our function works against the sample case:</p>
+<pre class="part"><code>part_2(sample_g) == 32</code></pre>
+<p>A second sample is provided, so we can test against that also:</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="handy-haversacks.html#cb122-1"></a><span class="kw">c</span>(<span class="st">&quot;shiny gold bags contain 2 dark red bags.&quot;</span>,</span>
+<span id="cb122-2"><a href="handy-haversacks.html#cb122-2"></a>  <span class="st">&quot;dark red bags contain 2 dark orange bags.&quot;</span>,</span>
+<span id="cb122-3"><a href="handy-haversacks.html#cb122-3"></a>  <span class="st">&quot;dark orange bags contain 2 dark yellow bags.&quot;</span>,</span>
+<span id="cb122-4"><a href="handy-haversacks.html#cb122-4"></a>  <span class="st">&quot;dark yellow bags contain 2 dark green bags.&quot;</span>,</span>
+<span id="cb122-5"><a href="handy-haversacks.html#cb122-5"></a>  <span class="st">&quot;dark green bags contain 2 dark blue bags.&quot;</span>,</span>
+<span id="cb122-6"><a href="handy-haversacks.html#cb122-6"></a>  <span class="st">&quot;dark blue bags contain 2 dark violet bags.&quot;</span>,</span>
+<span id="cb122-7"><a href="handy-haversacks.html#cb122-7"></a>  <span class="st">&quot;dark violet bags contain no other bags.&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb122-8"><a href="handy-haversacks.html#cb122-8"></a><span class="st">  </span><span class="kw">convert_input_to_tibble</span>() <span class="op">%&gt;%</span></span>
+<span id="cb122-9"><a href="handy-haversacks.html#cb122-9"></a><span class="st">  </span><span class="kw">graph_from_data_frame</span>() <span class="op">%&gt;%</span></span>
+<span id="cb122-10"><a href="handy-haversacks.html#cb122-10"></a><span class="st">  </span><span class="kw">part_2</span>() <span class="op">==</span><span class="st"> </span><span class="dv">126</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Now we can run against the actual data:</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="handy-haversacks.html#cb124-1"></a><span class="kw">part_2</span>(actual_g)</span></code></pre></div>
+<pre><code>## [1] 45157</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="custom-customs.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

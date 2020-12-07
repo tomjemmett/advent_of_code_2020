@@ -24,7 +24,7 @@
 <meta name="author" content="Tom Jemmett" />
 
 
-<meta name="date" content="2020-12-06" />
+<meta name="date" content="2020-12-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -169,6 +169,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.2" data-path="custom-customs.html"><a href="custom-customs.html#part-2-5"><i class="fa fa-check"></i><b>6.2</b> Part 2</a></li>
 <li class="chapter" data-level="6.3" data-path="custom-customs.html"><a href="custom-customs.html#extra-solving-part-1-2-with-set-functions"><i class="fa fa-check"></i><b>6.3</b> Extra: solving part 1 &amp; 2 with set functions</a></li>
 </ul></li>
+<li class="chapter" data-level="7" data-path="handy-haversacks.html"><a href="handy-haversacks.html"><i class="fa fa-check"></i><b>7</b> Handy Haversacks</a><ul>
+<li class="chapter" data-level="7.1" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-1-6"><i class="fa fa-check"></i><b>7.1</b> Part 1</a></li>
+<li class="chapter" data-level="7.2" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-2-6"><i class="fa fa-check"></i><b>7.2</b> Part 2</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -247,8 +251,8 @@ that the target we increase the lower number pointer.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_1_naive(sample, 2020)      2.71µs   3.21µs   290553.        0B     29.1
-## 2 part_1_improved(sample, 2020)  59.94µs  65.45µs    15141.        0B     17.0</code></pre>
+## 1 part_1_naive(sample, 2020)      2.69µs   3.26µs   286170.        0B     28.6
+## 2 part_1_improved(sample, 2020)  61.92µs  65.69µs    14689.        0B     17.0</code></pre>
 <p>For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
 sort the data, which is costly, and then it performs far more comparisons per iteration.</p>
 <p>However, when we have more data, these extra steps lead to big improvements, as can be seen when running with the actual
@@ -258,8 +262,8 @@ data.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_1_naive(actual, 2020)     680.4µs  708.4µs     1391.        0B     2.02
-## 2 part_1_improved(actual, 2020)   82.6µs   89.8µs    10535.    1.66KB    14.9</code></pre>
+## 1 part_1_naive(actual, 2020)     683.3µs  712.3µs     1379.        0B     2.02
+## 2 part_1_improved(actual, 2020)   83.9µs   89.2µs    10791.    1.66KB    14.8</code></pre>
 <p>The improved algorithm was roughly 10x faster for me on the actual data.</p>
 </div>
 </div>
@@ -348,8 +352,8 @@ continue the search by looping.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_2_naive(actual, 2020)     121.8ms  124.2ms      8.07        0B     5.38
-## 2 part_2_improved(actual, 2020)   15.3ms   15.4ms     64.8     1.66KB   519.</code></pre>
+## 1 part_2_naive(actual, 2020)     113.1ms  113.4ms      8.82        0B     2.20
+## 2 part_2_improved(actual, 2020)   15.1ms   15.3ms     65.2     1.66KB   782.</code></pre>
 <p>On my machine the improved approach is again about 10x quicker.</p>
 </div>
 </div>
@@ -385,8 +389,8 @@ is a constant time operation in python - it’s near instantaneous).</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_2_improved(actual, 2020)   14.7ms  15.11ms      66.3    1.66KB     40.5
-## 2 py$part_2_py(actual, 2020)       1.2ms   1.27ms     762.    17.45KB      0</code></pre>
+## 1 part_2_improved(actual, 2020)  14.78ms  14.98ms      64.0    1.66KB    37.1 
+## 2 py$part_2_py(actual, 2020)      1.21ms   1.25ms     794.    17.45KB     2.96</code></pre>
 
 </div>
 </div>
