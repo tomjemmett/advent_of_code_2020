@@ -71,9 +71,9 @@ sample_g
 ```
 
 ```
-## IGRAPH 2af038c DN-- 10 15 -- 
+## IGRAPH e6d5042 DN-- 10 15 -- 
 ## + attr: name (v/c), n (e/n)
-## + edges from 2af038c (vertex names):
+## + edges from e6d5042 (vertex names):
 ##  [1] light red   ->bright white light red   ->muted yellow
 ##  [3] dark orange ->bright white dark orange ->muted yellow
 ##  [5] bright white->shiny gold   muted yellow->shiny gold  
@@ -134,8 +134,7 @@ function that sums how many bags this bag will contain.
 ```r
 part_2 <- function(input) {
   sg <- induced_subgraph(input, subcomponent(input, "shiny gold", "out"))
-  am <- as_adjacency_matrix(sg, attr = "n") %>%
-    as.matrix()
+  am <- as_adjacency_matrix(sg, attr = "n", sparse = FALSE)
   
   fn <- function(am, v = "shiny gold", n = 1) {
     a <- am[v, ] * n
