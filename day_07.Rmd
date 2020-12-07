@@ -106,7 +106,7 @@ part_2 <- function(input) {
 
 We can test that our function works against the sample case:
 
-```{part 2 test sample}
+```{r part 2 test sample}
 part_2(sample_g) == 32
 ```
 
