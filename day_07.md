@@ -71,9 +71,9 @@ sample_g
 ```
 
 ```
-## IGRAPH 71228b4 DN-- 10 15 -- 
+## IGRAPH e1bd8e2 DN-- 10 15 -- 
 ## + attr: name (v/c), n (e/n)
-## + edges from 71228b4 (vertex names):
+## + edges from e1bd8e2 (vertex names):
 ##  [1] light red   ->bright white light red   ->muted yellow
 ##  [3] dark orange ->bright white dark orange ->muted yellow
 ##  [5] bright white->shiny gold   muted yellow->shiny gold  
@@ -189,4 +189,39 @@ part_2(actual_g)
 
 ```
 ## [1] 45157
+```
+
+# Extra: alternative solution to part 2
+
+We could also solve part 2 by iterating through each vertex and finding the incident edges and adjacent vertices. We
+multiply the edge weight (`ie$n`) by the current value of `n`, sum these values and add `n` back in to the total. This
+gives us the total number of bags, including the initial bag, so we need to subtract 1 from this answer.
+
+
+```r
+part_2_alt <- function(g, v, n) {
+  ie <- incident_edges(g, v, "out")[[1]]
+  vn <- ends(g, ie)[, 2]
+  sum(map2_dbl(vn, ie$n * n, part_2_alt, g = g)) + n
+}
+```
+
+We can now verify that this alternative function works as above.
+
+
+```r
+part_2_alt(sample_g, "shiny gold", 1) - 1 == part_2(sample_g)
+```
+
+```
+## [1] TRUE
+```
+
+
+```r
+part_2_alt(actual_g, "shiny gold", 1) - 1 == part_2(actual_g)
+```
+
+```
+## [1] TRUE
 ```

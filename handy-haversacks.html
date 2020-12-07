@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="custom-customs.html"/>
-
+<link rel="next" href="extra-alternative-solution-to-part-2.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -173,6 +173,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.1" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-1-6"><i class="fa fa-check"></i><b>7.1</b> Part 1</a></li>
 <li class="chapter" data-level="7.2" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-2-6"><i class="fa fa-check"></i><b>7.2</b> Part 2</a></li>
 </ul></li>
+<li class="chapter" data-level="8" data-path="extra-alternative-solution-to-part-2.html"><a href="extra-alternative-solution-to-part-2.html"><i class="fa fa-check"></i><b>8</b> Extra: alternative solution to part 2</a></li>
 </ul>
 
       </nav>
@@ -243,9 +244,9 @@ edges are in the graph. Any additional columns will be added as properties to th
 <p>We can create a graph using the <code>graph_from_data_frame()</code> function:</p>
 <div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="handy-haversacks.html#cb113-1"></a>sample_g &lt;-<span class="st"> </span><span class="kw">graph_from_data_frame</span>(sample_df)</span>
 <span id="cb113-2"><a href="handy-haversacks.html#cb113-2"></a>sample_g</span></code></pre></div>
-<pre><code>## IGRAPH 71228b4 DN-- 10 15 -- 
+<pre><code>## IGRAPH e1bd8e2 DN-- 10 15 -- 
 ## + attr: name (v/c), n (e/n)
-## + edges from 71228b4 (vertex names):
+## + edges from e1bd8e2 (vertex names):
 ##  [1] light red   -&gt;bright white light red   -&gt;muted yellow
 ##  [3] dark orange -&gt;bright white dark orange -&gt;muted yellow
 ##  [5] bright white-&gt;shiny gold   muted yellow-&gt;shiny gold  
@@ -311,7 +312,6 @@ function that sums how many bags this bag will contain.</p>
 <p>Now we can run against the actual data:</p>
 <div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="handy-haversacks.html#cb125-1"></a><span class="kw">part_2</span>(actual_g)</span></code></pre></div>
 <pre><code>## [1] 45157</code></pre>
-
 </div>
 </div>
             </section>
@@ -319,8 +319,8 @@ function that sums how many bags this bag will contain.</p>
           </div>
         </div>
       </div>
-<a href="custom-customs.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="custom-customs.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="extra-alternative-solution-to-part-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

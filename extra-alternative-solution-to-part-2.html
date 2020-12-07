@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Day 6 Custom Customs | Advent of Code 2020</title>
+  <title>Day 8 Extra: alternative solution to part 2 | Advent of Code 2020</title>
   <meta name="description" content="My attempt to complete AOC 2020 in R" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Day 6 Custom Customs | Advent of Code 2020" />
+  <meta property="og:title" content="Day 8 Extra: alternative solution to part 2 | Advent of Code 2020" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Day 6 Custom Customs | Advent of Code 2020" />
+  <meta name="twitter:title" content="Day 8 Extra: alternative solution to part 2 | Advent of Code 2020" />
   
   <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="binary-boarding.html"/>
-<link rel="next" href="handy-haversacks.html"/>
+<link rel="prev" href="handy-haversacks.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -191,96 +191,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="custom-customs" class="section level1">
-<h1><span class="header-section-number">Day 6</span> Custom Customs</h1>
-<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/6">Day 6</a>.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="custom-customs.html#cb94-1"></a>load_file &lt;-<span class="st"> </span><span class="cf">function</span>(file) {</span>
-<span id="cb94-2"><a href="custom-customs.html#cb94-2"></a>  file <span class="op">%&gt;%</span></span>
-<span id="cb94-3"><a href="custom-customs.html#cb94-3"></a><span class="st">    </span><span class="kw">read_file</span>() <span class="op">%&gt;%</span></span>
-<span id="cb94-4"><a href="custom-customs.html#cb94-4"></a><span class="st">    </span><span class="co"># strip windows added carriage returns</span></span>
-<span id="cb94-5"><a href="custom-customs.html#cb94-5"></a><span class="st">    </span><span class="kw">str_remove_all</span>(<span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb94-6"><a href="custom-customs.html#cb94-6"></a><span class="st">    </span><span class="co"># clear trailing whitespace</span></span>
-<span id="cb94-7"><a href="custom-customs.html#cb94-7"></a><span class="st">    </span><span class="kw">str_trim</span>() <span class="op">%&gt;%</span></span>
-<span id="cb94-8"><a href="custom-customs.html#cb94-8"></a><span class="st">    </span><span class="co"># split where we have two new lines</span></span>
-<span id="cb94-9"><a href="custom-customs.html#cb94-9"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb94-10"><a href="custom-customs.html#cb94-10"></a><span class="st">    </span><span class="co"># take only the first results (the input is just one string)</span></span>
-<span id="cb94-11"><a href="custom-customs.html#cb94-11"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb94-12"><a href="custom-customs.html#cb94-12"></a><span class="st">    </span><span class="co"># split each result into individual lines</span></span>
-<span id="cb94-13"><a href="custom-customs.html#cb94-13"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb94-14"><a href="custom-customs.html#cb94-14"></a>}</span>
-<span id="cb94-15"><a href="custom-customs.html#cb94-15"></a></span>
-<span id="cb94-16"><a href="custom-customs.html#cb94-16"></a>sample &lt;-<span class="st"> </span><span class="kw">load_file</span>(<span class="st">&quot;samples/day_06_sample.txt&quot;</span>)</span>
-<span id="cb94-17"><a href="custom-customs.html#cb94-17"></a>actual &lt;-<span class="st"> </span><span class="kw">load_file</span>(<span class="st">&quot;inputs/day_06_input.txt&quot;</span>)</span></code></pre></div>
-<div id="part-1-5" class="section level2">
-<h2><span class="header-section-number">6.1</span> Part 1</h2>
-<p>For part 1 I am going to first split each respondents response into the individual answers (<code>str_extract_all()</code>). This
-will return a list of character vectors, so I will use <code>flatten_chr()</code> to turn these into vectors containing all of the
-answers for each group as a character vector. Then I can simply take the <code>unique()</code> values and work out the <code>length()</code>
-of the resulting vector. I tie all of this together with the <code>compose()</code> function from <code>{purrr}</code>: this is similar to
-<code>%&gt;%</code>, except it chains the functions together before you evaluate them into a single chain.</p>
-<p>Like mathematical composition, <code>compose()</code> works with the “outer-most” function first, e.g. <code>str_extract_all()</code> runs
-before <code>flatten_chr()</code>, etc.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="custom-customs.html#cb95-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb95-2"><a href="custom-customs.html#cb95-2"></a>  input <span class="op">%&gt;%</span></span>
-<span id="cb95-3"><a href="custom-customs.html#cb95-3"></a><span class="st">    </span><span class="kw">map_dbl</span>(<span class="kw">compose</span>(length,</span>
-<span id="cb95-4"><a href="custom-customs.html#cb95-4"></a>                    unique,</span>
-<span id="cb95-5"><a href="custom-customs.html#cb95-5"></a>                    flatten_chr,</span>
-<span id="cb95-6"><a href="custom-customs.html#cb95-6"></a>                    str_extract_all), <span class="st">&quot;.&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb95-7"><a href="custom-customs.html#cb95-7"></a><span class="st">    </span><span class="kw">sum</span>()</span>
-<span id="cb95-8"><a href="custom-customs.html#cb95-8"></a>}</span></code></pre></div>
-<p>Now I can check that this function behaves as expected:</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="custom-customs.html#cb96-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">11</span></span></code></pre></div>
+<div id="extra-alternative-solution-to-part-2" class="section level1">
+<h1><span class="header-section-number">Day 8</span> Extra: alternative solution to part 2</h1>
+<p>We could also solve part 2 by iterating through each vertex and finding the incident edges and adjacent vertices. We
+multiply the edge weight (<code>ie$n</code>) by the current value of <code>n</code>, sum these values and add <code>n</code> back in to the total. This
+gives us the total number of bags, including the initial bag, so we need to subtract 1 from this answer.</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="extra-alternative-solution-to-part-2.html#cb127-1"></a>part_<span class="dv">2</span>_alt &lt;-<span class="st"> </span><span class="cf">function</span>(g, v, n) {</span>
+<span id="cb127-2"><a href="extra-alternative-solution-to-part-2.html#cb127-2"></a>  ie &lt;-<span class="st"> </span><span class="kw">incident_edges</span>(g, v, <span class="st">&quot;out&quot;</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb127-3"><a href="extra-alternative-solution-to-part-2.html#cb127-3"></a>  vn &lt;-<span class="st"> </span><span class="kw">ends</span>(g, ie)[, <span class="dv">2</span>]</span>
+<span id="cb127-4"><a href="extra-alternative-solution-to-part-2.html#cb127-4"></a>  <span class="kw">sum</span>(<span class="kw">map2_dbl</span>(vn, ie<span class="op">$</span>n <span class="op">*</span><span class="st"> </span>n, part_<span class="dv">2</span>_alt, <span class="dt">g =</span> g)) <span class="op">+</span><span class="st"> </span>n</span>
+<span id="cb127-5"><a href="extra-alternative-solution-to-part-2.html#cb127-5"></a>}</span></code></pre></div>
+<p>We can now verify that this alternative function works as above.</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="extra-alternative-solution-to-part-2.html#cb128-1"></a><span class="kw">part_2_alt</span>(sample_g, <span class="st">&quot;shiny gold&quot;</span>, <span class="dv">1</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span> <span class="op">==</span><span class="st"> </span><span class="kw">part_2</span>(sample_g)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>And we can run on our actual data</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="custom-customs.html#cb98-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
-<pre><code>## [1] 6273</code></pre>
-</div>
-<div id="part-2-5" class="section level2">
-<h2><span class="header-section-number">6.2</span> Part 2</h2>
-<p>For part 2 I am going to start as in part 1, split each respondents response into individual answers. But then I will
-use <code>reduce()</code> to go through pairs of responses at a time and only select the questions which were answered by both as
-“yes”. We can then simply take the <code>length()</code> of each groups responses.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="custom-customs.html#cb100-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb100-2"><a href="custom-customs.html#cb100-2"></a>  input <span class="op">%&gt;%</span></span>
-<span id="cb100-3"><a href="custom-customs.html#cb100-3"></a><span class="st">    </span><span class="kw">map</span>(str_extract_all, <span class="st">&quot;.&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb100-4"><a href="custom-customs.html#cb100-4"></a><span class="st">    </span><span class="kw">map</span>(reduce, <span class="op">~</span>.y[.y <span class="op">%in%</span><span class="st"> </span>.x]) <span class="op">%&gt;%</span></span>
-<span id="cb100-5"><a href="custom-customs.html#cb100-5"></a><span class="st">    </span><span class="kw">map_dbl</span>(length) <span class="op">%&gt;%</span></span>
-<span id="cb100-6"><a href="custom-customs.html#cb100-6"></a><span class="st">    </span><span class="kw">sum</span>()</span>
-<span id="cb100-7"><a href="custom-customs.html#cb100-7"></a>}</span></code></pre></div>
-<p>We can test to see if the function works as expected::</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="custom-customs.html#cb101-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">6</span></span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<p>And run the function on the actual data.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="custom-customs.html#cb103-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
-<pre><code>## [1] 3254</code></pre>
-</div>
-<div id="extra-solving-part-1-2-with-set-functions" class="section level2">
-<h2><span class="header-section-number">6.3</span> Extra: solving part 1 &amp; 2 with set functions</h2>
-<p>We could solve part 1 and 2 with the same function. Part 1 is essentially just the union of set’s in each group, whereas
-part 2 is the intersection of set’s. So we can instead write a function that accepted a set function as an argument,
-like so:</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="custom-customs.html#cb105-1"></a>extra &lt;-<span class="st"> </span><span class="cf">function</span>(input, fn) {</span>
-<span id="cb105-2"><a href="custom-customs.html#cb105-2"></a>  input <span class="op">%&gt;%</span></span>
-<span id="cb105-3"><a href="custom-customs.html#cb105-3"></a><span class="st">    </span><span class="kw">map</span>(str_extract_all, <span class="st">&quot;.&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb105-4"><a href="custom-customs.html#cb105-4"></a><span class="st">    </span><span class="kw">map</span>(reduce, fn) <span class="op">%&gt;%</span></span>
-<span id="cb105-5"><a href="custom-customs.html#cb105-5"></a><span class="st">    </span><span class="kw">map_dbl</span>(length) <span class="op">%&gt;%</span></span>
-<span id="cb105-6"><a href="custom-customs.html#cb105-6"></a><span class="st">    </span><span class="kw">sum</span>()</span>
-<span id="cb105-7"><a href="custom-customs.html#cb105-7"></a>}</span></code></pre></div>
-<p>We can now check that this new function works as expected:</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="custom-customs.html#cb106-1"></a><span class="kw">extra</span>(actual, union) <span class="op">==</span><span class="st"> </span><span class="kw">part_1</span>(actual)</span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="custom-customs.html#cb108-1"></a><span class="kw">extra</span>(actual, intersect) <span class="op">==</span><span class="st"> </span><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="extra-alternative-solution-to-part-2.html#cb130-1"></a><span class="kw">part_2_alt</span>(actual_g, <span class="st">&quot;shiny gold&quot;</span>, <span class="dv">1</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span> <span class="op">==</span><span class="st"> </span><span class="kw">part_2</span>(actual_g)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="binary-boarding.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="handy-haversacks.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="handy-haversacks.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
