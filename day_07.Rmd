@@ -130,3 +130,27 @@ Now we can run against the actual data:
 ```{r part 2 actual}
 part_2(actual_g)
 ```
+
+## Extra: alternative solution to part 2
+
+We could also solve part 2 by iterating through each vertex and finding the incident edges and adjacent vertices. We
+multiply the edge weight (`ie$n`) by the current value of `n`, sum these values and add `n` back in to the total. This
+gives us the total number of bags, including the initial bag, so we need to subtract 1 from this answer.
+
+```{r extra part 2 alt}
+part_2_alt <- function(g, v, n) {
+  ie <- incident_edges(g, v, "out")[[1]]
+  vn <- ends(g, ie)[, 2]
+  sum(map2_dbl(vn, ie$n * n, part_2_alt, g = g)) + n
+}
+```
+
+We can now verify that this alternative function works as above.
+
+```{r extra part 2 alt sample test}
+part_2_alt(sample_g, "shiny gold", 1) - 1 == part_2(sample_g)
+```
+
+```{r extra part 2 alt actual test}
+part_2_alt(actual_g, "shiny gold", 1) - 1 == part_2(actual_g)
+```
