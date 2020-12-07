@@ -243,9 +243,9 @@ edges are in the graph. Any additional columns will be added as properties to th
 <p>We can create a graph using the <code>graph_from_data_frame()</code> function:</p>
 <div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="handy-haversacks.html#cb113-1"></a>sample_g &lt;-<span class="st"> </span><span class="kw">graph_from_data_frame</span>(sample_df)</span>
 <span id="cb113-2"><a href="handy-haversacks.html#cb113-2"></a>sample_g</span></code></pre></div>
-<pre><code>## IGRAPH e6d5042 DN-- 10 15 -- 
+<pre><code>## IGRAPH 71228b4 DN-- 10 15 -- 
 ## + attr: name (v/c), n (e/n)
-## + edges from e6d5042 (vertex names):
+## + edges from 71228b4 (vertex names):
 ##  [1] light red   -&gt;bright white light red   -&gt;muted yellow
 ##  [3] dark orange -&gt;bright white dark orange -&gt;muted yellow
 ##  [5] bright white-&gt;shiny gold   muted yellow-&gt;shiny gold  
@@ -294,21 +294,22 @@ function that sums how many bags this bag will contain.</p>
 <span id="cb120-14"><a href="handy-haversacks.html#cb120-14"></a>  <span class="kw">fn</span>(am)</span>
 <span id="cb120-15"><a href="handy-haversacks.html#cb120-15"></a>}</span></code></pre></div>
 <p>We can test that our function works against the sample case:</p>
-<pre class="part"><code>part_2(sample_g) == 32</code></pre>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="handy-haversacks.html#cb121-1"></a><span class="kw">part_2</span>(sample_g) <span class="op">==</span><span class="st"> </span><span class="dv">32</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
 <p>A second sample is provided, so we can test against that also:</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="handy-haversacks.html#cb122-1"></a><span class="kw">c</span>(<span class="st">&quot;shiny gold bags contain 2 dark red bags.&quot;</span>,</span>
-<span id="cb122-2"><a href="handy-haversacks.html#cb122-2"></a>  <span class="st">&quot;dark red bags contain 2 dark orange bags.&quot;</span>,</span>
-<span id="cb122-3"><a href="handy-haversacks.html#cb122-3"></a>  <span class="st">&quot;dark orange bags contain 2 dark yellow bags.&quot;</span>,</span>
-<span id="cb122-4"><a href="handy-haversacks.html#cb122-4"></a>  <span class="st">&quot;dark yellow bags contain 2 dark green bags.&quot;</span>,</span>
-<span id="cb122-5"><a href="handy-haversacks.html#cb122-5"></a>  <span class="st">&quot;dark green bags contain 2 dark blue bags.&quot;</span>,</span>
-<span id="cb122-6"><a href="handy-haversacks.html#cb122-6"></a>  <span class="st">&quot;dark blue bags contain 2 dark violet bags.&quot;</span>,</span>
-<span id="cb122-7"><a href="handy-haversacks.html#cb122-7"></a>  <span class="st">&quot;dark violet bags contain no other bags.&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb122-8"><a href="handy-haversacks.html#cb122-8"></a><span class="st">  </span><span class="kw">convert_input_to_tibble</span>() <span class="op">%&gt;%</span></span>
-<span id="cb122-9"><a href="handy-haversacks.html#cb122-9"></a><span class="st">  </span><span class="kw">graph_from_data_frame</span>() <span class="op">%&gt;%</span></span>
-<span id="cb122-10"><a href="handy-haversacks.html#cb122-10"></a><span class="st">  </span><span class="kw">part_2</span>() <span class="op">==</span><span class="st"> </span><span class="dv">126</span></span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="handy-haversacks.html#cb123-1"></a><span class="kw">c</span>(<span class="st">&quot;shiny gold bags contain 2 dark red bags.&quot;</span>,</span>
+<span id="cb123-2"><a href="handy-haversacks.html#cb123-2"></a>  <span class="st">&quot;dark red bags contain 2 dark orange bags.&quot;</span>,</span>
+<span id="cb123-3"><a href="handy-haversacks.html#cb123-3"></a>  <span class="st">&quot;dark orange bags contain 2 dark yellow bags.&quot;</span>,</span>
+<span id="cb123-4"><a href="handy-haversacks.html#cb123-4"></a>  <span class="st">&quot;dark yellow bags contain 2 dark green bags.&quot;</span>,</span>
+<span id="cb123-5"><a href="handy-haversacks.html#cb123-5"></a>  <span class="st">&quot;dark green bags contain 2 dark blue bags.&quot;</span>,</span>
+<span id="cb123-6"><a href="handy-haversacks.html#cb123-6"></a>  <span class="st">&quot;dark blue bags contain 2 dark violet bags.&quot;</span>,</span>
+<span id="cb123-7"><a href="handy-haversacks.html#cb123-7"></a>  <span class="st">&quot;dark violet bags contain no other bags.&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb123-8"><a href="handy-haversacks.html#cb123-8"></a><span class="st">  </span><span class="kw">convert_input_to_tibble</span>() <span class="op">%&gt;%</span></span>
+<span id="cb123-9"><a href="handy-haversacks.html#cb123-9"></a><span class="st">  </span><span class="kw">graph_from_data_frame</span>() <span class="op">%&gt;%</span></span>
+<span id="cb123-10"><a href="handy-haversacks.html#cb123-10"></a><span class="st">  </span><span class="kw">part_2</span>() <span class="op">==</span><span class="st"> </span><span class="dv">126</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Now we can run against the actual data:</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="handy-haversacks.html#cb124-1"></a><span class="kw">part_2</span>(actual_g)</span></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="handy-haversacks.html#cb125-1"></a><span class="kw">part_2</span>(actual_g)</span></code></pre></div>
 <pre><code>## [1] 45157</code></pre>
 
 </div>

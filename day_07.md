@@ -71,9 +71,9 @@ sample_g
 ```
 
 ```
-## IGRAPH e6d5042 DN-- 10 15 -- 
+## IGRAPH 71228b4 DN-- 10 15 -- 
 ## + attr: name (v/c), n (e/n)
-## + edges from e6d5042 (vertex names):
+## + edges from 71228b4 (vertex names):
 ##  [1] light red   ->bright white light red   ->muted yellow
 ##  [3] dark orange ->bright white dark orange ->muted yellow
 ##  [5] bright white->shiny gold   muted yellow->shiny gold  
@@ -152,8 +152,12 @@ part_2 <- function(input) {
 We can test that our function works against the sample case:
 
 
-```part
+```r
 part_2(sample_g) == 32
+```
+
+```
+## [1] TRUE
 ```
 
 A second sample is provided, so we can test against that also:
