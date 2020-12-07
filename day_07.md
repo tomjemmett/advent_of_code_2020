@@ -71,9 +71,9 @@ sample_g
 ```
 
 ```
-## IGRAPH e1bd8e2 DN-- 10 15 -- 
+## IGRAPH d9b1c5c DN-- 10 15 -- 
 ## + attr: name (v/c), n (e/n)
-## + edges from e1bd8e2 (vertex names):
+## + edges from d9b1c5c (vertex names):
 ##  [1] light red   ->bright white light red   ->muted yellow
 ##  [3] dark orange ->bright white dark orange ->muted yellow
 ##  [5] bright white->shiny gold   muted yellow->shiny gold  
@@ -191,7 +191,7 @@ part_2(actual_g)
 ## [1] 45157
 ```
 
-# Extra: alternative solution to part 2
+## Extra: alternative solution to part 2
 
 We could also solve part 2 by iterating through each vertex and finding the incident edges and adjacent vertices. We
 multiply the edge weight (`ie$n`) by the current value of `n`, sum these values and add `n` back in to the total. This
