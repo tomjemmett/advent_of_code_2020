@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Day 8  | Advent of Code 2020</title>
+  <meta name="description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Day 8  | Advent of Code 2020" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Day 8  | Advent of Code 2020" />
+  
+  <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
+  
+
+<meta name="author" content="Tom Jemmett" />
+
+
+<meta name="date" content="2020-12-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="handy-haversacks.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">Advent of Code 2020</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="report-repair.html"><a href="report-repair.html"><i class="fa fa-check"></i><b>1</b> Report Repair</a><ul>
+<li class="chapter" data-level="1.1" data-path="report-repair.html"><a href="report-repair.html#part-1"><i class="fa fa-check"></i><b>1.1</b> Part 1</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="report-repair.html"><a href="report-repair.html#is-the-improved-algorithm-any-better"><i class="fa fa-check"></i><b>1.1.1</b> is the improved algorithm any better?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="report-repair.html"><a href="report-repair.html#part-2"><i class="fa fa-check"></i><b>1.2</b> Part 2</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="report-repair.html"><a href="report-repair.html#is-our-improved-algorithm-better-this-time"><i class="fa fa-check"></i><b>1.2.1</b> Is our improved algorithm better this time?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: Implementing in Python</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="password-philosophy.html"><a href="password-philosophy.html"><i class="fa fa-check"></i><b>2</b> Password Philosophy</a><ul>
+<li class="chapter" data-level="2.1" data-path="password-philosophy.html"><a href="password-philosophy.html#part-1-1"><i class="fa fa-check"></i><b>2.1</b> Part 1</a></li>
+<li class="chapter" data-level="2.2" data-path="password-philosophy.html"><a href="password-philosophy.html#part-2-1"><i class="fa fa-check"></i><b>2.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html"><i class="fa fa-check"></i><b>3</b> Toboggan Trajectory</a><ul>
+<li class="chapter" data-level="3.1" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-1-2"><i class="fa fa-check"></i><b>3.1</b> Part 1</a></li>
+<li class="chapter" data-level="3.2" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-2-2"><i class="fa fa-check"></i><b>3.2</b> Part 2</a></li>
+<li class="chapter" data-level="3.3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter"><i class="fa fa-check"></i><b>3.3</b> Extra: Is there a path that minimises the number of trees you encounter?</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="passport-processing.html"><a href="passport-processing.html"><i class="fa fa-check"></i><b>4</b> Passport Processing</a><ul>
+<li class="chapter" data-level="4.1" data-path="passport-processing.html"><a href="passport-processing.html#part-1-3"><i class="fa fa-check"></i><b>4.1</b> Part 1</a></li>
+<li class="chapter" data-level="4.2" data-path="passport-processing.html"><a href="passport-processing.html#part-2-3"><i class="fa fa-check"></i><b>4.2</b> Part 2</a></li>
+<li class="chapter" data-level="4.3" data-path="passport-processing.html"><a href="passport-processing.html#extra-solving-with-regular-expressions"><i class="fa fa-check"></i><b>4.3</b> Extra: Solving with regular expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="binary-boarding.html"><a href="binary-boarding.html"><i class="fa fa-check"></i><b>5</b> Binary Boarding</a><ul>
+<li class="chapter" data-level="5.1" data-path="binary-boarding.html"><a href="binary-boarding.html#part-1-4"><i class="fa fa-check"></i><b>5.1</b> Part 1</a></li>
+<li class="chapter" data-level="5.2" data-path="binary-boarding.html"><a href="binary-boarding.html#part-2-4"><i class="fa fa-check"></i><b>5.2</b> Part 2</a></li>
+<li class="chapter" data-level="5.3" data-path="binary-boarding.html"><a href="binary-boarding.html#extra-solving-algebraicly"><i class="fa fa-check"></i><b>5.3</b> Extra: Solving algebraicly</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="custom-customs.html"><a href="custom-customs.html"><i class="fa fa-check"></i><b>6</b> Custom Customs</a><ul>
+<li class="chapter" data-level="6.1" data-path="custom-customs.html"><a href="custom-customs.html#part-1-5"><i class="fa fa-check"></i><b>6.1</b> Part 1</a></li>
+<li class="chapter" data-level="6.2" data-path="custom-customs.html"><a href="custom-customs.html#part-2-5"><i class="fa fa-check"></i><b>6.2</b> Part 2</a></li>
+<li class="chapter" data-level="6.3" data-path="custom-customs.html"><a href="custom-customs.html#extra-solving-part-1-2-with-set-functions"><i class="fa fa-check"></i><b>6.3</b> Extra: solving part 1 &amp; 2 with set functions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="handy-haversacks.html"><a href="handy-haversacks.html"><i class="fa fa-check"></i><b>7</b> Handy Haversacks</a><ul>
+<li class="chapter" data-level="7.1" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-1-6"><i class="fa fa-check"></i><b>7.1</b> Part 1</a></li>
+<li class="chapter" data-level="7.2" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-2-6"><i class="fa fa-check"></i><b>7.2</b> Part 2</a></li>
+<li class="chapter" data-level="7.3" data-path="handy-haversacks.html"><a href="handy-haversacks.html#extra-alternative-solution-to-part-2"><i class="fa fa-check"></i><b>7.3</b> Extra: alternative solution to part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="section.html"><a href="section.html"><i class="fa fa-check"></i><b>8</b> </a><ul>
+<li class="chapter" data-level="8.1" data-path="section.html"><a href="section.html#part-1-7"><i class="fa fa-check"></i><b>8.1</b> Part 1</a></li>
+<li class="chapter" data-level="8.2" data-path="section.html"><a href="section.html#part-2-7"><i class="fa fa-check"></i><b>8.2</b> Part 2</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Advent of Code 2020</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="section" class="section level1">
+<h1><span class="header-section-number">Day 8</span> </h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/8">Day 8</a>.</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="section.html#cb132-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_08_sample.txt&quot;</span>)</span>
+<span id="cb132-2"><a href="section.html#cb132-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_08_input.txt&quot;</span>)</span></code></pre></div>
+<div id="part-1-7" class="section level2">
+<h2><span class="header-section-number">8.1</span> Part 1</h2>
+<p>Today I’m going to build an <a href="https://adv-r.hadley.nz/r6.html">R6 class</a> to handle the state of the computer.</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="section.html#cb133-1"></a>Computer &lt;-<span class="st"> </span><span class="kw">R6Class</span>(</span>
+<span id="cb133-2"><a href="section.html#cb133-2"></a>  <span class="st">&quot;Computer&quot;</span>,</span>
+<span id="cb133-3"><a href="section.html#cb133-3"></a>  <span class="dt">public =</span> <span class="kw">list</span>(</span>
+<span id="cb133-4"><a href="section.html#cb133-4"></a>    <span class="dt">initialize =</span> <span class="cf">function</span>(instructions) {</span>
+<span id="cb133-5"><a href="section.html#cb133-5"></a>      private<span class="op">$</span>instructions &lt;-<span class="st"> </span>instructions <span class="op">%&gt;%</span></span>
+<span id="cb133-6"><a href="section.html#cb133-6"></a><span class="st">        </span><span class="kw">unglue_data</span>(<span class="st">&quot;{inst} {i}&quot;</span>, <span class="dt">convert =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb133-7"><a href="section.html#cb133-7"></a><span class="st">        </span><span class="kw">mutate</span>(<span class="dt">c =</span> <span class="dv">0</span>)</span>
+<span id="cb133-8"><a href="section.html#cb133-8"></a>    },</span>
+<span id="cb133-9"><a href="section.html#cb133-9"></a>    <span class="dt">get_accumulator =</span> <span class="cf">function</span>() {</span>
+<span id="cb133-10"><a href="section.html#cb133-10"></a>      private<span class="op">$</span>accumulator</span>
+<span id="cb133-11"><a href="section.html#cb133-11"></a>    },</span>
+<span id="cb133-12"><a href="section.html#cb133-12"></a>    <span class="dt">get_instructions_count =</span> <span class="cf">function</span>() {</span>
+<span id="cb133-13"><a href="section.html#cb133-13"></a>      <span class="kw">sum</span>(private<span class="op">$</span>instructions<span class="op">$</span>c)</span>
+<span id="cb133-14"><a href="section.html#cb133-14"></a>    },</span>
+<span id="cb133-15"><a href="section.html#cb133-15"></a>    <span class="dt">run_next =</span> <span class="cf">function</span>() {</span>
+<span id="cb133-16"><a href="section.html#cb133-16"></a>      next_instruction &lt;-<span class="st"> </span>private<span class="op">$</span><span class="kw">next_instruction</span>()</span>
+<span id="cb133-17"><a href="section.html#cb133-17"></a>      private<span class="op">$</span><span class="kw">run_instruction</span>(next_instruction<span class="op">$</span>inst,</span>
+<span id="cb133-18"><a href="section.html#cb133-18"></a>                              next_instruction<span class="op">$</span>i)</span>
+<span id="cb133-19"><a href="section.html#cb133-19"></a>      </span>
+<span id="cb133-20"><a href="section.html#cb133-20"></a>      <span class="kw">invisible</span>(self)</span>
+<span id="cb133-21"><a href="section.html#cb133-21"></a>    },</span>
+<span id="cb133-22"><a href="section.html#cb133-22"></a>    <span class="dt">run_until_repeat =</span> <span class="cf">function</span>() {</span>
+<span id="cb133-23"><a href="section.html#cb133-23"></a>      <span class="cf">repeat</span> {</span>
+<span id="cb133-24"><a href="section.html#cb133-24"></a>        next_instruction &lt;-<span class="st"> </span>private<span class="op">$</span><span class="kw">next_instruction</span>()</span>
+<span id="cb133-25"><a href="section.html#cb133-25"></a>        <span class="cf">if</span> (next_instruction<span class="op">$</span>c <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb133-26"><a href="section.html#cb133-26"></a>          <span class="cf">break</span>()</span>
+<span id="cb133-27"><a href="section.html#cb133-27"></a>        }</span>
+<span id="cb133-28"><a href="section.html#cb133-28"></a>        private<span class="op">$</span><span class="kw">run_instruction</span>(next_instruction<span class="op">$</span>inst,</span>
+<span id="cb133-29"><a href="section.html#cb133-29"></a>                                next_instruction<span class="op">$</span>i)</span>
+<span id="cb133-30"><a href="section.html#cb133-30"></a>      }</span>
+<span id="cb133-31"><a href="section.html#cb133-31"></a>      </span>
+<span id="cb133-32"><a href="section.html#cb133-32"></a>      <span class="kw">invisible</span>(self)</span>
+<span id="cb133-33"><a href="section.html#cb133-33"></a>    },</span>
+<span id="cb133-34"><a href="section.html#cb133-34"></a>    <span class="dt">print =</span> <span class="cf">function</span>(...) {</span>
+<span id="cb133-35"><a href="section.html#cb133-35"></a>      i &lt;-<span class="st"> </span>private<span class="op">$</span>instructions[private<span class="op">$</span>ptr, ]</span>
+<span id="cb133-36"><a href="section.html#cb133-36"></a>      <span class="kw">cat</span>(<span class="st">&quot;Accumulator:     &quot;</span>, private<span class="op">$</span>accumulator, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb133-37"><a href="section.html#cb133-37"></a>      <span class="kw">cat</span>(<span class="st">&quot;Pointer:         &quot;</span>, private<span class="op">$</span>ptr, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb133-38"><a href="section.html#cb133-38"></a>      <span class="kw">cat</span>(<span class="st">&quot;Instructions Ran:&quot;</span>, self<span class="op">$</span><span class="kw">get_instructions_count</span>(), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb133-39"><a href="section.html#cb133-39"></a>      <span class="kw">cat</span>(<span class="st">&quot;Next Instruction:&quot;</span>,</span>
+<span id="cb133-40"><a href="section.html#cb133-40"></a>          i<span class="op">$</span>inst,</span>
+<span id="cb133-41"><a href="section.html#cb133-41"></a>          <span class="st">&quot; &quot;</span>,</span>
+<span id="cb133-42"><a href="section.html#cb133-42"></a>          <span class="kw">sprintf</span>(<span class="st">&quot;%+d&quot;</span>, i<span class="op">$</span>i),</span>
+<span id="cb133-43"><a href="section.html#cb133-43"></a>          <span class="st">&quot; (&quot;</span>,</span>
+<span id="cb133-44"><a href="section.html#cb133-44"></a>          i<span class="op">$</span>c,</span>
+<span id="cb133-45"><a href="section.html#cb133-45"></a>          <span class="st">&quot;)</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb133-46"><a href="section.html#cb133-46"></a>    }</span>
+<span id="cb133-47"><a href="section.html#cb133-47"></a>  ),</span>
+<span id="cb133-48"><a href="section.html#cb133-48"></a>  <span class="dt">private =</span> <span class="kw">list</span>(</span>
+<span id="cb133-49"><a href="section.html#cb133-49"></a>    <span class="dt">accumulator =</span> <span class="dv">0</span>,</span>
+<span id="cb133-50"><a href="section.html#cb133-50"></a>    <span class="dt">ptr =</span> <span class="dv">1</span>,</span>
+<span id="cb133-51"><a href="section.html#cb133-51"></a>    <span class="dt">instructions =</span> <span class="kw">list</span>(),</span>
+<span id="cb133-52"><a href="section.html#cb133-52"></a>    </span>
+<span id="cb133-53"><a href="section.html#cb133-53"></a>    <span class="dt">next_instruction =</span> <span class="cf">function</span>() {</span>
+<span id="cb133-54"><a href="section.html#cb133-54"></a>      private<span class="op">$</span>instructions[private<span class="op">$</span>ptr, ]</span>
+<span id="cb133-55"><a href="section.html#cb133-55"></a>    },</span>
+<span id="cb133-56"><a href="section.html#cb133-56"></a>    <span class="dt">run_instruction =</span> <span class="cf">function</span>(inst, i) {</span>
+<span id="cb133-57"><a href="section.html#cb133-57"></a>      private<span class="op">$</span>instructions[private<span class="op">$</span>ptr, <span class="st">&quot;c&quot;</span>] &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">+</span></span>
+<span id="cb133-58"><a href="section.html#cb133-58"></a><span class="st">        </span>private<span class="op">$</span>instructions[private<span class="op">$</span>ptr, <span class="st">&quot;c&quot;</span>]</span>
+<span id="cb133-59"><a href="section.html#cb133-59"></a>      </span>
+<span id="cb133-60"><a href="section.html#cb133-60"></a>      private<span class="op">$</span>ptr &lt;-<span class="st"> </span>private[[inst]](i)</span>
+<span id="cb133-61"><a href="section.html#cb133-61"></a>    },</span>
+<span id="cb133-62"><a href="section.html#cb133-62"></a>    <span class="co"># instruction functions: must return the next pointer value</span></span>
+<span id="cb133-63"><a href="section.html#cb133-63"></a>    <span class="dt">acc =</span> <span class="cf">function</span>(i) {</span>
+<span id="cb133-64"><a href="section.html#cb133-64"></a>      private<span class="op">$</span>accumulator &lt;-<span class="st"> </span>private<span class="op">$</span>accumulator <span class="op">+</span><span class="st"> </span>i</span>
+<span id="cb133-65"><a href="section.html#cb133-65"></a>      private<span class="op">$</span>ptr <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb133-66"><a href="section.html#cb133-66"></a>    },</span>
+<span id="cb133-67"><a href="section.html#cb133-67"></a>    <span class="dt">jmp =</span> <span class="cf">function</span>(i) {</span>
+<span id="cb133-68"><a href="section.html#cb133-68"></a>      private<span class="op">$</span>ptr <span class="op">+</span><span class="st"> </span>i</span>
+<span id="cb133-69"><a href="section.html#cb133-69"></a>    },</span>
+<span id="cb133-70"><a href="section.html#cb133-70"></a>    <span class="dt">nop =</span> <span class="cf">function</span>(i) {</span>
+<span id="cb133-71"><a href="section.html#cb133-71"></a>      private<span class="op">$</span>ptr <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb133-72"><a href="section.html#cb133-72"></a>    }</span>
+<span id="cb133-73"><a href="section.html#cb133-73"></a>  )</span>
+<span id="cb133-74"><a href="section.html#cb133-74"></a>)</span></code></pre></div>
+<p>Now we can initialize our sample computer:</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="section.html#cb134-1"></a>sample_computer &lt;-<span class="st"> </span>Computer<span class="op">$</span><span class="kw">new</span>(sample)</span>
+<span id="cb134-2"><a href="section.html#cb134-2"></a>sample_computer</span></code></pre></div>
+<pre><code>## Accumulator:      0 
+## Pointer:          1 
+## Instructions Ran: 0 
+## Next Instruction: nop   +0  ( 0 )</code></pre>
+<p>And we can run the next instruction:</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="section.html#cb136-1"></a>sample_computer<span class="op">$</span><span class="kw">run_next</span>()</span>
+<span id="cb136-2"><a href="section.html#cb136-2"></a>sample_computer</span></code></pre></div>
+<pre><code>## Accumulator:      0 
+## Pointer:          2 
+## Instructions Ran: 1 
+## Next Instruction: acc   +1  ( 0 )</code></pre>
+<p>We can run the computer until we repeat an instruction:</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="section.html#cb138-1"></a>sample_computer<span class="op">$</span><span class="kw">run_until_repeat</span>()</span>
+<span id="cb138-2"><a href="section.html#cb138-2"></a>sample_computer</span></code></pre></div>
+<pre><code>## Accumulator:      5 
+## Pointer:          2 
+## Instructions Ran: 7 
+## Next Instruction: acc   +1  ( 1 )</code></pre>
+<p>According to the days text, the accumulator should be 5, and we should have run 7 instructions, which we can see is the
+output from the <code>sample_computer</code>.</p>
+<p>Now we can run the actual data:</p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="section.html#cb140-1"></a>actual_computer &lt;-<span class="st"> </span>Computer<span class="op">$</span><span class="kw">new</span>(actual)</span>
+<span id="cb140-2"><a href="section.html#cb140-2"></a>actual_computer<span class="op">$</span><span class="kw">run_until_repeat</span>()</span>
+<span id="cb140-3"><a href="section.html#cb140-3"></a>actual_computer</span></code></pre></div>
+<pre><code>## Accumulator:      1816 
+## Pointer:          580 
+## Instructions Ran: 211 
+## Next Instruction: jmp   -101  ( 1 )</code></pre>
+</div>
+<div id="part-2-7" class="section level2">
+<h2><span class="header-section-number">8.2</span> Part 2</h2>
+<p>We need to modify our computer slightly. First, we need to introduce a way to see if our computer has
+<a href="https://en.wikipedia.org/wiki/Halting_problem">halted</a>, which will be when the pointer has exceeded the length of the
+instructions.</p>
+<p>Second, we need to be able to flip <code>nop</code> to <code>jmp</code> and <code>jmp</code> to <code>nop</code>. There may be a smarter way to figure out which to
+flip, but I’m just going to iterate through the initial input and flip one at a time. If the computer halt’s then we
+have found our solution.</p>
+<p>Rather than recreating the <code>Computer</code> class, we can use <code>Computer$set()</code> to add a <code>halted</code> method and a
+<code>run_until_halted_or_repeat</code> method.</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="section.html#cb142-1"></a>Computer<span class="op">$</span><span class="kw">set</span>(<span class="st">&quot;public&quot;</span>, <span class="st">&quot;is_halted&quot;</span>, <span class="cf">function</span>() {</span>
+<span id="cb142-2"><a href="section.html#cb142-2"></a>  private<span class="op">$</span>ptr <span class="op">&gt;</span><span class="st"> </span><span class="kw">nrow</span>(private<span class="op">$</span>instructions)</span>
+<span id="cb142-3"><a href="section.html#cb142-3"></a>})</span>
+<span id="cb142-4"><a href="section.html#cb142-4"></a></span>
+<span id="cb142-5"><a href="section.html#cb142-5"></a>Computer<span class="op">$</span><span class="kw">set</span>(<span class="st">&quot;public&quot;</span>, <span class="st">&quot;run_until_halted_or_repeat&quot;</span>, <span class="cf">function</span>() {</span>
+<span id="cb142-6"><a href="section.html#cb142-6"></a>  <span class="cf">repeat</span> {</span>
+<span id="cb142-7"><a href="section.html#cb142-7"></a>    <span class="cf">if</span> (self<span class="op">$</span><span class="kw">is_halted</span>()) {</span>
+<span id="cb142-8"><a href="section.html#cb142-8"></a>      <span class="cf">break</span>()</span>
+<span id="cb142-9"><a href="section.html#cb142-9"></a>    }</span>
+<span id="cb142-10"><a href="section.html#cb142-10"></a>    next_instruction &lt;-<span class="st"> </span>private<span class="op">$</span><span class="kw">next_instruction</span>()</span>
+<span id="cb142-11"><a href="section.html#cb142-11"></a>    <span class="cf">if</span> (next_instruction<span class="op">$</span>c <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb142-12"><a href="section.html#cb142-12"></a>      <span class="cf">break</span>()</span>
+<span id="cb142-13"><a href="section.html#cb142-13"></a>    }</span>
+<span id="cb142-14"><a href="section.html#cb142-14"></a>    private<span class="op">$</span><span class="kw">run_instruction</span>(next_instruction<span class="op">$</span>inst,</span>
+<span id="cb142-15"><a href="section.html#cb142-15"></a>                            next_instruction<span class="op">$</span>i)</span>
+<span id="cb142-16"><a href="section.html#cb142-16"></a>  }</span>
+<span id="cb142-17"><a href="section.html#cb142-17"></a>  </span>
+<span id="cb142-18"><a href="section.html#cb142-18"></a>  <span class="kw">invisible</span>(self)</span>
+<span id="cb142-19"><a href="section.html#cb142-19"></a>})</span></code></pre></div>
+<p>Now we need to build a function to take our list of instructions and flip all of the <code>nop</code>/<code>jmp</code> instructions:</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="section.html#cb143-1"></a>flip_instructions &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb143-2"><a href="section.html#cb143-2"></a>  input <span class="op">%&gt;%</span></span>
+<span id="cb143-3"><a href="section.html#cb143-3"></a><span class="st">    </span><span class="kw">str_detect</span>(<span class="st">&quot;^(?!acc)&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb143-4"><a href="section.html#cb143-4"></a><span class="st">    </span><span class="kw">which</span>() <span class="op">%&gt;%</span></span>
+<span id="cb143-5"><a href="section.html#cb143-5"></a><span class="st">    </span><span class="kw">map</span>(<span class="cf">function</span>(.x) {</span>
+<span id="cb143-6"><a href="section.html#cb143-6"></a>      ix &lt;-<span class="st"> </span>input[[.x]]</span>
+<span id="cb143-7"><a href="section.html#cb143-7"></a>      <span class="kw">str_sub</span>(input[[.x]], <span class="dv">1</span>, <span class="dv">3</span>) &lt;-<span class="st"> </span><span class="cf">if</span>(<span class="kw">str_sub</span>(input[[.x]], <span class="dv">1</span>, <span class="dv">3</span>) <span class="op">==</span><span class="st"> &quot;nop&quot;</span>) {</span>
+<span id="cb143-8"><a href="section.html#cb143-8"></a>        <span class="st">&quot;jmp&quot;</span></span>
+<span id="cb143-9"><a href="section.html#cb143-9"></a>      } <span class="cf">else</span> {</span>
+<span id="cb143-10"><a href="section.html#cb143-10"></a>        <span class="st">&quot;nop&quot;</span></span>
+<span id="cb143-11"><a href="section.html#cb143-11"></a>      }</span>
+<span id="cb143-12"><a href="section.html#cb143-12"></a>      input</span>
+<span id="cb143-13"><a href="section.html#cb143-13"></a>    })</span>
+<span id="cb143-14"><a href="section.html#cb143-14"></a>}</span></code></pre></div>
+<p>Our sample flipped looks like this:</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="section.html#cb144-1"></a><span class="kw">flip_instructions</span>(sample)</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] &quot;jmp +0&quot;  &quot;acc +1&quot;  &quot;jmp +4&quot;  &quot;acc +3&quot;  &quot;jmp -3&quot;  &quot;acc -99&quot; &quot;acc +1&quot; 
+## [8] &quot;jmp -4&quot;  &quot;acc +6&quot; 
+## 
+## [[2]]
+## [1] &quot;nop +0&quot;  &quot;acc +1&quot;  &quot;nop +4&quot;  &quot;acc +3&quot;  &quot;jmp -3&quot;  &quot;acc -99&quot; &quot;acc +1&quot; 
+## [8] &quot;jmp -4&quot;  &quot;acc +6&quot; 
+## 
+## [[3]]
+## [1] &quot;nop +0&quot;  &quot;acc +1&quot;  &quot;jmp +4&quot;  &quot;acc +3&quot;  &quot;nop -3&quot;  &quot;acc -99&quot; &quot;acc +1&quot; 
+## [8] &quot;jmp -4&quot;  &quot;acc +6&quot; 
+## 
+## [[4]]
+## [1] &quot;nop +0&quot;  &quot;acc +1&quot;  &quot;jmp +4&quot;  &quot;acc +3&quot;  &quot;jmp -3&quot;  &quot;acc -99&quot; &quot;acc +1&quot; 
+## [8] &quot;nop -4&quot;  &quot;acc +6&quot;</code></pre>
+<p>We have 4 set’s of instructions to test. This isn’t the most efficient way of solving this… we could flip each of the
+instructions in turn, and run the computer on that. This would allow us to exit early. But I don’t think that this will
+cause us much issues as our actual input isn’t huge (<code>length(actual)</code> instructions).</p>
+<p>Now we just need to build a function to iterate over the flipped instructions and run until we find a solution, and
+return the results of that computer.</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="section.html#cb146-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb146-2"><a href="section.html#cb146-2"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">flip_instructions</span>(input)) {</span>
+<span id="cb146-3"><a href="section.html#cb146-3"></a>    computer &lt;-<span class="st"> </span>Computer<span class="op">$</span><span class="kw">new</span>(i)</span>
+<span id="cb146-4"><a href="section.html#cb146-4"></a>    computer<span class="op">$</span><span class="kw">run_until_halted_or_repeat</span>()</span>
+<span id="cb146-5"><a href="section.html#cb146-5"></a>    </span>
+<span id="cb146-6"><a href="section.html#cb146-6"></a>    <span class="cf">if</span> (computer<span class="op">$</span><span class="kw">is_halted</span>()) {</span>
+<span id="cb146-7"><a href="section.html#cb146-7"></a>      <span class="kw">return</span>(computer)</span>
+<span id="cb146-8"><a href="section.html#cb146-8"></a>    }</span>
+<span id="cb146-9"><a href="section.html#cb146-9"></a>  }</span>
+<span id="cb146-10"><a href="section.html#cb146-10"></a>  <span class="kw">stop</span>(<span class="st">&quot;No solution found!&quot;</span>)</span>
+<span id="cb146-11"><a href="section.html#cb146-11"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="section.html#cb147-1"></a><span class="kw">part_2</span>(sample)</span></code></pre></div>
+<pre><code>## Accumulator:      8 
+## Pointer:          10 
+## Instructions Ran: 6 
+## Next Instruction: NA   NA  ( NA )</code></pre>
+<p>This is the rsult that we are expecting, so we can run this for the actual data:</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="section.html#cb149-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<pre><code>## Accumulator:      1149 
+## Pointer:          627 
+## Instructions Ran: 123 
+## Next Instruction: NA   NA  ( NA )</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="handy-haversacks.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

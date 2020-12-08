@@ -27,3 +27,6 @@ handy-haversacks
 part-1-6
 part-2-6
 extra-alternative-solution-to-part-2
+section
+part-1-7
+part-2-7
