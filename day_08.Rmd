@@ -1,4 +1,4 @@
-# 
+# Handheld Halting
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -202,7 +202,7 @@ part_2 <- function(input) {
     computer$run_until_halted_or_repeat()
     
     if (computer$is_halted()) {
-      return(computer)
+      return(list(input = input, computer = computer))
     }
   }
   stop("No solution found!")
@@ -213,10 +213,10 @@ part_2 <- function(input) {
 part_2(sample)
 ```
 
-This is the rsult that we are expecting, so we can run this for the actual data:
+This is the result that we are expecting, so we can run this for the actual data:
 
 ```{r part 2 actual}
-part_2(actual)
+part_2(actual)$computer
 ```
 
 ## Extra: update the computer class
