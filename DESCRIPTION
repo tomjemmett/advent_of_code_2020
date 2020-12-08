@@ -10,7 +10,8 @@ Imports:
     unglue,
     reticulate,
     igraph,
-    ggraph
+    ggraph,
+    R6
 Suggests:
     withr,
     callr,
