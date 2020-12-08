@@ -1,4 +1,4 @@
-# 
+# Handheld Halting
 
 
 
@@ -252,7 +252,7 @@ part_2 <- function(input) {
     computer$run_until_halted_or_repeat()
     
     if (computer$is_halted()) {
-      return(computer)
+      return(list(input = input, computer = computer))
     }
   }
   stop("No solution found!")
@@ -265,17 +265,22 @@ part_2(sample)
 ```
 
 ```
+## $input
+## [1] "nop +0"  "acc +1"  "jmp +4"  "acc +3"  "jmp -3"  "acc -99" "acc +1" 
+## [8] "jmp -4"  "acc +6" 
+## 
+## $computer
 ## Accumulator:      8 
 ## Pointer:          10 
 ## Instructions Ran: 6 
 ## Next Instruction: NA   NA  ( NA )
 ```
 
-This is the rsult that we are expecting, so we can run this for the actual data:
+This is the result that we are expecting, so we can run this for the actual data:
 
 
 ```r
-part_2(actual)
+part_2(actual)$computer
 ```
 
 ```
@@ -283,4 +288,108 @@ part_2(actual)
 ## Pointer:          627 
 ## Instructions Ran: 123 
 ## Next Instruction: NA   NA  ( NA )
+```
+
+## Extra: update the computer class
+
+Redefining the entire class to include the added methods in part 2, and to redefine the print method
+
+
+```r
+Computer <- R6Class(
+  "Computer",
+  public = list(
+    initialize = function(instructions) {
+      private$instructions <- instructions %>%
+        unglue_data("{inst} {i}", convert = TRUE) %>%
+        mutate(c = 0)
+    },
+    get_accumulator = function() {
+      private$accumulator
+    },
+    get_instructions_count = function() {
+      sum(private$instructions$c)
+    },
+    run_next = function() {
+      next_instruction <- private$next_instruction()
+      private$run_instruction(next_instruction$inst,
+                              next_instruction$i)
+      
+      invisible(self)
+    },
+    run_until_repeat = function() {
+      repeat {
+        next_instruction <- private$next_instruction()
+        if (next_instruction$c > 0) {
+          break()
+        }
+        private$run_instruction(next_instruction$inst,
+                                next_instruction$i)
+      }
+      
+      invisible(self)
+    },
+    is_halted = function() {
+      private$ptr > nrow(private$instructions)
+    },
+    run_until_halted_or_repeat = function() {
+      repeat {
+        if (self$is_halted()) {
+          break()
+        }
+        next_instruction <- private$next_instruction()
+        if (next_instruction$c > 0) {
+          break()
+        }
+        private$run_instruction(next_instruction$inst,
+                                next_instruction$i)
+      }
+      
+      invisible(self)
+    },
+    print = function(...) {
+      cat("Accumulator:     ", private$accumulator, "\n")
+      cat("Pointer:         ", private$ptr, "\n")
+      cat("Instructions Ran:", self$get_instructions_count(), "\n")
+      cat("Next Instruction: ")
+      if (self$is_halted()) {
+        cat("HALTED\n")
+      } else {
+        i <- private$instructions[private$ptr, ]
+        cat(i$inst,
+            " ",
+            sprintf("%+d", i$i),
+            " (",
+            i$c,
+            ")\n")
+      }
+    }
+  ),
+  private = list(
+    accumulator = 0,
+    ptr = 1,
+    instructions = list(),
+    
+    next_instruction = function() {
+      private$instructions[private$ptr, ]
+    },
+    run_instruction = function(inst, i) {
+      private$instructions[private$ptr, "c"] <- 1 +
+        private$instructions[private$ptr, "c"]
+      
+      private$ptr <- private[[inst]](i)
+    },
+    # instruction functions: must return the next pointer value
+    acc = function(i) {
+      private$accumulator <- private$accumulator + i
+      private$ptr + 1
+    },
+    jmp = function(i) {
+      private$ptr + i
+    },
+    nop = function(i) {
+      private$ptr + 1
+    }
+  )
+)
 ```

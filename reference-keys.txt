@@ -27,6 +27,7 @@ handy-haversacks
 part-1-6
 part-2-6
 extra-alternative-solution-to-part-2
-section
+handheld-halting
 part-1-7
 part-2-7
+extra-update-the-computer-class
