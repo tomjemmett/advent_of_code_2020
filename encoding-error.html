@@ -245,16 +245,17 @@ give us a slight performance boost by not having to iterate through all of the v
 <span id="cb158-10"><a href="encoding-error.html#cb158-10"></a>    <span class="cf">for</span> (j <span class="cf">in</span> (i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>(s <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
 <span id="cb158-11"><a href="encoding-error.html#cb158-11"></a>      <span class="co"># update the sum</span></span>
 <span id="cb158-12"><a href="encoding-error.html#cb158-12"></a>      sv &lt;-<span class="st"> </span>sv <span class="op">+</span><span class="st"> </span>input[[j]]</span>
-<span id="cb158-13"><a href="encoding-error.html#cb158-13"></a>      <span class="co"># update the min and max values</span></span>
-<span id="cb158-14"><a href="encoding-error.html#cb158-14"></a>      <span class="cf">if</span> (input[[j]] <span class="op">&lt;</span><span class="st"> </span>minv) minv &lt;-<span class="st"> </span>input[[j]]</span>
-<span id="cb158-15"><a href="encoding-error.html#cb158-15"></a>      <span class="cf">if</span> (input[[j]] <span class="op">&gt;</span><span class="st"> </span>maxv) maxv &lt;-<span class="st"> </span>input[[j]]</span>
-<span id="cb158-16"><a href="encoding-error.html#cb158-16"></a>      <span class="co"># if our sum is equal to the target, then return the sum of the min and max value</span></span>
-<span id="cb158-17"><a href="encoding-error.html#cb158-17"></a>      <span class="cf">if</span> (sv <span class="op">==</span><span class="st"> </span>t) {</span>
-<span id="cb158-18"><a href="encoding-error.html#cb158-18"></a>        <span class="kw">return</span> (minv <span class="op">+</span><span class="st"> </span>maxv)</span>
-<span id="cb158-19"><a href="encoding-error.html#cb158-19"></a>      }</span>
-<span id="cb158-20"><a href="encoding-error.html#cb158-20"></a>    }</span>
-<span id="cb158-21"><a href="encoding-error.html#cb158-21"></a>  }</span>
-<span id="cb158-22"><a href="encoding-error.html#cb158-22"></a>}</span></code></pre></div>
+<span id="cb158-13"><a href="encoding-error.html#cb158-13"></a>      <span class="co"># if we exceed the target then break out the loop and move to the next i</span></span>
+<span id="cb158-14"><a href="encoding-error.html#cb158-14"></a>      <span class="cf">if</span> (sv <span class="op">&gt;</span><span class="st"> </span>t) <span class="cf">next</span>()</span>
+<span id="cb158-15"><a href="encoding-error.html#cb158-15"></a>      <span class="co"># update the min and max values</span></span>
+<span id="cb158-16"><a href="encoding-error.html#cb158-16"></a>      <span class="cf">if</span> (input[[j]] <span class="op">&lt;</span><span class="st"> </span>minv) minv &lt;-<span class="st"> </span>input[[j]]</span>
+<span id="cb158-17"><a href="encoding-error.html#cb158-17"></a>      <span class="cf">if</span> (input[[j]] <span class="op">&gt;</span><span class="st"> </span>maxv) maxv &lt;-<span class="st"> </span>input[[j]]</span>
+<span id="cb158-18"><a href="encoding-error.html#cb158-18"></a>      <span class="co"># if our sum is equal to the target, then return the sum of the min and</span></span>
+<span id="cb158-19"><a href="encoding-error.html#cb158-19"></a>      <span class="co"># max value</span></span>
+<span id="cb158-20"><a href="encoding-error.html#cb158-20"></a>      <span class="cf">if</span> (sv <span class="op">==</span><span class="st"> </span>t) <span class="kw">return</span> (minv <span class="op">+</span><span class="st"> </span>maxv)</span>
+<span id="cb158-21"><a href="encoding-error.html#cb158-21"></a>    }</span>
+<span id="cb158-22"><a href="encoding-error.html#cb158-22"></a>  }</span>
+<span id="cb158-23"><a href="encoding-error.html#cb158-23"></a>}</span></code></pre></div>
 <p>We can test on the sample:</p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="encoding-error.html#cb159-1"></a><span class="kw">part_2</span>(sample, ps1) <span class="op">==</span><span class="st"> </span><span class="dv">62</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>

@@ -261,8 +261,8 @@ that the target we increase the lower number pointer.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_1_naive(sample, 2020)      2.85µs   3.52µs   266486.        0B     26.7
-## 2 part_1_improved(sample, 2020)  60.19µs   66.4µs    12774.        0B     14.8</code></pre>
+## 1 part_1_naive(sample, 2020)      2.72µs   3.43µs   233170.        0B     23.3
+## 2 part_1_improved(sample, 2020)  62.05µs  69.41µs    11783.        0B     14.9</code></pre>
 <p>For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
 sort the data, which is costly, and then it performs far more comparisons per iteration.</p>
 <p>However, when we have more data, these extra steps lead to big improvements, as can be seen when running with the actual
@@ -272,8 +272,8 @@ data.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_1_naive(actual, 2020)     680.8µs  709.7µs     1353.        0B     2.02
-## 2 part_1_improved(actual, 2020)   83.3µs   89.8µs    10846.    1.66KB    14.9</code></pre>
+## 1 part_1_naive(actual, 2020)     698.4µs  739.3µs     1136.        0B     2.03
+## 2 part_1_improved(actual, 2020)   85.8µs   93.8µs     8806.    1.66KB    12.7</code></pre>
 <p>The improved algorithm was roughly 10x faster for me on the actual data.</p>
 </div>
 </div>
@@ -362,8 +362,8 @@ continue the search by looping.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_2_naive(actual, 2020)       112ms  116.5ms      8.61        0B     2.15
-## 2 part_2_improved(actual, 2020)   15.1ms   15.1ms     65.6     1.66KB   503.</code></pre>
+## 1 part_2_naive(actual, 2020)       143ms  143.6ms      6.77        0B     2.26
+## 2 part_2_improved(actual, 2020)   16.4ms   19.1ms     52.3     1.66KB   444.</code></pre>
 <p>On my machine the improved approach is again about 10x quicker.</p>
 </div>
 </div>
@@ -399,8 +399,8 @@ is a constant time operation in python - it’s near instantaneous).</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_2_improved(actual, 2020)  14.95ms  15.34ms      64.5    1.66KB    37.3 
-## 2 py$part_2_py(actual, 2020)      1.24ms   1.29ms     747.    17.45KB     2.02</code></pre>
+## 1 part_2_improved(actual, 2020)  15.11ms   15.7ms      61.7    1.66KB    34.7 
+## 2 py$part_2_py(actual, 2020)      1.23ms    1.3ms     726.    17.45KB     4.11</code></pre>
 
 </div>
 </div>
