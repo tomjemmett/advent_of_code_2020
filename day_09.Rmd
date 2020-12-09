@@ -67,13 +67,14 @@ part_2 <- function(input, t) {
     for (j in (i + 1):(s - 1)) {
       # update the sum
       sv <- sv + input[[j]]
+      # if we exceed the target then break out the loop and move to the next i
+      if (sv > t) next()
       # update the min and max values
       if (input[[j]] < minv) minv <- input[[j]]
       if (input[[j]] > maxv) maxv <- input[[j]]
-      # if our sum is equal to the target, then return the sum of the min and max value
-      if (sv == t) {
-        return (minv + maxv)
-      }
+      # if our sum is equal to the target, then return the sum of the min and
+      # max value
+      if (sv == t) return (minv + maxv)
     }
   }
 }
