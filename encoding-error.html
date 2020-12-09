@@ -182,7 +182,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9" data-path="encoding-error.html"><a href="encoding-error.html"><i class="fa fa-check"></i><b>9</b> Encoding Error</a><ul>
 <li class="chapter" data-level="9.1" data-path="encoding-error.html"><a href="encoding-error.html#part-1-8"><i class="fa fa-check"></i><b>9.1</b> Part 1</a></li>
 <li class="chapter" data-level="9.2" data-path="encoding-error.html"><a href="encoding-error.html#part-2-8"><i class="fa fa-check"></i><b>9.2</b> Part 2</a></li>
-<li class="chapter" data-level="9.3" data-path="encoding-error.html"><a href="encoding-error.html#extra"><i class="fa fa-check"></i><b>9.3</b> Extra</a></li>
 </ul></li>
 </ul>
 
@@ -262,23 +261,6 @@ give us a slight performance boost by not having to iterate through all of the v
 <p>And run on the actual input:</p>
 <div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="encoding-error.html#cb161-1"></a><span class="kw">part_2</span>(actual, pa1)</span></code></pre></div>
 <pre><code>## [1] 7409241</code></pre>
-</div>
-<div id="extra" class="section level2">
-<h2><span class="header-section-number">9.3</span> Extra</h2>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="encoding-error.html#cb163-1"></a>part_<span class="dv">1</span>_e &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
-<span id="cb163-2"><a href="encoding-error.html#cb163-2"></a>  i &lt;-<span class="st"> </span>n <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb163-3"><a href="encoding-error.html#cb163-3"></a>  r &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span>n</span>
-<span id="cb163-4"><a href="encoding-error.html#cb163-4"></a>  <span class="cf">while</span> (<span class="kw">any</span>((input[[i]] <span class="op">-</span><span class="st"> </span>input[r]) <span class="op">%in%</span><span class="st"> </span>input[r])) {</span>
-<span id="cb163-5"><a href="encoding-error.html#cb163-5"></a>    r &lt;-<span class="st"> </span>r <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb163-6"><a href="encoding-error.html#cb163-6"></a>    i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb163-7"><a href="encoding-error.html#cb163-7"></a>  }</span>
-<span id="cb163-8"><a href="encoding-error.html#cb163-8"></a>  input[[i]]</span>
-<span id="cb163-9"><a href="encoding-error.html#cb163-9"></a>}</span>
-<span id="cb163-10"><a href="encoding-error.html#cb163-10"></a></span>
-<span id="cb163-11"><a href="encoding-error.html#cb163-11"></a><span class="kw">part_1_e</span>(sample, <span class="dv">5</span>)</span></code></pre></div>
-<pre><code>## [1] 127</code></pre>
-<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="encoding-error.html#cb165-1"></a><span class="kw">part_1_e</span>(actual, <span class="dv">25</span>)</span></code></pre></div>
-<pre><code>## [1] 57195069</code></pre>
 
 </div>
 </div>

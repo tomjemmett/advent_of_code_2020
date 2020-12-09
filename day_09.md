@@ -107,32 +107,3 @@ part_2(actual, pa1)
 ```
 ## [1] 7409241
 ```
-
-## Extra
-
-
-```r
-part_1_e <- function(input, n) {
-  i <- n + 1
-  r <- 1:n
-  while (any((input[[i]] - input[r]) %in% input[r])) {
-    r <- r + 1
-    i <- i + 1
-  }
-  input[[i]]
-}
-
-part_1_e(sample, 5)
-```
-
-```
-## [1] 127
-```
-
-```r
-part_1_e(actual, 25)
-```
-
-```
-## [1] 57195069
-```
