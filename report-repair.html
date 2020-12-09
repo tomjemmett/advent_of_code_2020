@@ -182,6 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9" data-path="encoding-error.html"><a href="encoding-error.html"><i class="fa fa-check"></i><b>9</b> Encoding Error</a><ul>
 <li class="chapter" data-level="9.1" data-path="encoding-error.html"><a href="encoding-error.html#part-1-8"><i class="fa fa-check"></i><b>9.1</b> Part 1</a></li>
 <li class="chapter" data-level="9.2" data-path="encoding-error.html"><a href="encoding-error.html#part-2-8"><i class="fa fa-check"></i><b>9.2</b> Part 2</a></li>
+<li class="chapter" data-level="9.3" data-path="encoding-error.html"><a href="encoding-error.html#extra"><i class="fa fa-check"></i><b>9.3</b> Extra</a></li>
 </ul></li>
 </ul>
 
@@ -261,8 +262,8 @@ that the target we increase the lower number pointer.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_1_naive(sample, 2020)      2.81µs   3.59µs   258614.        0B     25.9
-## 2 part_1_improved(sample, 2020)  62.42µs     68µs    13144.        0B     14.9</code></pre>
+## 1 part_1_naive(sample, 2020)      2.54µs   3.19µs   279406.        0B     27.9
+## 2 part_1_improved(sample, 2020)  56.74µs  63.06µs    15348.        0B     19.2</code></pre>
 <p>For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
 sort the data, which is costly, and then it performs far more comparisons per iteration.</p>
 <p>However, when we have more data, these extra steps lead to big improvements, as can be seen when running with the actual
@@ -272,8 +273,8 @@ data.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_1_naive(actual, 2020)       700µs  723.8µs     1323.        0B     2.03
-## 2 part_1_improved(actual, 2020)   83.5µs   91.2µs    10436.    1.66KB    14.9</code></pre>
+## 1 part_1_naive(actual, 2020)     654.9µs  703.9µs     1364.        0B     2.02
+## 2 part_1_improved(actual, 2020)   78.7µs   86.3µs    11091.    1.66KB    14.8</code></pre>
 <p>The improved algorithm was roughly 10x faster for me on the actual data.</p>
 </div>
 </div>
@@ -362,8 +363,8 @@ continue the search by looping.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_2_naive(actual, 2020)     116.7ms  120.4ms      8.10        0B     2.03
-## 2 part_2_improved(actual, 2020)   15.7ms   15.8ms     60.3     1.66KB   422.</code></pre>
+## 1 part_2_naive(actual, 2020)     106.9ms  110.2ms      8.99        0B     2.25
+## 2 part_2_improved(actual, 2020)   15.1ms   15.4ms     64.0     1.66KB   490.</code></pre>
 <p>On my machine the improved approach is again about 10x quicker.</p>
 </div>
 </div>
@@ -399,8 +400,8 @@ is a constant time operation in python - it’s near instantaneous).</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_2_improved(actual, 2020)  15.35ms  16.26ms      59.4    1.66KB    33.0 
-## 2 py$part_2_py(actual, 2020)      1.22ms   1.28ms     749.    17.45KB     4.09</code></pre>
+## 1 part_2_improved(actual, 2020)  15.14ms  16.06ms      59.0    1.66KB    32.8 
+## 2 py$part_2_py(actual, 2020)      1.22ms   1.25ms     775.    17.45KB     2.99</code></pre>
 
 </div>
 </div>

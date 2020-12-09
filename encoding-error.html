@@ -182,6 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9" data-path="encoding-error.html"><a href="encoding-error.html"><i class="fa fa-check"></i><b>9</b> Encoding Error</a><ul>
 <li class="chapter" data-level="9.1" data-path="encoding-error.html"><a href="encoding-error.html#part-1-8"><i class="fa fa-check"></i><b>9.1</b> Part 1</a></li>
 <li class="chapter" data-level="9.2" data-path="encoding-error.html"><a href="encoding-error.html#part-2-8"><i class="fa fa-check"></i><b>9.2</b> Part 2</a></li>
+<li class="chapter" data-level="9.3" data-path="encoding-error.html"><a href="encoding-error.html#extra"><i class="fa fa-check"></i><b>9.3</b> Extra</a></li>
 </ul></li>
 </ul>
 
@@ -207,55 +208,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb152-2"><a href="encoding-error.html#cb152-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_09_input.txt&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span></code></pre></div>
 <div id="part-1-8" class="section level2">
 <h2><span class="header-section-number">9.1</span> Part 1</h2>
-<p>Naively we could take the permutations of the rolling window of n elements. It would make more sense though to keep
-track of the pairs, and just recalculate the pairs that drop off with the pairs that enter as the window slides.</p>
-<p>First, let’s create a function that creates the initial n pairs for values. This will return a list that keeps track of
-the relevant data:
-- the <code>input</code> values
-- <code>x</code>, which is the start of the window
-- <code>n</code>, which is the size of the window</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="encoding-error.html#cb153-1"></a>create_pairs &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
-<span id="cb153-2"><a href="encoding-error.html#cb153-2"></a>  <span class="kw">list</span>(</span>
-<span id="cb153-3"><a href="encoding-error.html#cb153-3"></a>    <span class="dt">input =</span> input,</span>
-<span id="cb153-4"><a href="encoding-error.html#cb153-4"></a>    <span class="dt">x =</span> <span class="dv">1</span>,</span>
-<span id="cb153-5"><a href="encoding-error.html#cb153-5"></a>    <span class="dt">n =</span> n,</span>
-<span id="cb153-6"><a href="encoding-error.html#cb153-6"></a>    <span class="dt">pairs =</span> <span class="dv">1</span><span class="op">:</span>(n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb153-7"><a href="encoding-error.html#cb153-7"></a><span class="st">      </span><span class="kw">map_dfr</span>(<span class="op">~</span><span class="kw">tibble</span>(<span class="dt">r =</span> (.x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>n), <span class="dt">.id =</span> <span class="st">&quot;l&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb153-8"><a href="encoding-error.html#cb153-8"></a><span class="st">      </span><span class="kw">mutate</span>(<span class="kw">across</span>(l, as.numeric),</span>
-<span id="cb153-9"><a href="encoding-error.html#cb153-9"></a>             <span class="dt">s =</span> input[l] <span class="op">+</span><span class="st"> </span>input[r])</span>
-<span id="cb153-10"><a href="encoding-error.html#cb153-10"></a>  )</span>
-<span id="cb153-11"><a href="encoding-error.html#cb153-11"></a>}</span></code></pre></div>
-<p>We can then create a function which modifies the list and slides the window.</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="encoding-error.html#cb154-1"></a>slide_pairs &lt;-<span class="st"> </span><span class="cf">function</span>(p) {</span>
-<span id="cb154-2"><a href="encoding-error.html#cb154-2"></a>  p<span class="op">$</span>pairs &lt;-<span class="st"> </span>p<span class="op">$</span>pairs <span class="op">%&gt;%</span></span>
-<span id="cb154-3"><a href="encoding-error.html#cb154-3"></a><span class="st">    </span><span class="kw">filter</span>(l <span class="op">==</span><span class="st"> </span>p<span class="op">$</span>x) <span class="op">%&gt;%</span></span>
-<span id="cb154-4"><a href="encoding-error.html#cb154-4"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">s =</span> s <span class="op">-</span><span class="st"> </span>p<span class="op">$</span>input[l] <span class="op">+</span><span class="st"> </span>p<span class="op">$</span>input[p<span class="op">$</span>x <span class="op">+</span><span class="st"> </span>p<span class="op">$</span>n],</span>
-<span id="cb154-5"><a href="encoding-error.html#cb154-5"></a>           <span class="dt">l =</span> r,</span>
-<span id="cb154-6"><a href="encoding-error.html#cb154-6"></a>           <span class="dt">r =</span> p<span class="op">$</span>x <span class="op">+</span><span class="st"> </span>p<span class="op">$</span>n) <span class="op">%&gt;%</span></span>
-<span id="cb154-7"><a href="encoding-error.html#cb154-7"></a><span class="st">    </span><span class="kw">bind_rows</span>(<span class="kw">filter</span>(p<span class="op">$</span>pairs, l <span class="op">!=</span><span class="st"> </span>p<span class="op">$</span>x)) <span class="op">%&gt;%</span></span>
-<span id="cb154-8"><a href="encoding-error.html#cb154-8"></a><span class="st">    </span><span class="kw">arrange</span>(l, r)</span>
-<span id="cb154-9"><a href="encoding-error.html#cb154-9"></a>  </span>
-<span id="cb154-10"><a href="encoding-error.html#cb154-10"></a>  p<span class="op">$</span>x &lt;-<span class="st"> </span>p<span class="op">$</span>x <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb154-11"><a href="encoding-error.html#cb154-11"></a>  </span>
-<span id="cb154-12"><a href="encoding-error.html#cb154-12"></a>  p</span>
-<span id="cb154-13"><a href="encoding-error.html#cb154-13"></a>}</span></code></pre></div>
-<p>Now we can build a function that call’s <code>slider_pairs()</code> until we find a value that isn’t in the in the pairs.</p>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="encoding-error.html#cb155-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
-<span id="cb155-2"><a href="encoding-error.html#cb155-2"></a>  x &lt;-<span class="st"> </span><span class="kw">create_pairs</span>(input, n)</span>
-<span id="cb155-3"><a href="encoding-error.html#cb155-3"></a>  </span>
-<span id="cb155-4"><a href="encoding-error.html#cb155-4"></a>  <span class="cf">while</span> (<span class="kw">any</span>(x<span class="op">$</span>pairs<span class="op">$</span>s <span class="op">==</span><span class="st"> </span>x<span class="op">$</span>input[[x<span class="op">$</span>x <span class="op">+</span><span class="st"> </span>x<span class="op">$</span>n]])) {</span>
-<span id="cb155-5"><a href="encoding-error.html#cb155-5"></a>    x &lt;-<span class="st"> </span><span class="kw">slide_pairs</span>(x)</span>
-<span id="cb155-6"><a href="encoding-error.html#cb155-6"></a>  }</span>
-<span id="cb155-7"><a href="encoding-error.html#cb155-7"></a>  </span>
-<span id="cb155-8"><a href="encoding-error.html#cb155-8"></a>  x<span class="op">$</span>input[[x<span class="op">$</span>x <span class="op">+</span><span class="st"> </span>x<span class="op">$</span>n]]</span>
-<span id="cb155-9"><a href="encoding-error.html#cb155-9"></a>}</span></code></pre></div>
+<p>We can solve part 1 by creating a function that slides a window (<code>r</code>) across the <code>input</code> and checks to see if the value
+of the element <code>i</code> just after the end of the current window, minus all of the values in that window, is in the window.</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="encoding-error.html#cb153-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
+<span id="cb153-2"><a href="encoding-error.html#cb153-2"></a>  i &lt;-<span class="st"> </span>n <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb153-3"><a href="encoding-error.html#cb153-3"></a>  r &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span>n</span>
+<span id="cb153-4"><a href="encoding-error.html#cb153-4"></a>  <span class="cf">while</span> (<span class="kw">any</span>((input[[i]] <span class="op">-</span><span class="st"> </span>input[r]) <span class="op">%in%</span><span class="st"> </span>input[r])) {</span>
+<span id="cb153-5"><a href="encoding-error.html#cb153-5"></a>    r &lt;-<span class="st"> </span>r <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb153-6"><a href="encoding-error.html#cb153-6"></a>    i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb153-7"><a href="encoding-error.html#cb153-7"></a>  }</span>
+<span id="cb153-8"><a href="encoding-error.html#cb153-8"></a>  input[[i]]</span>
+<span id="cb153-9"><a href="encoding-error.html#cb153-9"></a>}</span></code></pre></div>
 <p>We can now check our function gives us the right answer for the sample:</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="encoding-error.html#cb156-1"></a>ps1 &lt;-<span class="st"> </span><span class="kw">part_1</span>(sample, <span class="dv">5</span>)</span>
-<span id="cb156-2"><a href="encoding-error.html#cb156-2"></a>ps1 <span class="op">==</span><span class="st"> </span><span class="dv">127</span></span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="encoding-error.html#cb154-1"></a>ps1 &lt;-<span class="st"> </span><span class="kw">part_1</span>(sample, <span class="dv">5</span>)</span>
+<span id="cb154-2"><a href="encoding-error.html#cb154-2"></a>ps1 <span class="op">==</span><span class="st"> </span><span class="dv">127</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>This gives us the correct answer, so we can now run on the actual input:</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="encoding-error.html#cb158-1"></a>pa1 &lt;-<span class="st"> </span><span class="kw">part_1</span>(actual, <span class="dv">25</span>)</span>
-<span id="cb158-2"><a href="encoding-error.html#cb158-2"></a>pa1</span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="encoding-error.html#cb156-1"></a>pa1 &lt;-<span class="st"> </span><span class="kw">part_1</span>(actual, <span class="dv">25</span>)</span>
+<span id="cb156-2"><a href="encoding-error.html#cb156-2"></a>pa1</span></code></pre></div>
 <pre><code>## [1] 57195069</code></pre>
 </div>
 <div id="part-2-8" class="section level2">
@@ -264,34 +234,51 @@ the relevant data:
 solving this, but it’s the approach I will use.</p>
 <p>Instead of using the <code>sum</code>, <code>min</code> and <code>max</code> functions available in R I am going to keep track of the values: this should
 give us a slight performance boost by not having to iterate through all of the values each time.</p>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="encoding-error.html#cb160-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, t) {</span>
-<span id="cb160-2"><a href="encoding-error.html#cb160-2"></a>  s &lt;-<span class="st"> </span><span class="kw">which</span>(input <span class="op">==</span><span class="st"> </span>t)</span>
-<span id="cb160-3"><a href="encoding-error.html#cb160-3"></a>  <span class="co"># we need to loop until just before the index of the target in the input</span></span>
-<span id="cb160-4"><a href="encoding-error.html#cb160-4"></a>  <span class="co"># as we are using nested loops it should be s - 2 here</span></span>
-<span id="cb160-5"><a href="encoding-error.html#cb160-5"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(s <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)) {</span>
-<span id="cb160-6"><a href="encoding-error.html#cb160-6"></a>    sv &lt;-<span class="st"> </span>input[[i]] <span class="co"># keep track of the sum</span></span>
-<span id="cb160-7"><a href="encoding-error.html#cb160-7"></a>    minv &lt;-<span class="st"> </span>sv       <span class="co"># and the min value</span></span>
-<span id="cb160-8"><a href="encoding-error.html#cb160-8"></a>    maxv &lt;-<span class="st"> </span>sv       <span class="co"># and the max value</span></span>
-<span id="cb160-9"><a href="encoding-error.html#cb160-9"></a>    <span class="co"># now we need to loop from the next value (i + 1) to just before the target</span></span>
-<span id="cb160-10"><a href="encoding-error.html#cb160-10"></a>    <span class="cf">for</span> (j <span class="cf">in</span> (i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>(s <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
-<span id="cb160-11"><a href="encoding-error.html#cb160-11"></a>      <span class="co"># update the sum</span></span>
-<span id="cb160-12"><a href="encoding-error.html#cb160-12"></a>      sv &lt;-<span class="st"> </span>sv <span class="op">+</span><span class="st"> </span>input[[j]]</span>
-<span id="cb160-13"><a href="encoding-error.html#cb160-13"></a>      <span class="co"># update the min and max values</span></span>
-<span id="cb160-14"><a href="encoding-error.html#cb160-14"></a>      <span class="cf">if</span> (input[[j]] <span class="op">&lt;</span><span class="st"> </span>minv) minv &lt;-<span class="st"> </span>input[[j]]</span>
-<span id="cb160-15"><a href="encoding-error.html#cb160-15"></a>      <span class="cf">if</span> (input[[j]] <span class="op">&gt;</span><span class="st"> </span>maxv) maxv &lt;-<span class="st"> </span>input[[j]]</span>
-<span id="cb160-16"><a href="encoding-error.html#cb160-16"></a>      <span class="co"># if our sum is equal to the target, then return the sum of the min and max value</span></span>
-<span id="cb160-17"><a href="encoding-error.html#cb160-17"></a>      <span class="cf">if</span> (sv <span class="op">==</span><span class="st"> </span>t) {</span>
-<span id="cb160-18"><a href="encoding-error.html#cb160-18"></a>        <span class="kw">return</span> (minv <span class="op">+</span><span class="st"> </span>maxv)</span>
-<span id="cb160-19"><a href="encoding-error.html#cb160-19"></a>      }</span>
-<span id="cb160-20"><a href="encoding-error.html#cb160-20"></a>    }</span>
-<span id="cb160-21"><a href="encoding-error.html#cb160-21"></a>  }</span>
-<span id="cb160-22"><a href="encoding-error.html#cb160-22"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="encoding-error.html#cb158-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, t) {</span>
+<span id="cb158-2"><a href="encoding-error.html#cb158-2"></a>  s &lt;-<span class="st"> </span><span class="kw">which</span>(input <span class="op">==</span><span class="st"> </span>t)</span>
+<span id="cb158-3"><a href="encoding-error.html#cb158-3"></a>  <span class="co"># we need to loop until just before the index of the target in the input</span></span>
+<span id="cb158-4"><a href="encoding-error.html#cb158-4"></a>  <span class="co"># as we are using nested loops it should be s - 2 here</span></span>
+<span id="cb158-5"><a href="encoding-error.html#cb158-5"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(s <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)) {</span>
+<span id="cb158-6"><a href="encoding-error.html#cb158-6"></a>    sv &lt;-<span class="st"> </span>input[[i]] <span class="co"># keep track of the sum</span></span>
+<span id="cb158-7"><a href="encoding-error.html#cb158-7"></a>    minv &lt;-<span class="st"> </span>sv       <span class="co"># and the min value</span></span>
+<span id="cb158-8"><a href="encoding-error.html#cb158-8"></a>    maxv &lt;-<span class="st"> </span>sv       <span class="co"># and the max value</span></span>
+<span id="cb158-9"><a href="encoding-error.html#cb158-9"></a>    <span class="co"># now we need to loop from the next value (i + 1) to just before the target</span></span>
+<span id="cb158-10"><a href="encoding-error.html#cb158-10"></a>    <span class="cf">for</span> (j <span class="cf">in</span> (i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>(s <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb158-11"><a href="encoding-error.html#cb158-11"></a>      <span class="co"># update the sum</span></span>
+<span id="cb158-12"><a href="encoding-error.html#cb158-12"></a>      sv &lt;-<span class="st"> </span>sv <span class="op">+</span><span class="st"> </span>input[[j]]</span>
+<span id="cb158-13"><a href="encoding-error.html#cb158-13"></a>      <span class="co"># update the min and max values</span></span>
+<span id="cb158-14"><a href="encoding-error.html#cb158-14"></a>      <span class="cf">if</span> (input[[j]] <span class="op">&lt;</span><span class="st"> </span>minv) minv &lt;-<span class="st"> </span>input[[j]]</span>
+<span id="cb158-15"><a href="encoding-error.html#cb158-15"></a>      <span class="cf">if</span> (input[[j]] <span class="op">&gt;</span><span class="st"> </span>maxv) maxv &lt;-<span class="st"> </span>input[[j]]</span>
+<span id="cb158-16"><a href="encoding-error.html#cb158-16"></a>      <span class="co"># if our sum is equal to the target, then return the sum of the min and max value</span></span>
+<span id="cb158-17"><a href="encoding-error.html#cb158-17"></a>      <span class="cf">if</span> (sv <span class="op">==</span><span class="st"> </span>t) {</span>
+<span id="cb158-18"><a href="encoding-error.html#cb158-18"></a>        <span class="kw">return</span> (minv <span class="op">+</span><span class="st"> </span>maxv)</span>
+<span id="cb158-19"><a href="encoding-error.html#cb158-19"></a>      }</span>
+<span id="cb158-20"><a href="encoding-error.html#cb158-20"></a>    }</span>
+<span id="cb158-21"><a href="encoding-error.html#cb158-21"></a>  }</span>
+<span id="cb158-22"><a href="encoding-error.html#cb158-22"></a>}</span></code></pre></div>
 <p>We can test on the sample:</p>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="encoding-error.html#cb161-1"></a><span class="kw">part_2</span>(sample, ps1) <span class="op">==</span><span class="st"> </span><span class="dv">62</span></span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="encoding-error.html#cb159-1"></a><span class="kw">part_2</span>(sample, ps1) <span class="op">==</span><span class="st"> </span><span class="dv">62</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>And run on the actual input:</p>
-<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="encoding-error.html#cb163-1"></a><span class="kw">part_2</span>(actual, pa1)</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="encoding-error.html#cb161-1"></a><span class="kw">part_2</span>(actual, pa1)</span></code></pre></div>
 <pre><code>## [1] 7409241</code></pre>
+</div>
+<div id="extra" class="section level2">
+<h2><span class="header-section-number">9.3</span> Extra</h2>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="encoding-error.html#cb163-1"></a>part_<span class="dv">1</span>_e &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
+<span id="cb163-2"><a href="encoding-error.html#cb163-2"></a>  i &lt;-<span class="st"> </span>n <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb163-3"><a href="encoding-error.html#cb163-3"></a>  r &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span>n</span>
+<span id="cb163-4"><a href="encoding-error.html#cb163-4"></a>  <span class="cf">while</span> (<span class="kw">any</span>((input[[i]] <span class="op">-</span><span class="st"> </span>input[r]) <span class="op">%in%</span><span class="st"> </span>input[r])) {</span>
+<span id="cb163-5"><a href="encoding-error.html#cb163-5"></a>    r &lt;-<span class="st"> </span>r <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb163-6"><a href="encoding-error.html#cb163-6"></a>    i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb163-7"><a href="encoding-error.html#cb163-7"></a>  }</span>
+<span id="cb163-8"><a href="encoding-error.html#cb163-8"></a>  input[[i]]</span>
+<span id="cb163-9"><a href="encoding-error.html#cb163-9"></a>}</span>
+<span id="cb163-10"><a href="encoding-error.html#cb163-10"></a></span>
+<span id="cb163-11"><a href="encoding-error.html#cb163-11"></a><span class="kw">part_1_e</span>(sample, <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## [1] 127</code></pre>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="encoding-error.html#cb165-1"></a><span class="kw">part_1_e</span>(actual, <span class="dv">25</span>)</span></code></pre></div>
+<pre><code>## [1] 57195069</code></pre>
 
 </div>
 </div>
