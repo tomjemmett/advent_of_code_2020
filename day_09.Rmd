@@ -17,58 +17,18 @@ actual <- read_lines("inputs/day_09_input.txt") %>% as.numeric()
 
 ## Part 1
 
-Naively we could take the permutations of the rolling window of n elements. It would make more sense though to keep
-track of the pairs, and just recalculate the pairs that drop off with the pairs that enter as the window slides.
-
-First, let's create a function that creates the initial n pairs for values. This will return a list that keeps track of
-the relevant data:
-  - the `input` values
-  - `x`, which is the start of the window
-  - `n`, which is the size of the window
+We can solve part 1 by creating a function that slides a window (`r`) across the `input` and checks to see if the value
+of the element `i` just after the end of the current window, minus all of the values in that window, is in the window.
   
-```{r part 1 create pairs}
-create_pairs <- function(input, n) {
-  list(
-    input = input,
-    x = 1,
-    n = n,
-    pairs = 1:(n - 1) %>%
-      map_dfr(~tibble(r = (.x + 1):n), .id = "l") %>%
-      mutate(across(l, as.numeric),
-             s = input[l] + input[r])
-  )
-}
-```
-
-We can then create a function which modifies the list and slides the window.
-
-```{r part 1 slide window}
-slide_pairs <- function(p) {
-  p$pairs <- p$pairs %>%
-    filter(l == p$x) %>%
-    mutate(s = s - p$input[l] + p$input[p$x + p$n],
-           l = r,
-           r = p$x + p$n) %>%
-    bind_rows(filter(p$pairs, l != p$x)) %>%
-    arrange(l, r)
-  
-  p$x <- p$x + 1
-  
-  p
-}
-```
-
-Now we can build a function that call's `slider_pairs()` until we find a value that isn't in the in the pairs.
-
 ```{r part 1 function}
 part_1 <- function(input, n) {
-  x <- create_pairs(input, n)
-  
-  while (any(x$pairs$s == x$input[[x$x + x$n]])) {
-    x <- slide_pairs(x)
+  i <- n + 1
+  r <- 1:n
+  while (any((input[[i]] - input[r]) %in% input[r])) {
+    r <- r + 1
+    i <- i + 1
   }
-  
-  x$input[[x$x + x$n]]
+  input[[i]]
 }
 ```
 
@@ -129,4 +89,21 @@ And run on the actual input:
 
 ```{r part 2 sample actual}
 part_2(actual, pa1)
+```
+
+## Extra
+
+```{r}
+part_1_e <- function(input, n) {
+  i <- n + 1
+  r <- 1:n
+  while (any((input[[i]] - input[r]) %in% input[r])) {
+    r <- r + 1
+    i <- i + 1
+  }
+  input[[i]]
+}
+
+part_1_e(sample, 5)
+part_1_e(actual, 25)
 ```
