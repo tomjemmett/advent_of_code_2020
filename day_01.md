@@ -104,8 +104,8 @@ bench::mark(part_1_naive(sample, 2020),
 ## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-## 1 part_1_naive(sample, 2020)      2.73µs   3.48µs   270300.        0B     27.0
-## 2 part_1_improved(sample, 2020)  60.85µs  66.04µs    13933.        0B     17.0
+## 1 part_1_naive(sample, 2020)      2.81µs   3.59µs   258614.        0B     25.9
+## 2 part_1_improved(sample, 2020)  62.42µs     68µs    13144.        0B     14.9
 ```
 
 For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
@@ -124,8 +124,8 @@ bench::mark(part_1_naive(actual, 2020),
 ## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-## 1 part_1_naive(actual, 2020)       699µs  707.6µs      998.        0B     1.98
-## 2 part_1_improved(actual, 2020)     86µs   90.8µs     6080.    1.66KB     8.75
+## 1 part_1_naive(actual, 2020)       700µs  723.8µs     1323.        0B     2.03
+## 2 part_1_improved(actual, 2020)   83.5µs   91.2µs    10436.    1.66KB    14.9
 ```
 
 The improved algorithm was roughly 10x faster for me on the actual data.
@@ -268,8 +268,8 @@ bench::mark(part_2_naive(actual, 2020),
 ## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-## 1 part_2_naive(actual, 2020)     121.7ms  122.4ms      8.18        0B     5.45
-## 2 part_2_improved(actual, 2020)   15.5ms   15.6ms     64.0     1.66KB   469.
+## 1 part_2_naive(actual, 2020)     116.7ms  120.4ms      8.10        0B     2.03
+## 2 part_2_improved(actual, 2020)   15.7ms   15.8ms     60.3     1.66KB   422.
 ```
 
 On my machine the improved approach is again about 10x quicker.
@@ -321,6 +321,6 @@ bench::mark(part_2_improved(actual, 2020),
 ## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   <bch:expr>                    <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl>
-## 1 part_2_improved(actual, 2020)  14.99ms   15.4ms      63.7    1.66KB    36.9 
-## 2 py$part_2_py(actual, 2020)      1.25ms   1.31ms     742.    17.45KB     4.10
+## 1 part_2_improved(actual, 2020)  15.35ms  16.26ms      59.4    1.66KB    33.0 
+## 2 py$part_2_py(actual, 2020)      1.22ms   1.28ms     749.    17.45KB     4.09
 ```
