@@ -1,0 +1,105 @@
+# Adapter Array
+
+
+
+This is my attempt to solve [Day 10](https://adventofcode.com/2020/day/10).
+
+
+```r
+sample <- read_lines("samples/day_10_sample.txt") %>% as.numeric()
+actual <- read_lines("inputs/day_10_input.txt") %>% as.numeric()
+```
+
+## Part 1
+
+We can solve part 1 pretty easily using base R functions. First, sort the input. We can then use `diff()` to calculate
+the differences between each successive pairs of values, then we can use `table()` to count how many of each value
+appears. We can then multiply the values using the `prod()` (product) function.
+
+We just need to remember to add "0" to our input, and the value that is 3 greater than the maximum value in the input.
+
+
+```r
+part_1 <- function(input) {
+  c(0, input, max(input + 3)) %>%
+    sort() %>%
+    diff() %>%
+    table() %>%
+    prod()
+}
+```
+
+We can now test our function on the sample:
+
+
+```r
+part_1(sample) == 22 * 10
+```
+
+```
+## [1] TRUE
+```
+
+And we can run the function with the actual data:
+
+
+```r
+part_1(actual)
+```
+
+```
+## [1] 2475
+```
+
+## Part 2
+
+Part 2 can be solved with [Dynamic Programming](https://en.wikipedia.org/wiki/Dynamic_programming). We will start at the
+beginning of the sorted input, and iterate over each item in turn. At each item we find which other items can be
+reached and increase their counts by the current items count. Once we reach the end of the list we have the answer.
+
+
+```r
+part_2 <- function(input) {
+  # ensure input is sorted
+  input <- sort(input)
+  # create a list of values for our counts, initialise to 0
+  t <- rep(0, length(input))
+  # set all of the items that can be reached from "0" to 1
+  t[input <= 3] <- 1
+  
+  # iterate over the input
+  for (i in seq_along(input)) {
+    # get the current item in the input
+    x <- input[[i]]
+    # update the items that can be reached
+    t[input > x & input <= x + 3] <- t[[i]] + t[input > x & input <= x + 3]
+  }
+  
+  # return just the final value
+  tail(t, 1)
+}
+```
+
+We can test our part 2 function on the sample data:
+
+
+```r
+part_2(sample) == 19208
+```
+
+```
+## [1] TRUE
+```
+
+We know that the actual solution will be a giant number, so make sure R doesn't format the number in scientific
+notation by setting the `scipen` option.
+
+
+```r
+options(scipen = 999)
+part_2(actual)
+```
+
+```
+## [1] 442136281481216
+```
