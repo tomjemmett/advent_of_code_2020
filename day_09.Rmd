@@ -4,8 +4,6 @@
 knitr::opts_chunk$set(echo = TRUE)
 options(crayon.enabled = NULL)
 library(tidyverse)
-library(R6)
-library(unglue)
 ```
 
 This is my attempt to solve [Day 9](https://adventofcode.com/2020/day/9).
