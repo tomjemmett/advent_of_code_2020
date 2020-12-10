@@ -246,13 +246,15 @@ reached and increase their counts by the current items count. Once we reach the 
 <span id="cb169-10"><a href="adapter-array.html#cb169-10"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(input)) {</span>
 <span id="cb169-11"><a href="adapter-array.html#cb169-11"></a>    <span class="co"># get the current item in the input</span></span>
 <span id="cb169-12"><a href="adapter-array.html#cb169-12"></a>    x &lt;-<span class="st"> </span>input[[i]]</span>
-<span id="cb169-13"><a href="adapter-array.html#cb169-13"></a>    <span class="co"># update the items that can be reached</span></span>
-<span id="cb169-14"><a href="adapter-array.html#cb169-14"></a>    t[input <span class="op">&gt;</span><span class="st"> </span>x <span class="op">&amp;</span><span class="st"> </span>input <span class="op">&lt;=</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="dv">3</span>] &lt;-<span class="st"> </span>t[[i]] <span class="op">+</span><span class="st"> </span>t[input <span class="op">&gt;</span><span class="st"> </span>x <span class="op">&amp;</span><span class="st"> </span>input <span class="op">&lt;=</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="dv">3</span>]</span>
-<span id="cb169-15"><a href="adapter-array.html#cb169-15"></a>  }</span>
-<span id="cb169-16"><a href="adapter-array.html#cb169-16"></a>  </span>
-<span id="cb169-17"><a href="adapter-array.html#cb169-17"></a>  <span class="co"># return just the final value</span></span>
-<span id="cb169-18"><a href="adapter-array.html#cb169-18"></a>  <span class="kw">tail</span>(t, <span class="dv">1</span>)</span>
-<span id="cb169-19"><a href="adapter-array.html#cb169-19"></a>}</span></code></pre></div>
+<span id="cb169-13"><a href="adapter-array.html#cb169-13"></a>    <span class="co"># get the indexes of the items that can be reached from the current item</span></span>
+<span id="cb169-14"><a href="adapter-array.html#cb169-14"></a>    r &lt;-<span class="st"> </span>input <span class="op">&gt;</span><span class="st"> </span>x <span class="op">&amp;</span><span class="st"> </span>input <span class="op">&lt;=</span><span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="dv">3</span></span>
+<span id="cb169-15"><a href="adapter-array.html#cb169-15"></a>    <span class="co"># update the items that can be reached</span></span>
+<span id="cb169-16"><a href="adapter-array.html#cb169-16"></a>    t[r] &lt;-<span class="st"> </span>t[[i]] <span class="op">+</span><span class="st"> </span>t[r]</span>
+<span id="cb169-17"><a href="adapter-array.html#cb169-17"></a>  }</span>
+<span id="cb169-18"><a href="adapter-array.html#cb169-18"></a>  </span>
+<span id="cb169-19"><a href="adapter-array.html#cb169-19"></a>  <span class="co"># return just the final value</span></span>
+<span id="cb169-20"><a href="adapter-array.html#cb169-20"></a>  <span class="kw">tail</span>(t, <span class="dv">1</span>)</span>
+<span id="cb169-21"><a href="adapter-array.html#cb169-21"></a>}</span></code></pre></div>
 <p>We can test our part 2 function on the sample data:</p>
 <div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="adapter-array.html#cb170-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">19208</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>

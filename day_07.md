@@ -71,9 +71,9 @@ sample_g
 ```
 
 ```
-## IGRAPH d7d8c5e DN-- 10 15 -- 
+## IGRAPH 89b6f4b DN-- 10 15 -- 
 ## + attr: name (v/c), n (e/n)
-## + edges from d7d8c5e (vertex names):
+## + edges from 89b6f4b (vertex names):
 ##  [1] light red   ->bright white light red   ->muted yellow
 ##  [3] dark orange ->bright white dark orange ->muted yellow
 ##  [5] bright white->shiny gold   muted yellow->shiny gold  
