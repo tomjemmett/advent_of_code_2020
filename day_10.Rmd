@@ -62,8 +62,10 @@ part_2 <- function(input) {
   for (i in seq_along(input)) {
     # get the current item in the input
     x <- input[[i]]
+    # get the indexes of the items that can be reached from the current item
+    r <- input > x & input <= x + 3
     # update the items that can be reached
-    t[input > x & input <= x + 3] <- t[[i]] + t[input > x & input <= x + 3]
+    t[r] <- t[[i]] + t[r]
   }
   
   # return just the final value
