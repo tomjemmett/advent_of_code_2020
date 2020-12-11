@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Day 11 Seating System | Advent of Code 2020</title>
+  <meta name="description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Day 11 Seating System | Advent of Code 2020" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Day 11 Seating System | Advent of Code 2020" />
+  
+  <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
+  
+
+<meta name="author" content="Tom Jemmett" />
+
+
+<meta name="date" content="2020-12-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="adapter-array.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">Advent of Code 2020</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="report-repair.html"><a href="report-repair.html"><i class="fa fa-check"></i><b>1</b> Report Repair</a><ul>
+<li class="chapter" data-level="1.1" data-path="report-repair.html"><a href="report-repair.html#part-1"><i class="fa fa-check"></i><b>1.1</b> Part 1</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="report-repair.html"><a href="report-repair.html#is-the-improved-algorithm-any-better"><i class="fa fa-check"></i><b>1.1.1</b> is the improved algorithm any better?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="report-repair.html"><a href="report-repair.html#part-2"><i class="fa fa-check"></i><b>1.2</b> Part 2</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="report-repair.html"><a href="report-repair.html#is-our-improved-algorithm-better-this-time"><i class="fa fa-check"></i><b>1.2.1</b> Is our improved algorithm better this time?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: Implementing in Python</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="password-philosophy.html"><a href="password-philosophy.html"><i class="fa fa-check"></i><b>2</b> Password Philosophy</a><ul>
+<li class="chapter" data-level="2.1" data-path="password-philosophy.html"><a href="password-philosophy.html#part-1-1"><i class="fa fa-check"></i><b>2.1</b> Part 1</a></li>
+<li class="chapter" data-level="2.2" data-path="password-philosophy.html"><a href="password-philosophy.html#part-2-1"><i class="fa fa-check"></i><b>2.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html"><i class="fa fa-check"></i><b>3</b> Toboggan Trajectory</a><ul>
+<li class="chapter" data-level="3.1" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-1-2"><i class="fa fa-check"></i><b>3.1</b> Part 1</a></li>
+<li class="chapter" data-level="3.2" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-2-2"><i class="fa fa-check"></i><b>3.2</b> Part 2</a></li>
+<li class="chapter" data-level="3.3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter"><i class="fa fa-check"></i><b>3.3</b> Extra: Is there a path that minimises the number of trees you encounter?</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="passport-processing.html"><a href="passport-processing.html"><i class="fa fa-check"></i><b>4</b> Passport Processing</a><ul>
+<li class="chapter" data-level="4.1" data-path="passport-processing.html"><a href="passport-processing.html#part-1-3"><i class="fa fa-check"></i><b>4.1</b> Part 1</a></li>
+<li class="chapter" data-level="4.2" data-path="passport-processing.html"><a href="passport-processing.html#part-2-3"><i class="fa fa-check"></i><b>4.2</b> Part 2</a></li>
+<li class="chapter" data-level="4.3" data-path="passport-processing.html"><a href="passport-processing.html#extra-solving-with-regular-expressions"><i class="fa fa-check"></i><b>4.3</b> Extra: Solving with regular expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="binary-boarding.html"><a href="binary-boarding.html"><i class="fa fa-check"></i><b>5</b> Binary Boarding</a><ul>
+<li class="chapter" data-level="5.1" data-path="binary-boarding.html"><a href="binary-boarding.html#part-1-4"><i class="fa fa-check"></i><b>5.1</b> Part 1</a></li>
+<li class="chapter" data-level="5.2" data-path="binary-boarding.html"><a href="binary-boarding.html#part-2-4"><i class="fa fa-check"></i><b>5.2</b> Part 2</a></li>
+<li class="chapter" data-level="5.3" data-path="binary-boarding.html"><a href="binary-boarding.html#extra-solving-algebraicly"><i class="fa fa-check"></i><b>5.3</b> Extra: Solving algebraicly</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="custom-customs.html"><a href="custom-customs.html"><i class="fa fa-check"></i><b>6</b> Custom Customs</a><ul>
+<li class="chapter" data-level="6.1" data-path="custom-customs.html"><a href="custom-customs.html#part-1-5"><i class="fa fa-check"></i><b>6.1</b> Part 1</a></li>
+<li class="chapter" data-level="6.2" data-path="custom-customs.html"><a href="custom-customs.html#part-2-5"><i class="fa fa-check"></i><b>6.2</b> Part 2</a></li>
+<li class="chapter" data-level="6.3" data-path="custom-customs.html"><a href="custom-customs.html#extra-solving-part-1-2-with-set-functions"><i class="fa fa-check"></i><b>6.3</b> Extra: solving part 1 &amp; 2 with set functions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="handy-haversacks.html"><a href="handy-haversacks.html"><i class="fa fa-check"></i><b>7</b> Handy Haversacks</a><ul>
+<li class="chapter" data-level="7.1" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-1-6"><i class="fa fa-check"></i><b>7.1</b> Part 1</a></li>
+<li class="chapter" data-level="7.2" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-2-6"><i class="fa fa-check"></i><b>7.2</b> Part 2</a></li>
+<li class="chapter" data-level="7.3" data-path="handy-haversacks.html"><a href="handy-haversacks.html#extra-alternative-solution-to-part-2"><i class="fa fa-check"></i><b>7.3</b> Extra: alternative solution to part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="handheld-halting.html"><a href="handheld-halting.html"><i class="fa fa-check"></i><b>8</b> Handheld Halting</a><ul>
+<li class="chapter" data-level="8.1" data-path="handheld-halting.html"><a href="handheld-halting.html#part-1-7"><i class="fa fa-check"></i><b>8.1</b> Part 1</a></li>
+<li class="chapter" data-level="8.2" data-path="handheld-halting.html"><a href="handheld-halting.html#part-2-7"><i class="fa fa-check"></i><b>8.2</b> Part 2</a></li>
+<li class="chapter" data-level="8.3" data-path="handheld-halting.html"><a href="handheld-halting.html#extra-update-the-computer-class"><i class="fa fa-check"></i><b>8.3</b> Extra: update the computer class</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="encoding-error.html"><a href="encoding-error.html"><i class="fa fa-check"></i><b>9</b> Encoding Error</a><ul>
+<li class="chapter" data-level="9.1" data-path="encoding-error.html"><a href="encoding-error.html#part-1-8"><i class="fa fa-check"></i><b>9.1</b> Part 1</a></li>
+<li class="chapter" data-level="9.2" data-path="encoding-error.html"><a href="encoding-error.html#part-2-8"><i class="fa fa-check"></i><b>9.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="adapter-array.html"><a href="adapter-array.html"><i class="fa fa-check"></i><b>10</b> Adapter Array</a><ul>
+<li class="chapter" data-level="10.1" data-path="adapter-array.html"><a href="adapter-array.html#part-1-9"><i class="fa fa-check"></i><b>10.1</b> Part 1</a></li>
+<li class="chapter" data-level="10.2" data-path="adapter-array.html"><a href="adapter-array.html#part-2-9"><i class="fa fa-check"></i><b>10.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="seating-system.html"><a href="seating-system.html"><i class="fa fa-check"></i><b>11</b> Seating System</a><ul>
+<li class="chapter" data-level="11.1" data-path="seating-system.html"><a href="seating-system.html#part-1-10"><i class="fa fa-check"></i><b>11.1</b> Part 1</a></li>
+<li class="chapter" data-level="11.2" data-path="seating-system.html"><a href="seating-system.html#part-2-10"><i class="fa fa-check"></i><b>11.2</b> Part 2</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Advent of Code 2020</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="seating-system" class="section level1">
+<h1><span class="header-section-number">Day 11</span> Seating System</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/11">Day 11</a>.</p>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="seating-system.html#cb174-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_11_sample.txt&quot;</span>)</span>
+<span id="cb174-2"><a href="seating-system.html#cb174-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_11_input.txt&quot;</span>)</span></code></pre></div>
+<div id="part-1-10" class="section level2">
+<h2><span class="header-section-number">11.1</span> Part 1</h2>
+<p>We are given that in our input:</p>
+<ul>
+<li><code>.</code> is the floor</li>
+<li><code>L</code> is an empty seat</li>
+<li><code>#</code> is an occupied seat</li>
+</ul>
+<p>It will make our life simpler to add a border of empty seats round our inputs, and convert the input to a matrix of
+individual characters</p>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="seating-system.html#cb175-1"></a>process_input &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb175-2"><a href="seating-system.html#cb175-2"></a>  dl &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="kw">rep</span>(<span class="st">&quot;.&quot;</span>, <span class="kw">str_length</span>(input[[<span class="dv">1</span>]])), <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb175-3"><a href="seating-system.html#cb175-3"></a>  m &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;.&quot;</span>, <span class="kw">c</span>(dl, input, dl), <span class="st">&quot;.&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb175-4"><a href="seating-system.html#cb175-4"></a><span class="st">    </span><span class="kw">str_extract_all</span>(<span class="st">&quot;.&quot;</span>, <span class="dt">simplify =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb175-5"><a href="seating-system.html#cb175-5"></a>  </span>
+<span id="cb175-6"><a href="seating-system.html#cb175-6"></a>  <span class="co"># give this matrix an s3 class of &quot;day11&quot;</span></span>
+<span id="cb175-7"><a href="seating-system.html#cb175-7"></a>  <span class="kw">structure</span>(m, <span class="dt">class =</span> <span class="kw">c</span>(<span class="st">&quot;day11&quot;</span>, <span class="kw">class</span>(m)))</span>
+<span id="cb175-8"><a href="seating-system.html#cb175-8"></a>}</span>
+<span id="cb175-9"><a href="seating-system.html#cb175-9"></a></span>
+<span id="cb175-10"><a href="seating-system.html#cb175-10"></a><span class="co"># implement a print method for our day11 class</span></span>
+<span id="cb175-11"><a href="seating-system.html#cb175-11"></a>print.day11 &lt;-<span class="st"> </span><span class="cf">function</span>(x, ...) {</span>
+<span id="cb175-12"><a href="seating-system.html#cb175-12"></a>  <span class="kw">cat</span>(<span class="kw">paste</span>(<span class="kw">apply</span>(x, <span class="dv">1</span>, paste, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>), <span class="dt">collapse =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>), <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb175-13"><a href="seating-system.html#cb175-13"></a>}</span>
+<span id="cb175-14"><a href="seating-system.html#cb175-14"></a></span>
+<span id="cb175-15"><a href="seating-system.html#cb175-15"></a>psample &lt;-<span class="st"> </span><span class="kw">process_input</span>(sample)</span>
+<span id="cb175-16"><a href="seating-system.html#cb175-16"></a>pactual &lt;-<span class="st"> </span><span class="kw">process_input</span>(actual)</span></code></pre></div>
+<p>We can now have a quick look at our sample input:</p>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="seating-system.html#cb176-1"></a>psample</span></code></pre></div>
+<pre><code>## ............
+## .L.LL.LL.LL.
+## .LLLLLLL.LL.
+## .L.L.L..L...
+## .LLLL.LL.LL.
+## .L.LL.LL.LL.
+## .L.LLLLL.LL.
+## ...L.L......
+## .LLLLLLLLLL.
+## .L.LLLLLL.L.
+## .L.LLLLL.LL.
+## ............</code></pre>
+<p>Now we can build a function to run n iteration’s:</p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="seating-system.html#cb178-1"></a>p1_run_iterations &lt;-<span class="st"> </span><span class="cf">function</span>(input, <span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">count =</span> <span class="dv">0</span>) {</span>
+<span id="cb178-2"><a href="seating-system.html#cb178-2"></a>  <span class="co"># this is a recursive function, when n is less than 1 stop iterating and</span></span>
+<span id="cb178-3"><a href="seating-system.html#cb178-3"></a>  <span class="co"># return whatever input is given</span></span>
+<span id="cb178-4"><a href="seating-system.html#cb178-4"></a>  <span class="cf">if</span> (n <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span>) <span class="kw">return</span> (<span class="kw">list</span>(<span class="dt">input =</span> input, <span class="dt">count =</span> count))</span>
+<span id="cb178-5"><a href="seating-system.html#cb178-5"></a>  </span>
+<span id="cb178-6"><a href="seating-system.html#cb178-6"></a>  <span class="co"># take a copy of the current state - we will modify this copied state and</span></span>
+<span id="cb178-7"><a href="seating-system.html#cb178-7"></a>  <span class="co"># return it for the next iteration</span></span>
+<span id="cb178-8"><a href="seating-system.html#cb178-8"></a>  next_state &lt;-<span class="st"> </span>input</span>
+<span id="cb178-9"><a href="seating-system.html#cb178-9"></a>  <span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(input) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb178-10"><a href="seating-system.html#cb178-10"></a>    <span class="cf">for</span> (c <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(<span class="kw">ncol</span>(input) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb178-11"><a href="seating-system.html#cb178-11"></a>      <span class="co"># skip this cell if it&#39;s a .</span></span>
+<span id="cb178-12"><a href="seating-system.html#cb178-12"></a>      <span class="cf">if</span> (input[r, c] <span class="op">==</span><span class="st"> &quot;.&quot;</span>) <span class="cf">next</span>()</span>
+<span id="cb178-13"><a href="seating-system.html#cb178-13"></a>      <span class="co"># get adjacent seats</span></span>
+<span id="cb178-14"><a href="seating-system.html#cb178-14"></a>      adjacent &lt;-<span class="st"> </span><span class="kw">c</span>(input[r <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, c <span class="op">-</span><span class="st"> </span><span class="dv">1</span>],</span>
+<span id="cb178-15"><a href="seating-system.html#cb178-15"></a>                    input[r <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, c    ],</span>
+<span id="cb178-16"><a href="seating-system.html#cb178-16"></a>                    input[r <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, c <span class="op">+</span><span class="st"> </span><span class="dv">1</span>],</span>
+<span id="cb178-17"><a href="seating-system.html#cb178-17"></a>                    input[r    , c <span class="op">-</span><span class="st"> </span><span class="dv">1</span>],</span>
+<span id="cb178-18"><a href="seating-system.html#cb178-18"></a>                    input[r    , c <span class="op">+</span><span class="st"> </span><span class="dv">1</span>],</span>
+<span id="cb178-19"><a href="seating-system.html#cb178-19"></a>                    input[r <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, c <span class="op">-</span><span class="st"> </span><span class="dv">1</span>],</span>
+<span id="cb178-20"><a href="seating-system.html#cb178-20"></a>                    input[r <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, c    ],</span>
+<span id="cb178-21"><a href="seating-system.html#cb178-21"></a>                    input[r <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, c <span class="op">+</span><span class="st"> </span><span class="dv">1</span>])</span>
+<span id="cb178-22"><a href="seating-system.html#cb178-22"></a>      <span class="co"># count how many are occupied</span></span>
+<span id="cb178-23"><a href="seating-system.html#cb178-23"></a>      occupied &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">ifelse</span>(adjacent <span class="op">==</span><span class="st"> &quot;#&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb178-24"><a href="seating-system.html#cb178-24"></a>      </span>
+<span id="cb178-25"><a href="seating-system.html#cb178-25"></a>      <span class="cf">if</span> (input[r, c] <span class="op">==</span><span class="st"> &quot;L&quot;</span>) {</span>
+<span id="cb178-26"><a href="seating-system.html#cb178-26"></a>        <span class="cf">if</span> (occupied <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb178-27"><a href="seating-system.html#cb178-27"></a>          next_state[r, c] &lt;-<span class="st"> &quot;#&quot;</span></span>
+<span id="cb178-28"><a href="seating-system.html#cb178-28"></a>        }</span>
+<span id="cb178-29"><a href="seating-system.html#cb178-29"></a>      } <span class="cf">else</span> {</span>
+<span id="cb178-30"><a href="seating-system.html#cb178-30"></a>        <span class="co"># it can only be &quot;#&quot; now</span></span>
+<span id="cb178-31"><a href="seating-system.html#cb178-31"></a>        <span class="cf">if</span> (occupied <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span>) {</span>
+<span id="cb178-32"><a href="seating-system.html#cb178-32"></a>          next_state[r, c] &lt;-<span class="st"> &quot;L&quot;</span></span>
+<span id="cb178-33"><a href="seating-system.html#cb178-33"></a>        }</span>
+<span id="cb178-34"><a href="seating-system.html#cb178-34"></a>      }</span>
+<span id="cb178-35"><a href="seating-system.html#cb178-35"></a>    }</span>
+<span id="cb178-36"><a href="seating-system.html#cb178-36"></a>  }</span>
+<span id="cb178-37"><a href="seating-system.html#cb178-37"></a>  </span>
+<span id="cb178-38"><a href="seating-system.html#cb178-38"></a>  <span class="cf">if</span> (<span class="kw">all</span>(next_state <span class="op">==</span><span class="st"> </span>input)) {</span>
+<span id="cb178-39"><a href="seating-system.html#cb178-39"></a>    <span class="kw">return</span> (<span class="kw">list</span>(<span class="dt">input =</span> input, <span class="dt">count =</span> count))</span>
+<span id="cb178-40"><a href="seating-system.html#cb178-40"></a>  }</span>
+<span id="cb178-41"><a href="seating-system.html#cb178-41"></a>  </span>
+<span id="cb178-42"><a href="seating-system.html#cb178-42"></a>  <span class="co"># run the next itertion, decreasing n by 1</span></span>
+<span id="cb178-43"><a href="seating-system.html#cb178-43"></a>  <span class="kw">p1_run_iterations</span>(next_state, n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, count <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb178-44"><a href="seating-system.html#cb178-44"></a>}</span></code></pre></div>
+<p>We can now test our function runs as expected on the sample.</p>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="seating-system.html#cb179-1"></a><span class="kw">p1_run_iterations</span>(psample)</span></code></pre></div>
+<pre><code>## $input
+## ............
+## .#.##.##.##.
+## .#######.##.
+## .#.#.#..#...
+## .####.##.##.
+## .#.##.##.##.
+## .#.#####.##.
+## ...#.#......
+## .##########.
+## .#.######.#.
+## .#.#####.##.
+## ............ 
+## 
+## $count
+## [1] 1</code></pre>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="seating-system.html#cb181-1"></a><span class="kw">p1_run_iterations</span>(psample, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>## $input
+## ............
+## .#.LL.L#.##.
+## .#LLLLLL.L#.
+## .L.L.L..L...
+## .#LLL.LL.L#.
+## .#.LL.LL.LL.
+## .#.LLLL#.##.
+## ...L.L......
+## .#LLLLLLLL#.
+## .#.LLLLLL.L.
+## .#.#LLLL.##.
+## ............ 
+## 
+## $count
+## [1] 2</code></pre>
+<p>These match the examples, we just need to check it terminates correctly:</p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="seating-system.html#cb183-1"></a>p1s &lt;-<span class="st"> </span><span class="kw">p1_run_iterations</span>(psample, <span class="ot">Inf</span>)</span>
+<span id="cb183-2"><a href="seating-system.html#cb183-2"></a>p1s<span class="op">$</span>count <span class="op">==</span><span class="st"> </span><span class="dv">5</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>We just need a way to count the seats occupied now:</p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="seating-system.html#cb185-1"></a>count_seats &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb185-2"><a href="seating-system.html#cb185-2"></a>  <span class="kw">sum</span>(x<span class="op">$</span>input <span class="op">==</span><span class="st"> &quot;#&quot;</span>)</span>
+<span id="cb185-3"><a href="seating-system.html#cb185-3"></a>}</span></code></pre></div>
+<p>Which we can run on the variable <code>p1s</code> from above:</p>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="seating-system.html#cb186-1"></a><span class="kw">count_seats</span>(p1s) <span class="op">==</span><span class="st"> </span><span class="dv">37</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>We can now run our functions on the actual data:</p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="seating-system.html#cb188-1"></a>pactual <span class="op">%&gt;%</span></span>
+<span id="cb188-2"><a href="seating-system.html#cb188-2"></a><span class="st">  </span><span class="kw">p1_run_iterations</span>(<span class="ot">Inf</span>) <span class="op">%&gt;%</span></span>
+<span id="cb188-3"><a href="seating-system.html#cb188-3"></a><span class="st">  </span><span class="kw">count_seats</span>()</span></code></pre></div>
+<pre><code>## [1] 2483</code></pre>
+</div>
+<div id="part-2-10" class="section level2">
+<h2><span class="header-section-number">11.2</span> Part 2</h2>
+<p>We now need to modify our run iterations function. I am going to embed a function that will search for the first seat,
+and update the tolerance from 4 to 5. The rest of the function remains as per part 1.</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="seating-system.html#cb190-1"></a>p2_run_iterations &lt;-<span class="st"> </span><span class="cf">function</span>(input, <span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">count =</span> <span class="dv">0</span>) {</span>
+<span id="cb190-2"><a href="seating-system.html#cb190-2"></a>  <span class="co"># this is a recursive function, when n is less than 1 stop iterating and</span></span>
+<span id="cb190-3"><a href="seating-system.html#cb190-3"></a>  <span class="co"># return whatever input is given</span></span>
+<span id="cb190-4"><a href="seating-system.html#cb190-4"></a>  <span class="cf">if</span> (n <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span>) <span class="kw">return</span> (<span class="kw">list</span>(<span class="dt">input =</span> input, <span class="dt">count =</span> count))</span>
+<span id="cb190-5"><a href="seating-system.html#cb190-5"></a>  </span>
+<span id="cb190-6"><a href="seating-system.html#cb190-6"></a>  <span class="co"># take a copy of the current state - we will modify this copied state and</span></span>
+<span id="cb190-7"><a href="seating-system.html#cb190-7"></a>  <span class="co"># return it for the next iteration</span></span>
+<span id="cb190-8"><a href="seating-system.html#cb190-8"></a>  next_state &lt;-<span class="st"> </span>input</span>
+<span id="cb190-9"><a href="seating-system.html#cb190-9"></a>  <span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(input) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb190-10"><a href="seating-system.html#cb190-10"></a>    <span class="cf">for</span> (c <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(<span class="kw">ncol</span>(input) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb190-11"><a href="seating-system.html#cb190-11"></a>      <span class="co"># skip this cell if it&#39;s a .</span></span>
+<span id="cb190-12"><a href="seating-system.html#cb190-12"></a>      <span class="cf">if</span> (input[r, c] <span class="op">==</span><span class="st"> &quot;.&quot;</span>) <span class="cf">next</span>()</span>
+<span id="cb190-13"><a href="seating-system.html#cb190-13"></a>      </span>
+<span id="cb190-14"><a href="seating-system.html#cb190-14"></a>      <span class="co"># get first seat</span></span>
+<span id="cb190-15"><a href="seating-system.html#cb190-15"></a>      find_first_seat &lt;-<span class="st"> </span><span class="cf">function</span>(rd, cd) {</span>
+<span id="cb190-16"><a href="seating-system.html#cb190-16"></a>        rr &lt;-<span class="st"> </span>r</span>
+<span id="cb190-17"><a href="seating-system.html#cb190-17"></a>        cc &lt;-<span class="st"> </span>c</span>
+<span id="cb190-18"><a href="seating-system.html#cb190-18"></a>        <span class="cf">repeat</span> {</span>
+<span id="cb190-19"><a href="seating-system.html#cb190-19"></a>          rr &lt;-<span class="st"> </span>rr <span class="op">+</span><span class="st"> </span>rd</span>
+<span id="cb190-20"><a href="seating-system.html#cb190-20"></a>          cc &lt;-<span class="st"> </span>cc <span class="op">+</span><span class="st"> </span>cd</span>
+<span id="cb190-21"><a href="seating-system.html#cb190-21"></a>          <span class="cf">if</span> (rr <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>rr <span class="op">&gt;</span><span class="st"> </span><span class="kw">nrow</span>(input) <span class="op">|</span></span>
+<span id="cb190-22"><a href="seating-system.html#cb190-22"></a><span class="st">              </span>cc <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>cc <span class="op">&gt;</span><span class="st"> </span><span class="kw">ncol</span>(input) ) {</span>
+<span id="cb190-23"><a href="seating-system.html#cb190-23"></a>            <span class="kw">return</span> (<span class="st">&quot;.&quot;</span>)</span>
+<span id="cb190-24"><a href="seating-system.html#cb190-24"></a>          } <span class="cf">else</span> <span class="cf">if</span> (input[rr, cc] <span class="op">!=</span><span class="st"> &quot;.&quot;</span>) {</span>
+<span id="cb190-25"><a href="seating-system.html#cb190-25"></a>            <span class="kw">return</span> (input[rr, cc])</span>
+<span id="cb190-26"><a href="seating-system.html#cb190-26"></a>          }</span>
+<span id="cb190-27"><a href="seating-system.html#cb190-27"></a>        }</span>
+<span id="cb190-28"><a href="seating-system.html#cb190-28"></a>      }</span>
+<span id="cb190-29"><a href="seating-system.html#cb190-29"></a>      adjacent &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb190-30"><a href="seating-system.html#cb190-30"></a>        <span class="dt">rd =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">-1</span>, <span class="dv">-1</span>,  <span class="dv">0</span>,  <span class="dv">0</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>),</span>
+<span id="cb190-31"><a href="seating-system.html#cb190-31"></a>        <span class="dt">cd =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,  <span class="dv">0</span>,  <span class="dv">1</span>, <span class="dv">-1</span>,  <span class="dv">1</span>, <span class="dv">-1</span>,  <span class="dv">0</span>,  <span class="dv">1</span>)</span>
+<span id="cb190-32"><a href="seating-system.html#cb190-32"></a>      ) <span class="op">%&gt;%</span></span>
+<span id="cb190-33"><a href="seating-system.html#cb190-33"></a><span class="st">        </span><span class="kw">pmap</span>(find_first_seat)</span>
+<span id="cb190-34"><a href="seating-system.html#cb190-34"></a>      </span>
+<span id="cb190-35"><a href="seating-system.html#cb190-35"></a>      <span class="co"># count how many are occupied</span></span>
+<span id="cb190-36"><a href="seating-system.html#cb190-36"></a>      occupied &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">ifelse</span>(adjacent <span class="op">==</span><span class="st"> &quot;#&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb190-37"><a href="seating-system.html#cb190-37"></a>      </span>
+<span id="cb190-38"><a href="seating-system.html#cb190-38"></a>      <span class="cf">if</span> (input[r, c] <span class="op">==</span><span class="st"> &quot;L&quot;</span>) {</span>
+<span id="cb190-39"><a href="seating-system.html#cb190-39"></a>        <span class="cf">if</span> (occupied <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb190-40"><a href="seating-system.html#cb190-40"></a>          next_state[r, c] &lt;-<span class="st"> &quot;#&quot;</span></span>
+<span id="cb190-41"><a href="seating-system.html#cb190-41"></a>        }</span>
+<span id="cb190-42"><a href="seating-system.html#cb190-42"></a>      } <span class="cf">else</span> {</span>
+<span id="cb190-43"><a href="seating-system.html#cb190-43"></a>        <span class="co"># it can only be &quot;#&quot; now</span></span>
+<span id="cb190-44"><a href="seating-system.html#cb190-44"></a>        <span class="cf">if</span> (occupied <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>) {</span>
+<span id="cb190-45"><a href="seating-system.html#cb190-45"></a>          next_state[r, c] &lt;-<span class="st"> &quot;L&quot;</span></span>
+<span id="cb190-46"><a href="seating-system.html#cb190-46"></a>        }</span>
+<span id="cb190-47"><a href="seating-system.html#cb190-47"></a>      }</span>
+<span id="cb190-48"><a href="seating-system.html#cb190-48"></a>    }</span>
+<span id="cb190-49"><a href="seating-system.html#cb190-49"></a>  }</span>
+<span id="cb190-50"><a href="seating-system.html#cb190-50"></a>  </span>
+<span id="cb190-51"><a href="seating-system.html#cb190-51"></a>  <span class="cf">if</span> (<span class="kw">all</span>(next_state <span class="op">==</span><span class="st"> </span>input)) {</span>
+<span id="cb190-52"><a href="seating-system.html#cb190-52"></a>    <span class="kw">return</span> (<span class="kw">list</span>(<span class="dt">input =</span> input, <span class="dt">count =</span> count))</span>
+<span id="cb190-53"><a href="seating-system.html#cb190-53"></a>  }</span>
+<span id="cb190-54"><a href="seating-system.html#cb190-54"></a>  </span>
+<span id="cb190-55"><a href="seating-system.html#cb190-55"></a>  <span class="co"># run the next itertion, decreasing n by 1</span></span>
+<span id="cb190-56"><a href="seating-system.html#cb190-56"></a>  <span class="kw">p2_run_iterations</span>(next_state, n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, count <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb190-57"><a href="seating-system.html#cb190-57"></a>}</span></code></pre></div>
+<p>We can test our function works as expected after 1 iteration:</p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="seating-system.html#cb191-1"></a>psample <span class="op">%&gt;%</span></span>
+<span id="cb191-2"><a href="seating-system.html#cb191-2"></a><span class="st">  </span><span class="kw">p2_run_iterations</span>(<span class="dv">1</span>) </span></code></pre></div>
+<pre><code>## $input
+## ............
+## .#.##.##.##.
+## .#######.##.
+## .#.#.#..#...
+## .####.##.##.
+## .#.##.##.##.
+## .#.#####.##.
+## ...#.#......
+## .##########.
+## .#.######.#.
+## .#.#####.##.
+## ............ 
+## 
+## $count
+## [1] 1</code></pre>
+<p>And after 2 iterations:</p>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb193-1"><a href="seating-system.html#cb193-1"></a>psample <span class="op">%&gt;%</span></span>
+<span id="cb193-2"><a href="seating-system.html#cb193-2"></a><span class="st">  </span><span class="kw">p2_run_iterations</span>(<span class="dv">2</span>) </span></code></pre></div>
+<pre><code>## $input
+## ............
+## .#.LL.LL.L#.
+## .#LLLLLL.LL.
+## .L.L.L..L...
+## .LLLL.LL.LL.
+## .L.LL.LL.LL.
+## .L.LLLLL.LL.
+## ...L.L......
+## .LLLLLLLLL#.
+## .#.LLLLLL.L.
+## .#.LLLLL.L#.
+## ............ 
+## 
+## $count
+## [1] 2</code></pre>
+<p>We can use the <code>count_seats()</code> function again to test our new function works:</p>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="seating-system.html#cb195-1"></a>psample <span class="op">%&gt;%</span></span>
+<span id="cb195-2"><a href="seating-system.html#cb195-2"></a><span class="st">  </span><span class="kw">p2_run_iterations</span>(<span class="ot">Inf</span>) <span class="op">%&gt;%</span></span>
+<span id="cb195-3"><a href="seating-system.html#cb195-3"></a><span class="st">  </span><span class="kw">count_seats</span>() <span class="op">==</span><span class="st"> </span><span class="dv">26</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>Now we can run the function on our actual data:</p>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="seating-system.html#cb197-1"></a>pactual <span class="op">%&gt;%</span></span>
+<span id="cb197-2"><a href="seating-system.html#cb197-2"></a><span class="st">  </span><span class="kw">p2_run_iterations</span>(<span class="ot">Inf</span>) <span class="op">%&gt;%</span></span>
+<span id="cb197-3"><a href="seating-system.html#cb197-3"></a><span class="st">  </span><span class="kw">count_seats</span>()</span></code></pre></div>
+<pre><code>## [1] 2285</code></pre>
+<p>(This takes some time to run… there is likely to be a more optimal solution!)</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="adapter-array.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
