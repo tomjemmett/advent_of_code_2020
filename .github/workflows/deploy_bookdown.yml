@@ -48,6 +48,7 @@ jobs:
           git fetch
           git worktree add --track -B gh-pages _book origin/gh-pages
           rm -rf _book/*
+          echo "aoc.tjmt.uk" > _book/CNAME
           Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
           cd _book
           git add .
