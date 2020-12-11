@@ -195,17 +195,14 @@ count_seats(p1s) == 37
 ## [1] TRUE
 ```
 
-We can now run our functions on the actual data:
+While this does run, it's not particular fast on the actual data. We come back to part 1 later.
 
 
 ```r
+# disabled chunk
 pactual %>%
   p1_run_iterations(Inf) %>%
   count_seats()
-```
-
-```
-## [1] 2483
 ```
 
 ## Part 2
@@ -365,17 +362,170 @@ psample %>%
 ## [1] TRUE
 ```
 
-Now we can run the function on our actual data:
+Again, this function runs very slowly on the actual data.
 
 
 ```r
+# disabled chunk
 pactual %>%
   p2_run_iterations(Inf) %>%
   count_seats()
 ```
 
+## Solving faster
+
+R is much better at vectorised operations, so if we could reduce the steps to summing matrices our code should run much
+faster.
+
+First, we are to treat our input as a matrix that contains either 0 for an unoccupied seat, 1 for an occupied seat, and
+`NA` for the floor.
+
+We then create functions for part 1 and for part 2 which returns 8 set's of indices for the directions that we are to
+look in for seats. These index sets will be used to return a matrix the same size as the inner part of our matrix (we
+ignore the border).
+
+Part 1's function is pretty simple, we simply shift the matrix one up, one to the left, then just one up, then one up
+and one to the right, etc. This function is pretty slow as we have to allocate quite a lot of memory.
+
+
+```r
+part_one <- function(input) {
+  nr <- nrow(input)
+  nc <- ncol(input)
+  
+  cross2(1:3, 1:3) %>%
+    discard(~ .x[[1]] == 2 && .x[[2]] == 2) %>%
+    map(function(.x) {
+      cross_df(
+        list(
+          row = .x[[1]]:(nr - 3 + .x[[1]]),
+          col = .x[[2]]:(nc - 3 + .x[[2]])
+        )
+      ) %>%
+        as.matrix()
+    })
+}
+```
+
+Part 2 is slightly more complex as we need to find the seat according to the more complex rules.
+
+
+```r
+part_two <- function(input) {
+  nr <- nrow(input)
+  nc <- ncol(input)
+  
+  find_in_direction <- function(r, c, rd, cd) {
+    ri <- r
+    ci <- c
+    repeat {
+      ri <- ri + rd
+      ci <- ci + cd
+      
+      # we have reached the boundary, exit
+      if (ri < 1 | ri > nr | ci < 1 | ci > nc) {
+        return (list(row = ri - rd, col = ci - cd))
+      }
+      # we have found a seat, return
+      if (!is.na(input[ri, ci])) {
+        return (list(row = ri, col = ci))
+      }
+    }
+  }
+ 
+  # get the indices of each cell in the inner part of the input matrix 
+  ixs <- cross_df(list(r = 2:(nr - 1), c = 2:(nc - 1)))
+  
+  # now find the values in each direction
+  list(
+    pmap_dfr(ixs, find_in_direction, -1, -1),
+    pmap_dfr(ixs, find_in_direction, -1,  0),
+    pmap_dfr(ixs, find_in_direction, -1,  1),
+    pmap_dfr(ixs, find_in_direction,  0, -1),
+    pmap_dfr(ixs, find_in_direction,  0,  1),
+    pmap_dfr(ixs, find_in_direction,  1, -1),
+    pmap_dfr(ixs, find_in_direction,  1,  0),
+    pmap_dfr(ixs, find_in_direction,  1,  1)
+  ) %>%
+    map(as.matrix)
+}
+```
+
+We now create a solving function, which takes the data as the first argument, either `part_one()` or `part_two()` as the
+second argument, and the tolerance (4 for part 1, 5 for part 2).
+
+
+```r
+solve <- function(x, add_mat_fn, tolerance) {
+  input <- ifelse(unclass(x) == "L", 0, NA)
+  
+  nr <- nrow(input)
+  nc <- ncol(input)
+  
+  add_mat_ix <- add_mat_fn(input)
+  
+  repeat {
+    # use this to check later if our matrix has changed
+    t <- input
+      
+    # use our matrix indices, find the values for the 8 shifted matrices, then
+    # add the 8 matrices together to give us one matrix that tells us how many
+    # adjacent seats are occupied
+    add_mat <- add_mat_ix %>%
+      map(~input[.x] %>%
+            replace_na(0) %>%
+            matrix(nrow = nr - 2, ncol = nc - 2)) %>%
+      reduce(`+`)
+    
+    # find the unoccupied seats in the input
+    y <- which(input == 0, arr.ind = TRUE)
+    # and the occupied seats
+    z <- which(input == 1, arr.ind = TRUE)
+    
+    # update the unoccupied seats
+    input[y] <- 1 * (add_mat[y - 1] == 0)
+    # update the occupied seats
+    input[z] <- 1 * (add_mat[z - 1] <  tolerance)
+    
+    # check to see if our matrix has changed
+    if (all(t == input, na.rm = TRUE)) break()
+  }
+  # now just return the number of occupied seats
+  sum(input, na.rm = TRUE)
+}
+```
+
+We can now run our new function's and see if they give us the same results as above:
+
+
+```r
+solve(psample, part_one, 4)
+```
+
+```
+## [1] 37
+```
+
+```r
+solve(pactual, part_one, 4)
+```
+
+```
+## [1] 2483
+```
+
+```r
+solve(psample, part_two, 5)
+```
+
+```
+## [1] 26
+```
+
+```r
+solve(pactual, part_two, 5)
+```
+
 ```
 ## [1] 2285
 ```
-
-(This takes some time to run... there is likely to be a more optimal solution!)
