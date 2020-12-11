@@ -126,14 +126,13 @@ count_seats <- function(x) {
 Which we can run on the variable `p1s` from above:
 
 ```{r part 1 sample test 4}
-part_1(p1s) == 37
+count_seats(p1s) == 37
 ```
 
 We can now run our functions on the actual data:
 
 ```{r part 1 actual}
-actual %>%
-  process_input() %>%
+pactual %>%
   p1_run_iterations(Inf) %>%
   count_seats()
 ```
@@ -143,7 +142,7 @@ actual %>%
 We now need to modify our run iterations function. I am going to embed a function that will search for the first seat,
 and update the tolerance from 4 to 5. The rest of the function remains as per part 1.
 
-```{r part 1 run iteration}
+```{r part 2 run iteration}
 p2_run_iterations <- function(input, n = 1, count = 0) {
   # this is a recursive function, when n is less than 1 stop iterating and
   # return whatever input is given
