@@ -353,64 +353,87 @@ individual characters</p>
 <div id="part-2-10" class="section level2">
 <h2><span class="header-section-number">11.2</span> Part 2</h2>
 <p>We now need to modify our run iterations function. I am going to embed a function that will search for the first seat,
-and update the tolerance from 4 to 5. The rest of the function remains as per part 1.</p>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="seating-system.html#cb190-1"></a>p2_run_iterations &lt;-<span class="st"> </span><span class="cf">function</span>(input, <span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">count =</span> <span class="dv">0</span>) {</span>
-<span id="cb190-2"><a href="seating-system.html#cb190-2"></a>  <span class="co"># this is a recursive function, when n is less than 1 stop iterating and</span></span>
-<span id="cb190-3"><a href="seating-system.html#cb190-3"></a>  <span class="co"># return whatever input is given</span></span>
-<span id="cb190-4"><a href="seating-system.html#cb190-4"></a>  <span class="cf">if</span> (n <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span>) <span class="kw">return</span> (<span class="kw">list</span>(<span class="dt">input =</span> input, <span class="dt">count =</span> count))</span>
-<span id="cb190-5"><a href="seating-system.html#cb190-5"></a>  </span>
-<span id="cb190-6"><a href="seating-system.html#cb190-6"></a>  <span class="co"># take a copy of the current state - we will modify this copied state and</span></span>
-<span id="cb190-7"><a href="seating-system.html#cb190-7"></a>  <span class="co"># return it for the next iteration</span></span>
-<span id="cb190-8"><a href="seating-system.html#cb190-8"></a>  next_state &lt;-<span class="st"> </span>input</span>
-<span id="cb190-9"><a href="seating-system.html#cb190-9"></a>  <span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(input) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
-<span id="cb190-10"><a href="seating-system.html#cb190-10"></a>    <span class="cf">for</span> (c <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(<span class="kw">ncol</span>(input) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
-<span id="cb190-11"><a href="seating-system.html#cb190-11"></a>      <span class="co"># skip this cell if it&#39;s a .</span></span>
-<span id="cb190-12"><a href="seating-system.html#cb190-12"></a>      <span class="cf">if</span> (input[r, c] <span class="op">==</span><span class="st"> &quot;.&quot;</span>) <span class="cf">next</span>()</span>
-<span id="cb190-13"><a href="seating-system.html#cb190-13"></a>      </span>
-<span id="cb190-14"><a href="seating-system.html#cb190-14"></a>      <span class="co"># get first seat</span></span>
-<span id="cb190-15"><a href="seating-system.html#cb190-15"></a>      find_first_seat &lt;-<span class="st"> </span><span class="cf">function</span>(rd, cd) {</span>
-<span id="cb190-16"><a href="seating-system.html#cb190-16"></a>        rr &lt;-<span class="st"> </span>r</span>
-<span id="cb190-17"><a href="seating-system.html#cb190-17"></a>        cc &lt;-<span class="st"> </span>c</span>
-<span id="cb190-18"><a href="seating-system.html#cb190-18"></a>        <span class="cf">repeat</span> {</span>
-<span id="cb190-19"><a href="seating-system.html#cb190-19"></a>          rr &lt;-<span class="st"> </span>rr <span class="op">+</span><span class="st"> </span>rd</span>
-<span id="cb190-20"><a href="seating-system.html#cb190-20"></a>          cc &lt;-<span class="st"> </span>cc <span class="op">+</span><span class="st"> </span>cd</span>
-<span id="cb190-21"><a href="seating-system.html#cb190-21"></a>          <span class="cf">if</span> (rr <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>rr <span class="op">&gt;</span><span class="st"> </span><span class="kw">nrow</span>(input) <span class="op">|</span></span>
-<span id="cb190-22"><a href="seating-system.html#cb190-22"></a><span class="st">              </span>cc <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>cc <span class="op">&gt;</span><span class="st"> </span><span class="kw">ncol</span>(input) ) {</span>
-<span id="cb190-23"><a href="seating-system.html#cb190-23"></a>            <span class="kw">return</span> (<span class="st">&quot;.&quot;</span>)</span>
-<span id="cb190-24"><a href="seating-system.html#cb190-24"></a>          } <span class="cf">else</span> <span class="cf">if</span> (input[rr, cc] <span class="op">!=</span><span class="st"> &quot;.&quot;</span>) {</span>
-<span id="cb190-25"><a href="seating-system.html#cb190-25"></a>            <span class="kw">return</span> (input[rr, cc])</span>
-<span id="cb190-26"><a href="seating-system.html#cb190-26"></a>          }</span>
-<span id="cb190-27"><a href="seating-system.html#cb190-27"></a>        }</span>
-<span id="cb190-28"><a href="seating-system.html#cb190-28"></a>      }</span>
-<span id="cb190-29"><a href="seating-system.html#cb190-29"></a>      adjacent &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
-<span id="cb190-30"><a href="seating-system.html#cb190-30"></a>        <span class="dt">rd =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">-1</span>, <span class="dv">-1</span>,  <span class="dv">0</span>,  <span class="dv">0</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>),</span>
-<span id="cb190-31"><a href="seating-system.html#cb190-31"></a>        <span class="dt">cd =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,  <span class="dv">0</span>,  <span class="dv">1</span>, <span class="dv">-1</span>,  <span class="dv">1</span>, <span class="dv">-1</span>,  <span class="dv">0</span>,  <span class="dv">1</span>)</span>
-<span id="cb190-32"><a href="seating-system.html#cb190-32"></a>      ) <span class="op">%&gt;%</span></span>
-<span id="cb190-33"><a href="seating-system.html#cb190-33"></a><span class="st">        </span><span class="kw">pmap</span>(find_first_seat)</span>
-<span id="cb190-34"><a href="seating-system.html#cb190-34"></a>      </span>
-<span id="cb190-35"><a href="seating-system.html#cb190-35"></a>      <span class="co"># count how many are occupied</span></span>
-<span id="cb190-36"><a href="seating-system.html#cb190-36"></a>      occupied &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">ifelse</span>(adjacent <span class="op">==</span><span class="st"> &quot;#&quot;</span>, <span class="dv">1</span>, <span class="dv">0</span>))</span>
-<span id="cb190-37"><a href="seating-system.html#cb190-37"></a>      </span>
-<span id="cb190-38"><a href="seating-system.html#cb190-38"></a>      <span class="cf">if</span> (input[r, c] <span class="op">==</span><span class="st"> &quot;L&quot;</span>) {</span>
-<span id="cb190-39"><a href="seating-system.html#cb190-39"></a>        <span class="cf">if</span> (occupied <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</span>
-<span id="cb190-40"><a href="seating-system.html#cb190-40"></a>          next_state[r, c] &lt;-<span class="st"> &quot;#&quot;</span></span>
-<span id="cb190-41"><a href="seating-system.html#cb190-41"></a>        }</span>
-<span id="cb190-42"><a href="seating-system.html#cb190-42"></a>      } <span class="cf">else</span> {</span>
-<span id="cb190-43"><a href="seating-system.html#cb190-43"></a>        <span class="co"># it can only be &quot;#&quot; now</span></span>
-<span id="cb190-44"><a href="seating-system.html#cb190-44"></a>        <span class="cf">if</span> (occupied <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>) {</span>
-<span id="cb190-45"><a href="seating-system.html#cb190-45"></a>          next_state[r, c] &lt;-<span class="st"> &quot;L&quot;</span></span>
-<span id="cb190-46"><a href="seating-system.html#cb190-46"></a>        }</span>
-<span id="cb190-47"><a href="seating-system.html#cb190-47"></a>      }</span>
-<span id="cb190-48"><a href="seating-system.html#cb190-48"></a>    }</span>
-<span id="cb190-49"><a href="seating-system.html#cb190-49"></a>  }</span>
-<span id="cb190-50"><a href="seating-system.html#cb190-50"></a>  </span>
-<span id="cb190-51"><a href="seating-system.html#cb190-51"></a>  <span class="cf">if</span> (<span class="kw">all</span>(next_state <span class="op">==</span><span class="st"> </span>input)) {</span>
-<span id="cb190-52"><a href="seating-system.html#cb190-52"></a>    <span class="kw">return</span> (<span class="kw">list</span>(<span class="dt">input =</span> input, <span class="dt">count =</span> count))</span>
-<span id="cb190-53"><a href="seating-system.html#cb190-53"></a>  }</span>
-<span id="cb190-54"><a href="seating-system.html#cb190-54"></a>  </span>
-<span id="cb190-55"><a href="seating-system.html#cb190-55"></a>  <span class="co"># run the next itertion, decreasing n by 1</span></span>
-<span id="cb190-56"><a href="seating-system.html#cb190-56"></a>  <span class="kw">p2_run_iterations</span>(next_state, n <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, count <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb190-57"><a href="seating-system.html#cb190-57"></a>}</span></code></pre></div>
+and update the tolerance from 4 to 5.</p>
+<p>In order to speed up computation we first calculate the “first seat” found from any position. In order to remember these
+seats we switch from a recursive function to use a loop. Otherwise, the function remains the same as in part 1.</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="seating-system.html#cb190-1"></a>p2_run_iterations &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
+<span id="cb190-2"><a href="seating-system.html#cb190-2"></a>  <span class="co"># create a function to find the first seat that can be seen from r, c in the</span></span>
+<span id="cb190-3"><a href="seating-system.html#cb190-3"></a>  <span class="co"># direction rd, cd. rd / cd should be 1, -1 or 0, but both should not be 0</span></span>
+<span id="cb190-4"><a href="seating-system.html#cb190-4"></a>  find_first_seat &lt;-<span class="st"> </span><span class="cf">function</span>(r, c, rd, cd) {</span>
+<span id="cb190-5"><a href="seating-system.html#cb190-5"></a>    rr &lt;-<span class="st"> </span>r</span>
+<span id="cb190-6"><a href="seating-system.html#cb190-6"></a>    cc &lt;-<span class="st"> </span>c</span>
+<span id="cb190-7"><a href="seating-system.html#cb190-7"></a>    <span class="cf">if</span> (input[rr, cc] <span class="op">==</span><span class="st"> &quot;.&quot;</span>) {</span>
+<span id="cb190-8"><a href="seating-system.html#cb190-8"></a>      <span class="co"># return a cell that will be a &quot;.&quot;</span></span>
+<span id="cb190-9"><a href="seating-system.html#cb190-9"></a>      <span class="kw">return</span> (<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb190-10"><a href="seating-system.html#cb190-10"></a>    }</span>
+<span id="cb190-11"><a href="seating-system.html#cb190-11"></a>    <span class="cf">repeat</span> {</span>
+<span id="cb190-12"><a href="seating-system.html#cb190-12"></a>      rr &lt;-<span class="st"> </span>rr <span class="op">+</span><span class="st"> </span>rd</span>
+<span id="cb190-13"><a href="seating-system.html#cb190-13"></a>      cc &lt;-<span class="st"> </span>cc <span class="op">+</span><span class="st"> </span>cd</span>
+<span id="cb190-14"><a href="seating-system.html#cb190-14"></a>      <span class="cf">if</span> (rr <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>rr <span class="op">&gt;</span><span class="st"> </span><span class="kw">nrow</span>(input) <span class="op">|</span></span>
+<span id="cb190-15"><a href="seating-system.html#cb190-15"></a><span class="st">          </span>cc <span class="op">&lt;</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>cc <span class="op">&gt;</span><span class="st"> </span><span class="kw">ncol</span>(input) ) {</span>
+<span id="cb190-16"><a href="seating-system.html#cb190-16"></a>        <span class="co"># return a cell that will be a &quot;.&quot;</span></span>
+<span id="cb190-17"><a href="seating-system.html#cb190-17"></a>        <span class="kw">return</span> (<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb190-18"><a href="seating-system.html#cb190-18"></a>      } <span class="cf">else</span> <span class="cf">if</span> (input[rr, cc] <span class="op">!=</span><span class="st"> &quot;.&quot;</span>) {</span>
+<span id="cb190-19"><a href="seating-system.html#cb190-19"></a>        <span class="co"># return the indexes</span></span>
+<span id="cb190-20"><a href="seating-system.html#cb190-20"></a>        <span class="kw">return</span> (<span class="kw">c</span>(rr, cc))</span>
+<span id="cb190-21"><a href="seating-system.html#cb190-21"></a>      }</span>
+<span id="cb190-22"><a href="seating-system.html#cb190-22"></a>    }</span>
+<span id="cb190-23"><a href="seating-system.html#cb190-23"></a>  }</span>
+<span id="cb190-24"><a href="seating-system.html#cb190-24"></a>  </span>
+<span id="cb190-25"><a href="seating-system.html#cb190-25"></a>  first_seats &lt;-<span class="st"> </span><span class="kw">map</span>(<span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(input) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), <span class="cf">function</span>(r) {</span>
+<span id="cb190-26"><a href="seating-system.html#cb190-26"></a>    <span class="kw">map</span>(<span class="dv">2</span><span class="op">:</span>(<span class="kw">ncol</span>(input) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>), <span class="cf">function</span>(c) {</span>
+<span id="cb190-27"><a href="seating-system.html#cb190-27"></a>      <span class="kw">list</span>(</span>
+<span id="cb190-28"><a href="seating-system.html#cb190-28"></a>        <span class="dt">rd =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">-1</span>, <span class="dv">-1</span>,  <span class="dv">0</span>,  <span class="dv">0</span>,  <span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">1</span>),</span>
+<span id="cb190-29"><a href="seating-system.html#cb190-29"></a>        <span class="dt">cd =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,  <span class="dv">0</span>,  <span class="dv">1</span>, <span class="dv">-1</span>,  <span class="dv">1</span>, <span class="dv">-1</span>,  <span class="dv">0</span>,  <span class="dv">1</span>)</span>
+<span id="cb190-30"><a href="seating-system.html#cb190-30"></a>      ) <span class="op">%&gt;%</span></span>
+<span id="cb190-31"><a href="seating-system.html#cb190-31"></a><span class="st">        </span><span class="kw">pmap</span>(find_first_seat, <span class="dt">r =</span> r, <span class="dt">c =</span> c) <span class="op">%&gt;%</span></span>
+<span id="cb190-32"><a href="seating-system.html#cb190-32"></a><span class="st">        </span><span class="kw">discard</span>(<span class="kw">compose</span>(any, is.na))</span>
+<span id="cb190-33"><a href="seating-system.html#cb190-33"></a>    })</span>
+<span id="cb190-34"><a href="seating-system.html#cb190-34"></a>  })</span>
+<span id="cb190-35"><a href="seating-system.html#cb190-35"></a>  </span>
+<span id="cb190-36"><a href="seating-system.html#cb190-36"></a>  count &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb190-37"><a href="seating-system.html#cb190-37"></a>  state &lt;-<span class="st"> </span>input</span>
+<span id="cb190-38"><a href="seating-system.html#cb190-38"></a>  <span class="cf">while</span> (count <span class="op">&lt;</span><span class="st"> </span>n) {</span>
+<span id="cb190-39"><a href="seating-system.html#cb190-39"></a>    <span class="co"># take a copy of the current state - we will modify this copied state and</span></span>
+<span id="cb190-40"><a href="seating-system.html#cb190-40"></a>    <span class="co"># return it for the next iteration</span></span>
+<span id="cb190-41"><a href="seating-system.html#cb190-41"></a>    next_state &lt;-<span class="st"> </span>state</span>
+<span id="cb190-42"><a href="seating-system.html#cb190-42"></a>    </span>
+<span id="cb190-43"><a href="seating-system.html#cb190-43"></a>    <span class="cf">for</span> (r <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(<span class="kw">nrow</span>(state) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb190-44"><a href="seating-system.html#cb190-44"></a>      <span class="cf">for</span> (c <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(<span class="kw">ncol</span>(state) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb190-45"><a href="seating-system.html#cb190-45"></a>        <span class="co"># skip this cell if it&#39;s a .</span></span>
+<span id="cb190-46"><a href="seating-system.html#cb190-46"></a>        <span class="cf">if</span> (state[r, c] <span class="op">==</span><span class="st"> &quot;.&quot;</span>) <span class="cf">next</span>()</span>
+<span id="cb190-47"><a href="seating-system.html#cb190-47"></a>        </span>
+<span id="cb190-48"><a href="seating-system.html#cb190-48"></a>        <span class="co"># our first seats only iterated over the &quot;inside&quot; range, so we need to</span></span>
+<span id="cb190-49"><a href="seating-system.html#cb190-49"></a>        <span class="co"># subtract 1 from the r and c index</span></span>
+<span id="cb190-50"><a href="seating-system.html#cb190-50"></a>        adjacent &lt;-<span class="st"> </span><span class="kw">map_chr</span>(first_seats[[r <span class="op">-</span><span class="st"> </span><span class="dv">1</span>]][[c <span class="op">-</span><span class="st"> </span><span class="dv">1</span>]],</span>
+<span id="cb190-51"><a href="seating-system.html#cb190-51"></a>                            <span class="op">~</span>state[.x[[<span class="dv">1</span>]], .x[[<span class="dv">2</span>]]])</span>
+<span id="cb190-52"><a href="seating-system.html#cb190-52"></a>        </span>
+<span id="cb190-53"><a href="seating-system.html#cb190-53"></a>        <span class="co"># count how many are occupied</span></span>
+<span id="cb190-54"><a href="seating-system.html#cb190-54"></a>        occupied &lt;-<span class="st"> </span><span class="kw">sum</span>(adjacent <span class="op">==</span><span class="st"> &quot;#&quot;</span>)</span>
+<span id="cb190-55"><a href="seating-system.html#cb190-55"></a>        </span>
+<span id="cb190-56"><a href="seating-system.html#cb190-56"></a>        <span class="cf">if</span> (state[r, c] <span class="op">==</span><span class="st"> &quot;L&quot;</span>) {</span>
+<span id="cb190-57"><a href="seating-system.html#cb190-57"></a>          <span class="cf">if</span> (occupied <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb190-58"><a href="seating-system.html#cb190-58"></a>            next_state[r, c] &lt;-<span class="st"> &quot;#&quot;</span></span>
+<span id="cb190-59"><a href="seating-system.html#cb190-59"></a>          }</span>
+<span id="cb190-60"><a href="seating-system.html#cb190-60"></a>        } <span class="cf">else</span> {</span>
+<span id="cb190-61"><a href="seating-system.html#cb190-61"></a>          <span class="co"># it can only be &quot;#&quot; now</span></span>
+<span id="cb190-62"><a href="seating-system.html#cb190-62"></a>          <span class="cf">if</span> (occupied <span class="op">&gt;=</span><span class="st"> </span><span class="dv">5</span>) {</span>
+<span id="cb190-63"><a href="seating-system.html#cb190-63"></a>            next_state[r, c] &lt;-<span class="st"> &quot;L&quot;</span></span>
+<span id="cb190-64"><a href="seating-system.html#cb190-64"></a>          }</span>
+<span id="cb190-65"><a href="seating-system.html#cb190-65"></a>        }</span>
+<span id="cb190-66"><a href="seating-system.html#cb190-66"></a>      }</span>
+<span id="cb190-67"><a href="seating-system.html#cb190-67"></a>    }</span>
+<span id="cb190-68"><a href="seating-system.html#cb190-68"></a>    </span>
+<span id="cb190-69"><a href="seating-system.html#cb190-69"></a>    <span class="cf">if</span> (<span class="kw">all</span>(next_state <span class="op">==</span><span class="st"> </span>state)) {</span>
+<span id="cb190-70"><a href="seating-system.html#cb190-70"></a>      <span class="cf">break</span>()</span>
+<span id="cb190-71"><a href="seating-system.html#cb190-71"></a>    }</span>
+<span id="cb190-72"><a href="seating-system.html#cb190-72"></a>    </span>
+<span id="cb190-73"><a href="seating-system.html#cb190-73"></a>    state &lt;-<span class="st"> </span>next_state</span>
+<span id="cb190-74"><a href="seating-system.html#cb190-74"></a>    count &lt;-<span class="st"> </span>count <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb190-75"><a href="seating-system.html#cb190-75"></a>  }</span>
+<span id="cb190-76"><a href="seating-system.html#cb190-76"></a>  </span>
+<span id="cb190-77"><a href="seating-system.html#cb190-77"></a>  <span class="kw">list</span>(<span class="dt">input =</span> state, <span class="dt">count =</span> count)</span>
+<span id="cb190-78"><a href="seating-system.html#cb190-78"></a>}</span></code></pre></div>
 <p>We can test our function works as expected after 1 iteration:</p>
 <div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="seating-system.html#cb191-1"></a>psample <span class="op">%&gt;%</span></span>
 <span id="cb191-2"><a href="seating-system.html#cb191-2"></a><span class="st">  </span><span class="kw">p2_run_iterations</span>(<span class="dv">1</span>) </span></code></pre></div>

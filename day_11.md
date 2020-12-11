@@ -211,66 +211,90 @@ pactual %>%
 ## Part 2
 
 We now need to modify our run iterations function. I am going to embed a function that will search for the first seat,
-and update the tolerance from 4 to 5. The rest of the function remains as per part 1.
+and update the tolerance from 4 to 5.
+
+In order to speed up computation we first calculate the "first seat" found from any position. In order to remember these
+seats we switch from a recursive function to use a loop. Otherwise, the function remains the same as in part 1.
 
 
 ```r
-p2_run_iterations <- function(input, n = 1, count = 0) {
-  # this is a recursive function, when n is less than 1 stop iterating and
-  # return whatever input is given
-  if (n < 1) return (list(input = input, count = count))
-  
-  # take a copy of the current state - we will modify this copied state and
-  # return it for the next iteration
-  next_state <- input
-  for (r in 2:(nrow(input) - 1)) {
-    for (c in 2:(ncol(input) - 1)) {
-      # skip this cell if it's a .
-      if (input[r, c] == ".") next()
-      
-      # get first seat
-      find_first_seat <- function(rd, cd) {
-        rr <- r
-        cc <- c
-        repeat {
-          rr <- rr + rd
-          cc <- cc + cd
-          if (rr < 1 | rr > nrow(input) |
-              cc < 1 | cc > ncol(input) ) {
-            return (".")
-          } else if (input[rr, cc] != ".") {
-            return (input[rr, cc])
-          }
-        }
-      }
-      adjacent <- list(
-        rd = c(-1, -1, -1,  0,  0,  1,  1,  1),
-        cd = c(-1,  0,  1, -1,  1, -1,  0,  1)
-      ) %>%
-        pmap(find_first_seat)
-      
-      # count how many are occupied
-      occupied <- sum(ifelse(adjacent == "#", 1, 0))
-      
-      if (input[r, c] == "L") {
-        if (occupied == 0) {
-          next_state[r, c] <- "#"
-        }
-      } else {
-        # it can only be "#" now
-        if (occupied >= 5) {
-          next_state[r, c] <- "L"
-        }
+p2_run_iterations <- function(input, n) {
+  # create a function to find the first seat that can be seen from r, c in the
+  # direction rd, cd. rd / cd should be 1, -1 or 0, but both should not be 0
+  find_first_seat <- function(r, c, rd, cd) {
+    rr <- r
+    cc <- c
+    if (input[rr, cc] == ".") {
+      # return a cell that will be a "."
+      return (c(1, 1))
+    }
+    repeat {
+      rr <- rr + rd
+      cc <- cc + cd
+      if (rr < 1 | rr > nrow(input) |
+          cc < 1 | cc > ncol(input) ) {
+        # return a cell that will be a "."
+        return (c(1, 1))
+      } else if (input[rr, cc] != ".") {
+        # return the indexes
+        return (c(rr, cc))
       }
     }
   }
   
-  if (all(next_state == input)) {
-    return (list(input = input, count = count))
+  first_seats <- map(2:(nrow(input) - 1), function(r) {
+    map(2:(ncol(input) - 1), function(c) {
+      list(
+        rd = c(-1, -1, -1,  0,  0,  1,  1,  1),
+        cd = c(-1,  0,  1, -1,  1, -1,  0,  1)
+      ) %>%
+        pmap(find_first_seat, r = r, c = c) %>%
+        discard(compose(any, is.na))
+    })
+  })
+  
+  count <- 0
+  state <- input
+  while (count < n) {
+    # take a copy of the current state - we will modify this copied state and
+    # return it for the next iteration
+    next_state <- state
+    
+    for (r in 2:(nrow(state) - 1)) {
+      for (c in 2:(ncol(state) - 1)) {
+        # skip this cell if it's a .
+        if (state[r, c] == ".") next()
+        
+        # our first seats only iterated over the "inside" range, so we need to
+        # subtract 1 from the r and c index
+        adjacent <- map_chr(first_seats[[r - 1]][[c - 1]],
+                            ~state[.x[[1]], .x[[2]]])
+        
+        # count how many are occupied
+        occupied <- sum(adjacent == "#")
+        
+        if (state[r, c] == "L") {
+          if (occupied == 0) {
+            next_state[r, c] <- "#"
+          }
+        } else {
+          # it can only be "#" now
+          if (occupied >= 5) {
+            next_state[r, c] <- "L"
+          }
+        }
+      }
+    }
+    
+    if (all(next_state == state)) {
+      break()
+    }
+    
+    state <- next_state
+    count <- count + 1
   }
   
-  # run the next itertion, decreasing n by 1
-  p2_run_iterations(next_state, n - 1, count + 1)
+  list(input = state, count = count)
 }
 ```
 
