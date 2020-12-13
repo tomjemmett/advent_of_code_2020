@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Day 6 Custom Customs | Advent of Code 2020</title>
+  <title>Day 13 Shuttle Search | Advent of Code 2020</title>
   <meta name="description" content="My attempt to complete AOC 2020 in R" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Day 6 Custom Customs | Advent of Code 2020" />
+  <meta property="og:title" content="Day 13 Shuttle Search | Advent of Code 2020" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Day 6 Custom Customs | Advent of Code 2020" />
+  <meta name="twitter:title" content="Day 13 Shuttle Search | Advent of Code 2020" />
   
   <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="binary-boarding.html"/>
-<link rel="next" href="handy-haversacks.html"/>
+<link rel="prev" href="rain-risk.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -217,86 +217,78 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="custom-customs" class="section level1">
-<h1><span class="header-section-number">Day 6</span> Custom Customs</h1>
-<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/6">Day 6</a>.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="custom-customs.html#cb94-1"></a>load_file &lt;-<span class="st"> </span><span class="cf">function</span>(file) {</span>
-<span id="cb94-2"><a href="custom-customs.html#cb94-2"></a>  file <span class="op">%&gt;%</span></span>
-<span id="cb94-3"><a href="custom-customs.html#cb94-3"></a><span class="st">    </span><span class="kw">read_file</span>() <span class="op">%&gt;%</span></span>
-<span id="cb94-4"><a href="custom-customs.html#cb94-4"></a><span class="st">    </span><span class="co"># strip windows added carriage returns</span></span>
-<span id="cb94-5"><a href="custom-customs.html#cb94-5"></a><span class="st">    </span><span class="kw">str_remove_all</span>(<span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb94-6"><a href="custom-customs.html#cb94-6"></a><span class="st">    </span><span class="co"># clear trailing whitespace</span></span>
-<span id="cb94-7"><a href="custom-customs.html#cb94-7"></a><span class="st">    </span><span class="kw">str_trim</span>() <span class="op">%&gt;%</span></span>
-<span id="cb94-8"><a href="custom-customs.html#cb94-8"></a><span class="st">    </span><span class="co"># split where we have two new lines</span></span>
-<span id="cb94-9"><a href="custom-customs.html#cb94-9"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb94-10"><a href="custom-customs.html#cb94-10"></a><span class="st">    </span><span class="co"># take only the first results (the input is just one string)</span></span>
-<span id="cb94-11"><a href="custom-customs.html#cb94-11"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb94-12"><a href="custom-customs.html#cb94-12"></a><span class="st">    </span><span class="co"># split each result into individual lines</span></span>
-<span id="cb94-13"><a href="custom-customs.html#cb94-13"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb94-14"><a href="custom-customs.html#cb94-14"></a>}</span>
-<span id="cb94-15"><a href="custom-customs.html#cb94-15"></a></span>
-<span id="cb94-16"><a href="custom-customs.html#cb94-16"></a>sample &lt;-<span class="st"> </span><span class="kw">load_file</span>(<span class="st">&quot;samples/day_06_sample.txt&quot;</span>)</span>
-<span id="cb94-17"><a href="custom-customs.html#cb94-17"></a>actual &lt;-<span class="st"> </span><span class="kw">load_file</span>(<span class="st">&quot;inputs/day_06_input.txt&quot;</span>)</span></code></pre></div>
-<div id="part-1-5" class="section level2">
-<h2><span class="header-section-number">6.1</span> Part 1</h2>
-<p>For part 1 I am going to first split each respondents response into the individual answers (<code>str_extract_all()</code>). This
-will return a list of character vectors, so I will use <code>flatten_chr()</code> to turn these into vectors containing all of the
-answers for each group as a character vector. Then I can simply take the <code>unique()</code> values and work out the <code>length()</code>
-of the resulting vector. I tie all of this together with the <code>compose()</code> function from <code>{purrr}</code>: this is similar to
-<code>%&gt;%</code>, except it chains the functions together before you evaluate them into a single chain.</p>
-<p>Like mathematical composition, <code>compose()</code> works with the “outer-most” function first, e.g. <code>str_extract_all()</code> runs
-before <code>flatten_chr()</code>, etc.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="custom-customs.html#cb95-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb95-2"><a href="custom-customs.html#cb95-2"></a>  input <span class="op">%&gt;%</span></span>
-<span id="cb95-3"><a href="custom-customs.html#cb95-3"></a><span class="st">    </span><span class="kw">map_dbl</span>(<span class="kw">compose</span>(length,</span>
-<span id="cb95-4"><a href="custom-customs.html#cb95-4"></a>                    unique,</span>
-<span id="cb95-5"><a href="custom-customs.html#cb95-5"></a>                    flatten_chr,</span>
-<span id="cb95-6"><a href="custom-customs.html#cb95-6"></a>                    str_extract_all), <span class="st">&quot;.&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb95-7"><a href="custom-customs.html#cb95-7"></a><span class="st">    </span><span class="kw">sum</span>()</span>
-<span id="cb95-8"><a href="custom-customs.html#cb95-8"></a>}</span></code></pre></div>
-<p>Now I can check that this function behaves as expected:</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="custom-customs.html#cb96-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">11</span></span></code></pre></div>
+<div id="shuttle-search" class="section level1">
+<h1><span class="header-section-number">Day 13</span> Shuttle Search</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2021/day/13">Day 13</a>.</p>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="shuttle-search.html#cb231-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_13_sample.txt&quot;</span>)</span>
+<span id="cb231-2"><a href="shuttle-search.html#cb231-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_13_input.txt&quot;</span>)</span></code></pre></div>
+<div id="part-1-12" class="section level2">
+<h2><span class="header-section-number">13.1</span> Part 1</h2>
+<p>We can solve part 1 by finding the first time each of the buses arrives after we arrive, then finding which bus has the
+minimum time.</p>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="shuttle-search.html#cb232-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb232-2"><a href="shuttle-search.html#cb232-2"></a>  earliest_time &lt;-<span class="st"> </span><span class="kw">as.integer</span>(input[[<span class="dv">1</span>]])</span>
+<span id="cb232-3"><a href="shuttle-search.html#cb232-3"></a>  buses &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]] <span class="op">%&gt;%</span></span>
+<span id="cb232-4"><a href="shuttle-search.html#cb232-4"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;,&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb232-5"><a href="shuttle-search.html#cb232-5"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb232-6"><a href="shuttle-search.html#cb232-6"></a><span class="st">    </span><span class="kw">str_subset</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">d&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb232-7"><a href="shuttle-search.html#cb232-7"></a><span class="st">    </span><span class="kw">as.integer</span>()</span>
+<span id="cb232-8"><a href="shuttle-search.html#cb232-8"></a>  </span>
+<span id="cb232-9"><a href="shuttle-search.html#cb232-9"></a>  first_available &lt;-<span class="st"> </span><span class="kw">ceiling</span>(earliest_time <span class="op">/</span><span class="st"> </span>buses) <span class="op">*</span><span class="st"> </span>buses</span>
+<span id="cb232-10"><a href="shuttle-search.html#cb232-10"></a>  which_bus &lt;-<span class="st"> </span><span class="kw">which.min</span>(first_available)</span>
+<span id="cb232-11"><a href="shuttle-search.html#cb232-11"></a>  (first_available[[which_bus]] <span class="op">-</span><span class="st"> </span>earliest_time) <span class="op">*</span><span class="st"> </span>buses[[which_bus]]</span>
+<span id="cb232-12"><a href="shuttle-search.html#cb232-12"></a>}</span></code></pre></div>
+<p>We can check that this function works on the sample data:</p>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="shuttle-search.html#cb233-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">295</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>And we can run on our actual data</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="custom-customs.html#cb98-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
-<pre><code>## [1] 6273</code></pre>
+<p>And we can run with the actual data</p>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="shuttle-search.html#cb235-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 3269</code></pre>
 </div>
-<div id="part-2-5" class="section level2">
-<h2><span class="header-section-number">6.2</span> Part 2</h2>
-<p>For part 2 I am going to start as in part 1, split each respondents response into individual answers. But then I will
-use <code>reduce()</code> to go through pairs of responses at a time and only select the questions which were answered by both as
-“yes”. We can then simply take the <code>length()</code> of each groups responses.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="custom-customs.html#cb100-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb100-2"><a href="custom-customs.html#cb100-2"></a>  input <span class="op">%&gt;%</span></span>
-<span id="cb100-3"><a href="custom-customs.html#cb100-3"></a><span class="st">    </span><span class="kw">map</span>(str_extract_all, <span class="st">&quot;.&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb100-4"><a href="custom-customs.html#cb100-4"></a><span class="st">    </span><span class="kw">map</span>(reduce, <span class="op">~</span>.y[.y <span class="op">%in%</span><span class="st"> </span>.x]) <span class="op">%&gt;%</span></span>
-<span id="cb100-5"><a href="custom-customs.html#cb100-5"></a><span class="st">    </span><span class="kw">map_dbl</span>(length) <span class="op">%&gt;%</span></span>
-<span id="cb100-6"><a href="custom-customs.html#cb100-6"></a><span class="st">    </span><span class="kw">sum</span>()</span>
-<span id="cb100-7"><a href="custom-customs.html#cb100-7"></a>}</span></code></pre></div>
-<p>We can test to see if the function works as expected::</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="custom-customs.html#cb101-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">6</span></span></code></pre></div>
+<div id="part-2-12" class="section level2">
+<h2><span class="header-section-number">13.2</span> Part 2</h2>
+<p>Part 2 could be solved with the <a href="https://en.wikipedia.org/wiki/Chinese_remainder_theorem">Chinese Remainder Theorem</a>,
+but we could solve it more simply by iterating over the input items and keeping track of the current time and the
+current “jump” size. The jump size is equal to the cumulative product of the busses.</p>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="shuttle-search.html#cb237-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb237-2"><a href="shuttle-search.html#cb237-2"></a>  <span class="co"># take the 2nd row of the input, convert x&#39;s to 0&#39;s</span></span>
+<span id="cb237-3"><a href="shuttle-search.html#cb237-3"></a>  x &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]] <span class="op">%&gt;%</span></span>
+<span id="cb237-4"><a href="shuttle-search.html#cb237-4"></a><span class="st">    </span><span class="kw">str_replace_all</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;0&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb237-5"><a href="shuttle-search.html#cb237-5"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;,&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb237-6"><a href="shuttle-search.html#cb237-6"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb237-7"><a href="shuttle-search.html#cb237-7"></a><span class="st">    </span><span class="kw">as.numeric</span>()</span>
+<span id="cb237-8"><a href="shuttle-search.html#cb237-8"></a>  </span>
+<span id="cb237-9"><a href="shuttle-search.html#cb237-9"></a>  <span class="co"># get the sequence of values that are non zero, index from 0</span></span>
+<span id="cb237-10"><a href="shuttle-search.html#cb237-10"></a>  y &lt;-<span class="st"> </span><span class="kw">seq_along</span>(x)[x <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>] <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb237-11"><a href="shuttle-search.html#cb237-11"></a>  <span class="co"># get rid of the 0&#39;s (x&#39;s)</span></span>
+<span id="cb237-12"><a href="shuttle-search.html#cb237-12"></a>  x &lt;-<span class="st"> </span>x[x <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>]</span>
+<span id="cb237-13"><a href="shuttle-search.html#cb237-13"></a>  </span>
+<span id="cb237-14"><a href="shuttle-search.html#cb237-14"></a>  <span class="co"># start with a jump equal to the first value in the input</span></span>
+<span id="cb237-15"><a href="shuttle-search.html#cb237-15"></a>  j &lt;-<span class="st"> </span>x[<span class="dv">1</span>]</span>
+<span id="cb237-16"><a href="shuttle-search.html#cb237-16"></a>  <span class="co"># start at time 0</span></span>
+<span id="cb237-17"><a href="shuttle-search.html#cb237-17"></a>  t &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb237-18"><a href="shuttle-search.html#cb237-18"></a>  </span>
+<span id="cb237-19"><a href="shuttle-search.html#cb237-19"></a>  <span class="co"># iterate over the input, skipping the first item</span></span>
+<span id="cb237-20"><a href="shuttle-search.html#cb237-20"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="kw">length</span>(x)) {</span>
+<span id="cb237-21"><a href="shuttle-search.html#cb237-21"></a>    <span class="co"># increase our time by the size of the jump while the time + step size is</span></span>
+<span id="cb237-22"><a href="shuttle-search.html#cb237-22"></a>    <span class="co"># not a divisor of the current input item</span></span>
+<span id="cb237-23"><a href="shuttle-search.html#cb237-23"></a>    <span class="cf">while</span> ((t <span class="op">+</span><span class="st"> </span>y[[i]]) <span class="op">%%</span><span class="st"> </span>x[[i]]) {</span>
+<span id="cb237-24"><a href="shuttle-search.html#cb237-24"></a>      t &lt;-<span class="st"> </span>t <span class="op">+</span><span class="st"> </span>j</span>
+<span id="cb237-25"><a href="shuttle-search.html#cb237-25"></a>    }</span>
+<span id="cb237-26"><a href="shuttle-search.html#cb237-26"></a>    <span class="co"># increase the size of our jump by the current input item (bus)</span></span>
+<span id="cb237-27"><a href="shuttle-search.html#cb237-27"></a>    j &lt;-<span class="st"> </span>j <span class="op">*</span><span class="st"> </span>x[[i]]</span>
+<span id="cb237-28"><a href="shuttle-search.html#cb237-28"></a>  }</span>
+<span id="cb237-29"><a href="shuttle-search.html#cb237-29"></a>  <span class="co"># return the time</span></span>
+<span id="cb237-30"><a href="shuttle-search.html#cb237-30"></a>  t</span>
+<span id="cb237-31"><a href="shuttle-search.html#cb237-31"></a>}</span></code></pre></div>
+<p>We can run this function on the sample data.</p>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="shuttle-search.html#cb238-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">1068781</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>And run the function on the actual data.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="custom-customs.html#cb103-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
-<pre><code>## [1] 3254</code></pre>
-</div>
-<div id="extra-solving-part-1-2-with-set-functions" class="section level2">
-<h2><span class="header-section-number">6.3</span> Extra: solving part 1 &amp; 2 with set functions</h2>
-<p>We could solve part 1 and 2 with the same function. Part 1 is essentially just the union of set’s in each group, whereas
-part 2 is the intersection of set’s. So we can instead write a function that accepted a set function as an argument,
-like so:</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="custom-customs.html#cb105-1"></a>extra &lt;-<span class="st"> </span><span class="cf">function</span>(input, fn) {</span>
-<span id="cb105-2"><a href="custom-customs.html#cb105-2"></a>  input <span class="op">%&gt;%</span></span>
-<span id="cb105-3"><a href="custom-customs.html#cb105-3"></a><span class="st">    </span><span class="kw">map</span>(str_extract_all, <span class="st">&quot;.&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb105-4"><a href="custom-customs.html#cb105-4"></a><span class="st">    </span><span class="kw">map</span>(reduce, fn) <span class="op">%&gt;%</span></span>
-<span id="cb105-5"><a href="custom-customs.html#cb105-5"></a><span class="st">    </span><span class="kw">map_dbl</span>(length) <span class="op">%&gt;%</span></span>
-<span id="cb105-6"><a href="custom-customs.html#cb105-6"></a><span class="st">    </span><span class="kw">sum</span>()</span>
-<span id="cb105-7"><a href="custom-customs.html#cb105-7"></a>}</span></code></pre></div>
-<p>We can now check that this new function works as expected:</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="custom-customs.html#cb106-1"></a><span class="kw">extra</span>(actual, union) <span class="op">==</span><span class="st"> </span><span class="kw">part_1</span>(actual)</span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="custom-customs.html#cb108-1"></a><span class="kw">extra</span>(actual, intersect) <span class="op">==</span><span class="st"> </span><span class="kw">part_2</span>(actual)</span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
+<p>And we can run on the actual data. We need to make sure that we alter the “scientific notation penalty” option to view
+the answer as an integer.</p>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="shuttle-search.html#cb240-1"></a><span class="kw">options</span>(<span class="dt">scipen =</span> <span class="dv">999</span>)</span>
+<span id="cb240-2"><a href="shuttle-search.html#cb240-2"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 672754131923874</code></pre>
 
 </div>
 </div>
@@ -305,8 +297,8 @@ like so:</p>
           </div>
         </div>
       </div>
-<a href="binary-boarding.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="handy-haversacks.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="rain-risk.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

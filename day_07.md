@@ -71,9 +71,9 @@ sample_g
 ```
 
 ```
-## IGRAPH f02a6cc DN-- 10 15 -- 
+## IGRAPH 933ea3f DN-- 10 15 -- 
 ## + attr: name (v/c), n (e/n)
-## + edges from f02a6cc (vertex names):
+## + edges from 933ea3f (vertex names):
 ##  [1] light red   ->bright white light red   ->muted yellow
 ##  [3] dark orange ->bright white dark orange ->muted yellow
 ##  [5] bright white->shiny gold   muted yellow->shiny gold  
