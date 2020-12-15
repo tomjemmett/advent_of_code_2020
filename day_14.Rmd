@@ -1,0 +1,177 @@
+# Docking Data
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(crayon.enabled = NULL, # for when rendering on github actions
+        scipen = 999)          # make sure we never print in scientific notation
+library(tidyverse)
+library(unglue)
+```
+
+This is my attempt to solve [Day 14](https://adventofcode.com/2021/day/14).
+
+```{r load data}
+sample <- read_lines("samples/day_14_sample.txt")
+actual <- read_lines("inputs/day_14_input.txt")
+```
+
+## Part 1
+
+Part 1 requires us to apply a "bitmask" to a number. The function `packBits()` can convert a vector of `raw` values
+back to an integer, but there are 2 issues.
+
+First, integers in R are signed 32-bit values, and our mask is 36-bits long. We need to handle the sign bit separately,
+otherwise we may end up with negative numbers.
+
+Secondly, `packBits()` is big [endian](https://en.wikipedia.org/wiki/Endianness), but the mask is little endian. So we
+need to reverse the values in the mask.
+
+We can solve today's problem by taking two copies of the mask. `mask0` will be where we apply the replace 0 logic. We
+can achieve this with a bitwise and, and a mask of all 1's except where the mask is a 0. `mask1` will be where we apply
+the replace 1 logic. We can achieve this with a bitwise or, and a mask of all 0's except where the mask is a 1.
+
+```{r part 1 apply mask}
+part_1_apply_mask <- function(value, mask) {
+  mask <- str_extract_all(mask, ".")[[1]] %>% rev()
+
+  mask0 <- str_replace(mask, "X", "1") %>% as.raw()
+  mask1 <- str_replace(mask, "X", "0") %>% as.raw()
+  
+  # ignore the most significant bit... assume all our numbers are positive...
+  mask0_lsb <- packBits(c(mask0[1:31], raw(1)), "integer")
+  mask1_lsb <- packBits(c(mask1[1:31], raw(1)), "integer")
+  
+  mask1_msb <- packBits(c(mask1[32:36], raw(27)), "integer")
+  
+  v <- value %>%
+    bitwAnd(mask0_lsb) %>%
+    bitwOr(mask1_lsb)
+  
+  as.numeric(v) + as.numeric(mask1_msb) * (2 ** 31)
+}
+```
+
+We can now solve part 1 by building a data frame that has a column for the mask along with the value. Note that if a
+memory location is updated twice we only keep the last value, so we can group by the memory locations and just keep
+the last value.
+
+```{r part 1 function}
+part_1 <- function(input) {
+  input %>%
+    unglue_data("{instruction} = {value}") %>%
+    mutate(mask = ifelse(instruction == "mask", value, NA)) %>%
+    fill(mask) %>%
+    filter(instruction != "mask") %>%
+    mutate(across(instruction, str_extract, "\\d+"),
+           across(c(instruction, value), as.integer)) %>%
+    group_by(instruction) %>%
+    summarise(across(everything(), last), .groups = "drop") %>%
+    mutate(new_val = map2_dbl(value, mask, part_1_apply_mask)) %>%
+    pull(new_val) %>%
+    sum()
+}
+```
+
+We can now test our function with the sample data:
+
+```{r part 1 sample test}
+part_1(sample) == 165
+```
+
+And we can run with the actual data:
+
+```{r part 1 actual}
+part_1(actual)
+```
+
+# Part 2
+
+In part 2 we have a more complex scenario. We create a new "apply mask" function that will apply these rules. This
+function will take the current memory, apply the rules for the current row of data, then return the memory. This can be
+used in within `reduce()` to iterate over the data and update the memory.
+
+```{r part 2}
+part_2_apply_mask <- function(memory, mem_loc, value, mask) {
+  m <- str_extract_all(mask, ".")[[1]]
+  
+  # convert mem_loc to a binary number
+  mem_loc_b <- c(raw(4), rev(intToBits(mem_loc)))
+  
+  all_mem_locs <- list(mem_loc_b)
+  
+  for (i in 1:36) {
+    if (m[[i]] == "1") {
+      for (j in seq_along(all_mem_locs)) {
+        all_mem_locs[[j]][[i]] <- as.raw(1)
+      }
+    } else if (m[[i]] == "X") {
+      a <- all_mem_locs
+      b <- all_mem_locs
+      
+      for (j in seq_along(all_mem_locs)) {
+        a[[j]][[i]] <- as.raw(0)
+        b[[j]][[i]] <- as.raw(1)
+      }
+      
+      all_mem_locs <- c(a, b)
+    }
+  }
+  
+  for (ml in all_mem_locs) {
+    mls <- paste(ml, collapse = "")
+    memory[[mls]] <- value
+  }
+  
+  memory
+}
+```
+
+Part 2 provides a new sample
+
+```{r part 2 sample}
+sample_2 <- c("mask = 000000000000000000000000000000X1001X",
+              "mem[42] = 100",
+              "mask = 00000000000000000000000000000000X0XX",
+              "mem[26] = 1")
+```
+
+We build a function now for solving part 2. We start by reusing the data processing step from part 1. We can then use
+a little helper function to run the `part_2_apply_mask()` function, and put it all together with a `reduce()` over the
+data.
+
+```{r part 2 function}
+part_2 <- function(input) {
+  data <- input %>%
+    unglue_data("{instruction} = {value}") %>%
+    mutate(mask = ifelse(instruction == "mask", value, NA)) %>%
+    fill(mask) %>%
+    filter(instruction != "mask") %>%
+    mutate(across(instruction, str_extract, "\\d+"),
+           across(c(instruction, value), as.integer)) %>%
+    rename(mem_loc = instruction)
+  
+  part_2_fn <- function(memory, data_row) {
+    with(data_row, {
+      part_2_apply_mask(memory, mem_loc, value, mask)
+    })
+  }
+  
+  data %>%
+    transpose() %>%
+    reduce(part_2_fn, .init = list()) %>%
+    flatten_dbl() %>%
+    sum()
+}
+```
+
+We can now run our function on the new sample data
+
+```{r part 2 sample test}
+part_2(sample_2) == 208
+```
+
+```{r part 2 actual}
+part_2(actual)
+```
+
+
