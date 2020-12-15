@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Day 13 Shuttle Search | Advent of Code 2020</title>
+  <title>Day 15 Part 2 | Advent of Code 2020</title>
   <meta name="description" content="My attempt to complete AOC 2020 in R" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Day 13 Shuttle Search | Advent of Code 2020" />
+  <meta property="og:title" content="Day 15 Part 2 | Advent of Code 2020" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Day 13 Shuttle Search | Advent of Code 2020" />
+  <meta name="twitter:title" content="Day 15 Part 2 | Advent of Code 2020" />
   
   <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="rain-risk.html"/>
-<link rel="next" href="docking-data.html"/>
+<link rel="prev" href="docking-data.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -219,88 +219,88 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="shuttle-search" class="section level1">
-<h1><span class="header-section-number">Day 13</span> Shuttle Search</h1>
-<p>This is my attempt to solve <a href="https://adventofcode.com/2021/day/13">Day 13</a>.</p>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="shuttle-search.html#cb231-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_13_sample.txt&quot;</span>)</span>
-<span id="cb231-2"><a href="shuttle-search.html#cb231-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_13_input.txt&quot;</span>)</span></code></pre></div>
-<div id="part-1-12" class="section level2">
-<h2><span class="header-section-number">13.1</span> Part 1</h2>
-<p>We can solve part 1 by finding the first time each of the buses arrives after we arrive, then finding which bus has the
-minimum time.</p>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="shuttle-search.html#cb232-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb232-2"><a href="shuttle-search.html#cb232-2"></a>  earliest_time &lt;-<span class="st"> </span><span class="kw">as.integer</span>(input[[<span class="dv">1</span>]])</span>
-<span id="cb232-3"><a href="shuttle-search.html#cb232-3"></a>  buses &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]] <span class="op">%&gt;%</span></span>
-<span id="cb232-4"><a href="shuttle-search.html#cb232-4"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;,&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb232-5"><a href="shuttle-search.html#cb232-5"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb232-6"><a href="shuttle-search.html#cb232-6"></a><span class="st">    </span><span class="kw">str_subset</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">d&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb232-7"><a href="shuttle-search.html#cb232-7"></a><span class="st">    </span><span class="kw">as.integer</span>()</span>
-<span id="cb232-8"><a href="shuttle-search.html#cb232-8"></a>  </span>
-<span id="cb232-9"><a href="shuttle-search.html#cb232-9"></a>  first_available &lt;-<span class="st"> </span><span class="kw">ceiling</span>(earliest_time <span class="op">/</span><span class="st"> </span>buses) <span class="op">*</span><span class="st"> </span>buses</span>
-<span id="cb232-10"><a href="shuttle-search.html#cb232-10"></a>  which_bus &lt;-<span class="st"> </span><span class="kw">which.min</span>(first_available)</span>
-<span id="cb232-11"><a href="shuttle-search.html#cb232-11"></a>  (first_available[[which_bus]] <span class="op">-</span><span class="st"> </span>earliest_time) <span class="op">*</span><span class="st"> </span>buses[[which_bus]]</span>
-<span id="cb232-12"><a href="shuttle-search.html#cb232-12"></a>}</span></code></pre></div>
-<p>We can check that this function works on the sample data:</p>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="shuttle-search.html#cb233-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">295</span></span></code></pre></div>
+<div id="part-2-13" class="section level1">
+<h1><span class="header-section-number">Day 15</span> Part 2</h1>
+<p>In part 2 we have a more complex scenario. We create a new “apply mask” function that will apply these rules. This
+function will take the current memory, apply the rules for the current row of data, then return the memory. This can be
+used in within <code>reduce()</code> to iterate over the data and update the memory.</p>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="part-2-13.html#cb249-1"></a>part_<span class="dv">2</span>_apply_mask &lt;-<span class="st"> </span><span class="cf">function</span>(memory, mem_loc, value, mask) {</span>
+<span id="cb249-2"><a href="part-2-13.html#cb249-2"></a>  m &lt;-<span class="st"> </span><span class="kw">str_extract_all</span>(mask, <span class="st">&quot;.&quot;</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb249-3"><a href="part-2-13.html#cb249-3"></a>  </span>
+<span id="cb249-4"><a href="part-2-13.html#cb249-4"></a>  <span class="co"># convert mem_loc to a binary number</span></span>
+<span id="cb249-5"><a href="part-2-13.html#cb249-5"></a>  mem_loc_b &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">raw</span>(<span class="dv">4</span>), <span class="kw">rev</span>(<span class="kw">intToBits</span>(mem_loc)))</span>
+<span id="cb249-6"><a href="part-2-13.html#cb249-6"></a>  </span>
+<span id="cb249-7"><a href="part-2-13.html#cb249-7"></a>  all_mem_locs &lt;-<span class="st"> </span><span class="kw">list</span>(mem_loc_b)</span>
+<span id="cb249-8"><a href="part-2-13.html#cb249-8"></a>  </span>
+<span id="cb249-9"><a href="part-2-13.html#cb249-9"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">36</span>) {</span>
+<span id="cb249-10"><a href="part-2-13.html#cb249-10"></a>    <span class="cf">if</span> (m[[i]] <span class="op">==</span><span class="st"> &quot;1&quot;</span>) {</span>
+<span id="cb249-11"><a href="part-2-13.html#cb249-11"></a>      <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(all_mem_locs)) {</span>
+<span id="cb249-12"><a href="part-2-13.html#cb249-12"></a>        all_mem_locs[[j]][[i]] &lt;-<span class="st"> </span><span class="kw">as.raw</span>(<span class="dv">1</span>)</span>
+<span id="cb249-13"><a href="part-2-13.html#cb249-13"></a>      }</span>
+<span id="cb249-14"><a href="part-2-13.html#cb249-14"></a>    } <span class="cf">else</span> <span class="cf">if</span> (m[[i]] <span class="op">==</span><span class="st"> &quot;X&quot;</span>) {</span>
+<span id="cb249-15"><a href="part-2-13.html#cb249-15"></a>      a &lt;-<span class="st"> </span>all_mem_locs</span>
+<span id="cb249-16"><a href="part-2-13.html#cb249-16"></a>      b &lt;-<span class="st"> </span>all_mem_locs</span>
+<span id="cb249-17"><a href="part-2-13.html#cb249-17"></a>      </span>
+<span id="cb249-18"><a href="part-2-13.html#cb249-18"></a>      <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(all_mem_locs)) {</span>
+<span id="cb249-19"><a href="part-2-13.html#cb249-19"></a>        a[[j]][[i]] &lt;-<span class="st"> </span><span class="kw">as.raw</span>(<span class="dv">0</span>)</span>
+<span id="cb249-20"><a href="part-2-13.html#cb249-20"></a>        b[[j]][[i]] &lt;-<span class="st"> </span><span class="kw">as.raw</span>(<span class="dv">1</span>)</span>
+<span id="cb249-21"><a href="part-2-13.html#cb249-21"></a>      }</span>
+<span id="cb249-22"><a href="part-2-13.html#cb249-22"></a>      </span>
+<span id="cb249-23"><a href="part-2-13.html#cb249-23"></a>      all_mem_locs &lt;-<span class="st"> </span><span class="kw">c</span>(a, b)</span>
+<span id="cb249-24"><a href="part-2-13.html#cb249-24"></a>    }</span>
+<span id="cb249-25"><a href="part-2-13.html#cb249-25"></a>  }</span>
+<span id="cb249-26"><a href="part-2-13.html#cb249-26"></a>  </span>
+<span id="cb249-27"><a href="part-2-13.html#cb249-27"></a>  <span class="cf">for</span> (ml <span class="cf">in</span> all_mem_locs) {</span>
+<span id="cb249-28"><a href="part-2-13.html#cb249-28"></a>    mls &lt;-<span class="st"> </span><span class="kw">paste</span>(ml, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb249-29"><a href="part-2-13.html#cb249-29"></a>    memory[[mls]] &lt;-<span class="st"> </span>value</span>
+<span id="cb249-30"><a href="part-2-13.html#cb249-30"></a>  }</span>
+<span id="cb249-31"><a href="part-2-13.html#cb249-31"></a>  </span>
+<span id="cb249-32"><a href="part-2-13.html#cb249-32"></a>  memory</span>
+<span id="cb249-33"><a href="part-2-13.html#cb249-33"></a>}</span></code></pre></div>
+<p>Part 2 provides a new sample</p>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="part-2-13.html#cb250-1"></a>sample_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;mask = 000000000000000000000000000000X1001X&quot;</span>,</span>
+<span id="cb250-2"><a href="part-2-13.html#cb250-2"></a>              <span class="st">&quot;mem[42] = 100&quot;</span>,</span>
+<span id="cb250-3"><a href="part-2-13.html#cb250-3"></a>              <span class="st">&quot;mask = 00000000000000000000000000000000X0XX&quot;</span>,</span>
+<span id="cb250-4"><a href="part-2-13.html#cb250-4"></a>              <span class="st">&quot;mem[26] = 1&quot;</span>)</span></code></pre></div>
+<p>We build a function now for solving part 2. We start by reusing the data processing step from part 1. We can then use
+a little helper function to run the <code>part_2_apply_mask()</code> function, and put it all together with a <code>reduce()</code> over the
+data.</p>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="part-2-13.html#cb251-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb251-2"><a href="part-2-13.html#cb251-2"></a>  data &lt;-<span class="st"> </span>input <span class="op">%&gt;%</span></span>
+<span id="cb251-3"><a href="part-2-13.html#cb251-3"></a><span class="st">    </span><span class="kw">unglue_data</span>(<span class="st">&quot;{instruction} = {value}&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb251-4"><a href="part-2-13.html#cb251-4"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">mask =</span> <span class="kw">ifelse</span>(instruction <span class="op">==</span><span class="st"> &quot;mask&quot;</span>, value, <span class="ot">NA</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb251-5"><a href="part-2-13.html#cb251-5"></a><span class="st">    </span><span class="kw">fill</span>(mask) <span class="op">%&gt;%</span></span>
+<span id="cb251-6"><a href="part-2-13.html#cb251-6"></a><span class="st">    </span><span class="kw">filter</span>(instruction <span class="op">!=</span><span class="st"> &quot;mask&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb251-7"><a href="part-2-13.html#cb251-7"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="kw">across</span>(instruction, str_extract, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">d+&quot;</span>),</span>
+<span id="cb251-8"><a href="part-2-13.html#cb251-8"></a>           <span class="kw">across</span>(<span class="kw">c</span>(instruction, value), as.integer)) <span class="op">%&gt;%</span></span>
+<span id="cb251-9"><a href="part-2-13.html#cb251-9"></a><span class="st">    </span><span class="kw">rename</span>(<span class="dt">mem_loc =</span> instruction)</span>
+<span id="cb251-10"><a href="part-2-13.html#cb251-10"></a>  </span>
+<span id="cb251-11"><a href="part-2-13.html#cb251-11"></a>  part_<span class="dv">2</span>_fn &lt;-<span class="st"> </span><span class="cf">function</span>(memory, data_row) {</span>
+<span id="cb251-12"><a href="part-2-13.html#cb251-12"></a>    <span class="kw">with</span>(data_row, {</span>
+<span id="cb251-13"><a href="part-2-13.html#cb251-13"></a>      <span class="kw">part_2_apply_mask</span>(memory, mem_loc, value, mask)</span>
+<span id="cb251-14"><a href="part-2-13.html#cb251-14"></a>    })</span>
+<span id="cb251-15"><a href="part-2-13.html#cb251-15"></a>  }</span>
+<span id="cb251-16"><a href="part-2-13.html#cb251-16"></a>  </span>
+<span id="cb251-17"><a href="part-2-13.html#cb251-17"></a>  data <span class="op">%&gt;%</span></span>
+<span id="cb251-18"><a href="part-2-13.html#cb251-18"></a><span class="st">    </span><span class="kw">transpose</span>() <span class="op">%&gt;%</span></span>
+<span id="cb251-19"><a href="part-2-13.html#cb251-19"></a><span class="st">    </span><span class="kw">reduce</span>(part_<span class="dv">2</span>_fn, <span class="dt">.init =</span> <span class="kw">list</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb251-20"><a href="part-2-13.html#cb251-20"></a><span class="st">    </span><span class="kw">flatten_dbl</span>() <span class="op">%&gt;%</span></span>
+<span id="cb251-21"><a href="part-2-13.html#cb251-21"></a><span class="st">    </span><span class="kw">sum</span>()</span>
+<span id="cb251-22"><a href="part-2-13.html#cb251-22"></a>}</span></code></pre></div>
+<p>We can now run our function on the new sample data</p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="part-2-13.html#cb252-1"></a><span class="kw">part_2</span>(sample_<span class="dv">2</span>) <span class="op">==</span><span class="st"> </span><span class="dv">208</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>And we can run with the actual data</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="shuttle-search.html#cb235-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
-<pre><code>## [1] 3269</code></pre>
-</div>
-<div id="part-2-12" class="section level2">
-<h2><span class="header-section-number">13.2</span> Part 2</h2>
-<p>Part 2 could be solved with the <a href="https://en.wikipedia.org/wiki/Chinese_remainder_theorem">Chinese Remainder Theorem</a>,
-but we could solve it more simply by iterating over the input items and keeping track of the current time and the
-current “jump” size. The jump size is equal to the cumulative product of the busses.</p>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="shuttle-search.html#cb237-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb237-2"><a href="shuttle-search.html#cb237-2"></a>  <span class="co"># take the 2nd row of the input, convert x&#39;s to 0&#39;s</span></span>
-<span id="cb237-3"><a href="shuttle-search.html#cb237-3"></a>  x &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]] <span class="op">%&gt;%</span></span>
-<span id="cb237-4"><a href="shuttle-search.html#cb237-4"></a><span class="st">    </span><span class="kw">str_replace_all</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;0&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb237-5"><a href="shuttle-search.html#cb237-5"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;,&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb237-6"><a href="shuttle-search.html#cb237-6"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb237-7"><a href="shuttle-search.html#cb237-7"></a><span class="st">    </span><span class="kw">as.numeric</span>()</span>
-<span id="cb237-8"><a href="shuttle-search.html#cb237-8"></a>  </span>
-<span id="cb237-9"><a href="shuttle-search.html#cb237-9"></a>  <span class="co"># get the sequence of values that are non zero, index from 0</span></span>
-<span id="cb237-10"><a href="shuttle-search.html#cb237-10"></a>  y &lt;-<span class="st"> </span><span class="kw">seq_along</span>(x)[x <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>] <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb237-11"><a href="shuttle-search.html#cb237-11"></a>  <span class="co"># get rid of the 0&#39;s (x&#39;s)</span></span>
-<span id="cb237-12"><a href="shuttle-search.html#cb237-12"></a>  x &lt;-<span class="st"> </span>x[x <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>]</span>
-<span id="cb237-13"><a href="shuttle-search.html#cb237-13"></a>  </span>
-<span id="cb237-14"><a href="shuttle-search.html#cb237-14"></a>  <span class="co"># start with a jump equal to the first value in the input</span></span>
-<span id="cb237-15"><a href="shuttle-search.html#cb237-15"></a>  j &lt;-<span class="st"> </span>x[<span class="dv">1</span>]</span>
-<span id="cb237-16"><a href="shuttle-search.html#cb237-16"></a>  <span class="co"># start at time 0</span></span>
-<span id="cb237-17"><a href="shuttle-search.html#cb237-17"></a>  t &lt;-<span class="st"> </span><span class="dv">0</span></span>
-<span id="cb237-18"><a href="shuttle-search.html#cb237-18"></a>  </span>
-<span id="cb237-19"><a href="shuttle-search.html#cb237-19"></a>  <span class="co"># iterate over the input, skipping the first item</span></span>
-<span id="cb237-20"><a href="shuttle-search.html#cb237-20"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="kw">length</span>(x)) {</span>
-<span id="cb237-21"><a href="shuttle-search.html#cb237-21"></a>    <span class="co"># increase our time by the size of the jump while the time + step size is</span></span>
-<span id="cb237-22"><a href="shuttle-search.html#cb237-22"></a>    <span class="co"># not a divisor of the current input item</span></span>
-<span id="cb237-23"><a href="shuttle-search.html#cb237-23"></a>    <span class="cf">while</span> ((t <span class="op">+</span><span class="st"> </span>y[[i]]) <span class="op">%%</span><span class="st"> </span>x[[i]]) {</span>
-<span id="cb237-24"><a href="shuttle-search.html#cb237-24"></a>      t &lt;-<span class="st"> </span>t <span class="op">+</span><span class="st"> </span>j</span>
-<span id="cb237-25"><a href="shuttle-search.html#cb237-25"></a>    }</span>
-<span id="cb237-26"><a href="shuttle-search.html#cb237-26"></a>    <span class="co"># increase the size of our jump by the current input item (bus)</span></span>
-<span id="cb237-27"><a href="shuttle-search.html#cb237-27"></a>    j &lt;-<span class="st"> </span>j <span class="op">*</span><span class="st"> </span>x[[i]]</span>
-<span id="cb237-28"><a href="shuttle-search.html#cb237-28"></a>  }</span>
-<span id="cb237-29"><a href="shuttle-search.html#cb237-29"></a>  <span class="co"># return the time</span></span>
-<span id="cb237-30"><a href="shuttle-search.html#cb237-30"></a>  t</span>
-<span id="cb237-31"><a href="shuttle-search.html#cb237-31"></a>}</span></code></pre></div>
-<p>We can run this function on the sample data.</p>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="shuttle-search.html#cb238-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">1068781</span></span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<p>And we can run on the actual data. We need to make sure that we alter the “scientific notation penalty” option to view
-the answer as an integer.</p>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="shuttle-search.html#cb240-1"></a><span class="kw">options</span>(<span class="dt">scipen =</span> <span class="dv">999</span>)</span>
-<span id="cb240-2"><a href="shuttle-search.html#cb240-2"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
-<pre><code>## [1] 672754131923874</code></pre>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="part-2-13.html#cb254-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 3926790061594</code></pre>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="rain-risk.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="docking-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="docking-data.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
