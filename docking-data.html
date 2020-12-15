@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="shuttle-search.html"/>
-<link rel="next" href="part-2-13.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -200,8 +200,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="14" data-path="docking-data.html"><a href="docking-data.html"><i class="fa fa-check"></i><b>14</b> Docking Data</a><ul>
 <li class="chapter" data-level="14.1" data-path="docking-data.html"><a href="docking-data.html#part-1-13"><i class="fa fa-check"></i><b>14.1</b> Part 1</a></li>
+<li class="chapter" data-level="14.2" data-path="docking-data.html"><a href="docking-data.html#part-2-13"><i class="fa fa-check"></i><b>14.2</b> Part 2</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="part-2-13.html"><a href="part-2-13.html"><i class="fa fa-check"></i><b>15</b> Part 2</a></li>
 </ul>
 
       </nav>
@@ -277,14 +277,89 @@ the last value.</p>
 <div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="docking-data.html#cb247-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
 <pre><code>## [1] 15514035145260</code></pre>
 </div>
+<div id="part-2-13" class="section level2">
+<h2><span class="header-section-number">14.2</span> Part 2</h2>
+<p>In part 2 we have a more complex scenario. We create a new “apply mask” function that will apply these rules. This
+function will take the current memory, apply the rules for the current row of data, then return the memory. This can be
+used in within <code>reduce()</code> to iterate over the data and update the memory.</p>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="docking-data.html#cb249-1"></a>part_<span class="dv">2</span>_apply_mask &lt;-<span class="st"> </span><span class="cf">function</span>(memory, mem_loc, value, mask) {</span>
+<span id="cb249-2"><a href="docking-data.html#cb249-2"></a>  m &lt;-<span class="st"> </span><span class="kw">str_extract_all</span>(mask, <span class="st">&quot;.&quot;</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb249-3"><a href="docking-data.html#cb249-3"></a>  </span>
+<span id="cb249-4"><a href="docking-data.html#cb249-4"></a>  <span class="co"># convert mem_loc to a binary number</span></span>
+<span id="cb249-5"><a href="docking-data.html#cb249-5"></a>  mem_loc_b &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">raw</span>(<span class="dv">4</span>), <span class="kw">rev</span>(<span class="kw">intToBits</span>(mem_loc)))</span>
+<span id="cb249-6"><a href="docking-data.html#cb249-6"></a>  </span>
+<span id="cb249-7"><a href="docking-data.html#cb249-7"></a>  all_mem_locs &lt;-<span class="st"> </span><span class="kw">list</span>(mem_loc_b)</span>
+<span id="cb249-8"><a href="docking-data.html#cb249-8"></a>  </span>
+<span id="cb249-9"><a href="docking-data.html#cb249-9"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">36</span>) {</span>
+<span id="cb249-10"><a href="docking-data.html#cb249-10"></a>    <span class="cf">if</span> (m[[i]] <span class="op">==</span><span class="st"> &quot;1&quot;</span>) {</span>
+<span id="cb249-11"><a href="docking-data.html#cb249-11"></a>      <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(all_mem_locs)) {</span>
+<span id="cb249-12"><a href="docking-data.html#cb249-12"></a>        all_mem_locs[[j]][[i]] &lt;-<span class="st"> </span><span class="kw">as.raw</span>(<span class="dv">1</span>)</span>
+<span id="cb249-13"><a href="docking-data.html#cb249-13"></a>      }</span>
+<span id="cb249-14"><a href="docking-data.html#cb249-14"></a>    } <span class="cf">else</span> <span class="cf">if</span> (m[[i]] <span class="op">==</span><span class="st"> &quot;X&quot;</span>) {</span>
+<span id="cb249-15"><a href="docking-data.html#cb249-15"></a>      a &lt;-<span class="st"> </span>all_mem_locs</span>
+<span id="cb249-16"><a href="docking-data.html#cb249-16"></a>      b &lt;-<span class="st"> </span>all_mem_locs</span>
+<span id="cb249-17"><a href="docking-data.html#cb249-17"></a>      </span>
+<span id="cb249-18"><a href="docking-data.html#cb249-18"></a>      <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">seq_along</span>(all_mem_locs)) {</span>
+<span id="cb249-19"><a href="docking-data.html#cb249-19"></a>        a[[j]][[i]] &lt;-<span class="st"> </span><span class="kw">as.raw</span>(<span class="dv">0</span>)</span>
+<span id="cb249-20"><a href="docking-data.html#cb249-20"></a>        b[[j]][[i]] &lt;-<span class="st"> </span><span class="kw">as.raw</span>(<span class="dv">1</span>)</span>
+<span id="cb249-21"><a href="docking-data.html#cb249-21"></a>      }</span>
+<span id="cb249-22"><a href="docking-data.html#cb249-22"></a>      </span>
+<span id="cb249-23"><a href="docking-data.html#cb249-23"></a>      all_mem_locs &lt;-<span class="st"> </span><span class="kw">c</span>(a, b)</span>
+<span id="cb249-24"><a href="docking-data.html#cb249-24"></a>    }</span>
+<span id="cb249-25"><a href="docking-data.html#cb249-25"></a>  }</span>
+<span id="cb249-26"><a href="docking-data.html#cb249-26"></a>  </span>
+<span id="cb249-27"><a href="docking-data.html#cb249-27"></a>  <span class="cf">for</span> (ml <span class="cf">in</span> all_mem_locs) {</span>
+<span id="cb249-28"><a href="docking-data.html#cb249-28"></a>    mls &lt;-<span class="st"> </span><span class="kw">paste</span>(ml, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb249-29"><a href="docking-data.html#cb249-29"></a>    memory[[mls]] &lt;-<span class="st"> </span>value</span>
+<span id="cb249-30"><a href="docking-data.html#cb249-30"></a>  }</span>
+<span id="cb249-31"><a href="docking-data.html#cb249-31"></a>  </span>
+<span id="cb249-32"><a href="docking-data.html#cb249-32"></a>  memory</span>
+<span id="cb249-33"><a href="docking-data.html#cb249-33"></a>}</span></code></pre></div>
+<p>Part 2 provides a new sample</p>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="docking-data.html#cb250-1"></a>sample_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;mask = 000000000000000000000000000000X1001X&quot;</span>,</span>
+<span id="cb250-2"><a href="docking-data.html#cb250-2"></a>              <span class="st">&quot;mem[42] = 100&quot;</span>,</span>
+<span id="cb250-3"><a href="docking-data.html#cb250-3"></a>              <span class="st">&quot;mask = 00000000000000000000000000000000X0XX&quot;</span>,</span>
+<span id="cb250-4"><a href="docking-data.html#cb250-4"></a>              <span class="st">&quot;mem[26] = 1&quot;</span>)</span></code></pre></div>
+<p>We build a function now for solving part 2. We start by reusing the data processing step from part 1. We can then use
+a little helper function to run the <code>part_2_apply_mask()</code> function, and put it all together with a <code>reduce()</code> over the
+data.</p>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="docking-data.html#cb251-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb251-2"><a href="docking-data.html#cb251-2"></a>  data &lt;-<span class="st"> </span>input <span class="op">%&gt;%</span></span>
+<span id="cb251-3"><a href="docking-data.html#cb251-3"></a><span class="st">    </span><span class="kw">unglue_data</span>(<span class="st">&quot;{instruction} = {value}&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb251-4"><a href="docking-data.html#cb251-4"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">mask =</span> <span class="kw">ifelse</span>(instruction <span class="op">==</span><span class="st"> &quot;mask&quot;</span>, value, <span class="ot">NA</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb251-5"><a href="docking-data.html#cb251-5"></a><span class="st">    </span><span class="kw">fill</span>(mask) <span class="op">%&gt;%</span></span>
+<span id="cb251-6"><a href="docking-data.html#cb251-6"></a><span class="st">    </span><span class="kw">filter</span>(instruction <span class="op">!=</span><span class="st"> &quot;mask&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb251-7"><a href="docking-data.html#cb251-7"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="kw">across</span>(instruction, str_extract, <span class="st">&quot;</span><span class="ch">\\</span><span class="st">d+&quot;</span>),</span>
+<span id="cb251-8"><a href="docking-data.html#cb251-8"></a>           <span class="kw">across</span>(<span class="kw">c</span>(instruction, value), as.integer)) <span class="op">%&gt;%</span></span>
+<span id="cb251-9"><a href="docking-data.html#cb251-9"></a><span class="st">    </span><span class="kw">rename</span>(<span class="dt">mem_loc =</span> instruction)</span>
+<span id="cb251-10"><a href="docking-data.html#cb251-10"></a>  </span>
+<span id="cb251-11"><a href="docking-data.html#cb251-11"></a>  part_<span class="dv">2</span>_fn &lt;-<span class="st"> </span><span class="cf">function</span>(memory, data_row) {</span>
+<span id="cb251-12"><a href="docking-data.html#cb251-12"></a>    <span class="kw">with</span>(data_row, {</span>
+<span id="cb251-13"><a href="docking-data.html#cb251-13"></a>      <span class="kw">part_2_apply_mask</span>(memory, mem_loc, value, mask)</span>
+<span id="cb251-14"><a href="docking-data.html#cb251-14"></a>    })</span>
+<span id="cb251-15"><a href="docking-data.html#cb251-15"></a>  }</span>
+<span id="cb251-16"><a href="docking-data.html#cb251-16"></a>  </span>
+<span id="cb251-17"><a href="docking-data.html#cb251-17"></a>  data <span class="op">%&gt;%</span></span>
+<span id="cb251-18"><a href="docking-data.html#cb251-18"></a><span class="st">    </span><span class="kw">transpose</span>() <span class="op">%&gt;%</span></span>
+<span id="cb251-19"><a href="docking-data.html#cb251-19"></a><span class="st">    </span><span class="kw">reduce</span>(part_<span class="dv">2</span>_fn, <span class="dt">.init =</span> <span class="kw">list</span>()) <span class="op">%&gt;%</span></span>
+<span id="cb251-20"><a href="docking-data.html#cb251-20"></a><span class="st">    </span><span class="kw">flatten_dbl</span>() <span class="op">%&gt;%</span></span>
+<span id="cb251-21"><a href="docking-data.html#cb251-21"></a><span class="st">    </span><span class="kw">sum</span>()</span>
+<span id="cb251-22"><a href="docking-data.html#cb251-22"></a>}</span></code></pre></div>
+<p>We can now run our function on the new sample data</p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="docking-data.html#cb252-1"></a><span class="kw">part_2</span>(sample_<span class="dv">2</span>) <span class="op">==</span><span class="st"> </span><span class="dv">208</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="docking-data.html#cb254-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 3926790061594</code></pre>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="shuttle-search.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="part-2-13.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="shuttle-search.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

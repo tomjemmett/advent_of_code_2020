@@ -91,7 +91,7 @@ part_1(actual)
 ## [1] 15514035145260
 ```
 
-# Part 2
+## Part 2
 
 In part 2 we have a more complex scenario. We create a new "apply mask" function that will apply these rules. This
 function will take the current memory, apply the rules for the current row of data, then return the memory. This can be
