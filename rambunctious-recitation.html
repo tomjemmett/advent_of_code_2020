@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Day 6 Custom Customs | Advent of Code 2020</title>
+  <title>Day 15 Rambunctious Recitation | Advent of Code 2020</title>
   <meta name="description" content="My attempt to complete AOC 2020 in R" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Day 6 Custom Customs | Advent of Code 2020" />
+  <meta property="og:title" content="Day 15 Rambunctious Recitation | Advent of Code 2020" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Day 6 Custom Customs | Advent of Code 2020" />
+  <meta name="twitter:title" content="Day 15 Rambunctious Recitation | Advent of Code 2020" />
   
   <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="binary-boarding.html"/>
-<link rel="next" href="handy-haversacks.html"/>
+<link rel="prev" href="docking-data.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -223,86 +223,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="custom-customs" class="section level1">
-<h1><span class="header-section-number">Day 6</span> Custom Customs</h1>
-<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/6">Day 6</a>.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="custom-customs.html#cb94-1"></a>load_file &lt;-<span class="st"> </span><span class="cf">function</span>(file) {</span>
-<span id="cb94-2"><a href="custom-customs.html#cb94-2"></a>  file <span class="op">%&gt;%</span></span>
-<span id="cb94-3"><a href="custom-customs.html#cb94-3"></a><span class="st">    </span><span class="kw">read_file</span>() <span class="op">%&gt;%</span></span>
-<span id="cb94-4"><a href="custom-customs.html#cb94-4"></a><span class="st">    </span><span class="co"># strip windows added carriage returns</span></span>
-<span id="cb94-5"><a href="custom-customs.html#cb94-5"></a><span class="st">    </span><span class="kw">str_remove_all</span>(<span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb94-6"><a href="custom-customs.html#cb94-6"></a><span class="st">    </span><span class="co"># clear trailing whitespace</span></span>
-<span id="cb94-7"><a href="custom-customs.html#cb94-7"></a><span class="st">    </span><span class="kw">str_trim</span>() <span class="op">%&gt;%</span></span>
-<span id="cb94-8"><a href="custom-customs.html#cb94-8"></a><span class="st">    </span><span class="co"># split where we have two new lines</span></span>
-<span id="cb94-9"><a href="custom-customs.html#cb94-9"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb94-10"><a href="custom-customs.html#cb94-10"></a><span class="st">    </span><span class="co"># take only the first results (the input is just one string)</span></span>
-<span id="cb94-11"><a href="custom-customs.html#cb94-11"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb94-12"><a href="custom-customs.html#cb94-12"></a><span class="st">    </span><span class="co"># split each result into individual lines</span></span>
-<span id="cb94-13"><a href="custom-customs.html#cb94-13"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb94-14"><a href="custom-customs.html#cb94-14"></a>}</span>
-<span id="cb94-15"><a href="custom-customs.html#cb94-15"></a></span>
-<span id="cb94-16"><a href="custom-customs.html#cb94-16"></a>sample &lt;-<span class="st"> </span><span class="kw">load_file</span>(<span class="st">&quot;samples/day_06_sample.txt&quot;</span>)</span>
-<span id="cb94-17"><a href="custom-customs.html#cb94-17"></a>actual &lt;-<span class="st"> </span><span class="kw">load_file</span>(<span class="st">&quot;inputs/day_06_input.txt&quot;</span>)</span></code></pre></div>
-<div id="part-1-5" class="section level2">
-<h2><span class="header-section-number">6.1</span> Part 1</h2>
-<p>For part 1 I am going to first split each respondents response into the individual answers (<code>str_extract_all()</code>). This
-will return a list of character vectors, so I will use <code>flatten_chr()</code> to turn these into vectors containing all of the
-answers for each group as a character vector. Then I can simply take the <code>unique()</code> values and work out the <code>length()</code>
-of the resulting vector. I tie all of this together with the <code>compose()</code> function from <code>{purrr}</code>: this is similar to
-<code>%&gt;%</code>, except it chains the functions together before you evaluate them into a single chain.</p>
-<p>Like mathematical composition, <code>compose()</code> works with the “outer-most” function first, e.g. <code>str_extract_all()</code> runs
-before <code>flatten_chr()</code>, etc.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="custom-customs.html#cb95-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb95-2"><a href="custom-customs.html#cb95-2"></a>  input <span class="op">%&gt;%</span></span>
-<span id="cb95-3"><a href="custom-customs.html#cb95-3"></a><span class="st">    </span><span class="kw">map_dbl</span>(<span class="kw">compose</span>(length,</span>
-<span id="cb95-4"><a href="custom-customs.html#cb95-4"></a>                    unique,</span>
-<span id="cb95-5"><a href="custom-customs.html#cb95-5"></a>                    flatten_chr,</span>
-<span id="cb95-6"><a href="custom-customs.html#cb95-6"></a>                    str_extract_all), <span class="st">&quot;.&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb95-7"><a href="custom-customs.html#cb95-7"></a><span class="st">    </span><span class="kw">sum</span>()</span>
-<span id="cb95-8"><a href="custom-customs.html#cb95-8"></a>}</span></code></pre></div>
-<p>Now I can check that this function behaves as expected:</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="custom-customs.html#cb96-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">11</span></span></code></pre></div>
+<div id="rambunctious-recitation" class="section level1">
+<h1><span class="header-section-number">Day 15</span> Rambunctious Recitation</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2021/day/15">Day 15</a>.</p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="rambunctious-recitation.html#cb256-1"></a>sample &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">3</span>,<span class="dv">6</span>)</span>
+<span id="cb256-2"><a href="rambunctious-recitation.html#cb256-2"></a>actual &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">12</span>,<span class="dv">1</span>,<span class="dv">16</span>,<span class="dv">3</span>,<span class="dv">11</span>,<span class="dv">0</span>)</span></code></pre></div>
+<div id="part-1-14" class="section level2">
+<h2><span class="header-section-number">15.1</span> Part 1</h2>
+<p>Ideally we would use a data type like a dictionary in Python for today’s problem… but there isn’t really a good
+option in R. Instead I will just assign a vector that will be long enough for the solution. I’m going to make an
+assumption that the largest number we will see will be less than the number of turns.</p>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="rambunctious-recitation.html#cb257-1"></a>solve &lt;-<span class="st"> </span><span class="cf">function</span>(input, turns) {</span>
+<span id="cb257-2"><a href="rambunctious-recitation.html#cb257-2"></a>  turn &lt;-<span class="st"> </span><span class="kw">numeric</span>(turns)</span>
+<span id="cb257-3"><a href="rambunctious-recitation.html#cb257-3"></a>  </span>
+<span id="cb257-4"><a href="rambunctious-recitation.html#cb257-4"></a>  <span class="co"># first iterate over the input</span></span>
+<span id="cb257-5"><a href="rambunctious-recitation.html#cb257-5"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(input)) {</span>
+<span id="cb257-6"><a href="rambunctious-recitation.html#cb257-6"></a>    p &lt;-<span class="st"> </span>input[[i]]</span>
+<span id="cb257-7"><a href="rambunctious-recitation.html#cb257-7"></a>    <span class="co"># R is 1 indexed, make it 0</span></span>
+<span id="cb257-8"><a href="rambunctious-recitation.html#cb257-8"></a>    turn[[p <span class="op">+</span><span class="st"> </span><span class="dv">1</span>]] &lt;-<span class="st"> </span>i</span>
+<span id="cb257-9"><a href="rambunctious-recitation.html#cb257-9"></a>  }</span>
+<span id="cb257-10"><a href="rambunctious-recitation.html#cb257-10"></a>  </span>
+<span id="cb257-11"><a href="rambunctious-recitation.html#cb257-11"></a>  <span class="co"># now continue for the rest of the turns</span></span>
+<span id="cb257-12"><a href="rambunctious-recitation.html#cb257-12"></a>  <span class="cf">for</span> (i <span class="cf">in</span> (<span class="kw">length</span>(input) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>turns) {</span>
+<span id="cb257-13"><a href="rambunctious-recitation.html#cb257-13"></a>    <span class="co"># find out which value was spoke</span></span>
+<span id="cb257-14"><a href="rambunctious-recitation.html#cb257-14"></a>    t &lt;-<span class="st"> </span>turn[[p <span class="op">+</span><span class="st"> </span><span class="dv">1</span>]]</span>
+<span id="cb257-15"><a href="rambunctious-recitation.html#cb257-15"></a>    <span class="co"># update the value of the turn</span></span>
+<span id="cb257-16"><a href="rambunctious-recitation.html#cb257-16"></a>    turn[[p <span class="op">+</span><span class="st"> </span><span class="dv">1</span>]] &lt;-<span class="st"> </span>i <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb257-17"><a href="rambunctious-recitation.html#cb257-17"></a>    <span class="co"># find which word is to be spoke</span></span>
+<span id="cb257-18"><a href="rambunctious-recitation.html#cb257-18"></a>    p &lt;-<span class="st"> </span><span class="kw">ifelse</span>(t <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">0</span>, i <span class="op">-</span><span class="st"> </span>t <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb257-19"><a href="rambunctious-recitation.html#cb257-19"></a>  } </span>
+<span id="cb257-20"><a href="rambunctious-recitation.html#cb257-20"></a>  </span>
+<span id="cb257-21"><a href="rambunctious-recitation.html#cb257-21"></a>  p</span>
+<span id="cb257-22"><a href="rambunctious-recitation.html#cb257-22"></a>}</span></code></pre></div>
+<p>We can now test that our function works against the sample data:</p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="rambunctious-recitation.html#cb258-1"></a><span class="kw">solve</span>(sample,  <span class="dv">4</span>) <span class="op">==</span><span class="st"> &quot;0&quot;</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>And we can run on our actual data</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="custom-customs.html#cb98-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
-<pre><code>## [1] 6273</code></pre>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="rambunctious-recitation.html#cb260-1"></a><span class="kw">solve</span>(sample,  <span class="dv">5</span>) <span class="op">==</span><span class="st"> &quot;3&quot;</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="rambunctious-recitation.html#cb262-1"></a><span class="kw">solve</span>(sample,  <span class="dv">6</span>) <span class="op">==</span><span class="st"> &quot;3&quot;</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="rambunctious-recitation.html#cb264-1"></a><span class="kw">solve</span>(sample,  <span class="dv">7</span>) <span class="op">==</span><span class="st"> &quot;1&quot;</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="rambunctious-recitation.html#cb266-1"></a><span class="kw">solve</span>(sample,  <span class="dv">8</span>) <span class="op">==</span><span class="st"> &quot;0&quot;</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="rambunctious-recitation.html#cb268-1"></a><span class="kw">solve</span>(sample,  <span class="dv">9</span>) <span class="op">==</span><span class="st"> &quot;4&quot;</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="rambunctious-recitation.html#cb270-1"></a><span class="kw">solve</span>(sample, <span class="dv">10</span>) <span class="op">==</span><span class="st"> &quot;0&quot;</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="rambunctious-recitation.html#cb272-1"></a><span class="kw">solve</span>(sample, <span class="dv">2020</span>) <span class="op">==</span><span class="st"> </span><span class="dv">436</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>We can now run our function on the actual data:</p>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="rambunctious-recitation.html#cb274-1"></a><span class="kw">solve</span>(actual, <span class="dv">2020</span>)</span></code></pre></div>
+<pre><code>## [1] 1696</code></pre>
 </div>
-<div id="part-2-5" class="section level2">
-<h2><span class="header-section-number">6.2</span> Part 2</h2>
-<p>For part 2 I am going to start as in part 1, split each respondents response into individual answers. But then I will
-use <code>reduce()</code> to go through pairs of responses at a time and only select the questions which were answered by both as
-“yes”. We can then simply take the <code>length()</code> of each groups responses.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="custom-customs.html#cb100-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb100-2"><a href="custom-customs.html#cb100-2"></a>  input <span class="op">%&gt;%</span></span>
-<span id="cb100-3"><a href="custom-customs.html#cb100-3"></a><span class="st">    </span><span class="kw">map</span>(str_extract_all, <span class="st">&quot;.&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb100-4"><a href="custom-customs.html#cb100-4"></a><span class="st">    </span><span class="kw">map</span>(reduce, <span class="op">~</span>.y[.y <span class="op">%in%</span><span class="st"> </span>.x]) <span class="op">%&gt;%</span></span>
-<span id="cb100-5"><a href="custom-customs.html#cb100-5"></a><span class="st">    </span><span class="kw">map_dbl</span>(length) <span class="op">%&gt;%</span></span>
-<span id="cb100-6"><a href="custom-customs.html#cb100-6"></a><span class="st">    </span><span class="kw">sum</span>()</span>
-<span id="cb100-7"><a href="custom-customs.html#cb100-7"></a>}</span></code></pre></div>
-<p>We can test to see if the function works as expected::</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="custom-customs.html#cb101-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">6</span></span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<p>And run the function on the actual data.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="custom-customs.html#cb103-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
-<pre><code>## [1] 3254</code></pre>
-</div>
-<div id="extra-solving-part-1-2-with-set-functions" class="section level2">
-<h2><span class="header-section-number">6.3</span> Extra: solving part 1 &amp; 2 with set functions</h2>
-<p>We could solve part 1 and 2 with the same function. Part 1 is essentially just the union of set’s in each group, whereas
-part 2 is the intersection of set’s. So we can instead write a function that accepted a set function as an argument,
-like so:</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="custom-customs.html#cb105-1"></a>extra &lt;-<span class="st"> </span><span class="cf">function</span>(input, fn) {</span>
-<span id="cb105-2"><a href="custom-customs.html#cb105-2"></a>  input <span class="op">%&gt;%</span></span>
-<span id="cb105-3"><a href="custom-customs.html#cb105-3"></a><span class="st">    </span><span class="kw">map</span>(str_extract_all, <span class="st">&quot;.&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb105-4"><a href="custom-customs.html#cb105-4"></a><span class="st">    </span><span class="kw">map</span>(reduce, fn) <span class="op">%&gt;%</span></span>
-<span id="cb105-5"><a href="custom-customs.html#cb105-5"></a><span class="st">    </span><span class="kw">map_dbl</span>(length) <span class="op">%&gt;%</span></span>
-<span id="cb105-6"><a href="custom-customs.html#cb105-6"></a><span class="st">    </span><span class="kw">sum</span>()</span>
-<span id="cb105-7"><a href="custom-customs.html#cb105-7"></a>}</span></code></pre></div>
-<p>We can now check that this new function works as expected:</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="custom-customs.html#cb106-1"></a><span class="kw">extra</span>(actual, union) <span class="op">==</span><span class="st"> </span><span class="kw">part_1</span>(actual)</span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="custom-customs.html#cb108-1"></a><span class="kw">extra</span>(actual, intersect) <span class="op">==</span><span class="st"> </span><span class="kw">part_2</span>(actual)</span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
+<div id="part-2-14" class="section level2">
+<h2><span class="header-section-number">15.2</span> Part 2</h2>
+<p>We don’t need to change anything for part 2, other than the number of turns.</p>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="rambunctious-recitation.html#cb276-1"></a><span class="kw">solve</span>(actual, <span class="dv">30000000</span>)</span></code></pre></div>
+<pre><code>## [1] 37385</code></pre>
 
 </div>
 </div>
@@ -311,8 +289,8 @@ like so:</p>
           </div>
         </div>
       </div>
-<a href="binary-boarding.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="handy-haversacks.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="docking-data.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
