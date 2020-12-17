@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Day 17 Conway Cubes | Advent of Code 2020</title>
+  <meta name="description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Day 17 Conway Cubes | Advent of Code 2020" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Day 17 Conway Cubes | Advent of Code 2020" />
+  
+  <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
+  
+
+<meta name="author" content="Tom Jemmett" />
+
+
+<meta name="date" content="2020-12-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ticket-translation.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">Advent of Code 2020</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="report-repair.html"><a href="report-repair.html"><i class="fa fa-check"></i><b>1</b> Report Repair</a><ul>
+<li class="chapter" data-level="1.1" data-path="report-repair.html"><a href="report-repair.html#part-1"><i class="fa fa-check"></i><b>1.1</b> Part 1</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="report-repair.html"><a href="report-repair.html#is-the-improved-algorithm-any-better"><i class="fa fa-check"></i><b>1.1.1</b> is the improved algorithm any better?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="report-repair.html"><a href="report-repair.html#part-2"><i class="fa fa-check"></i><b>1.2</b> Part 2</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="report-repair.html"><a href="report-repair.html#is-our-improved-algorithm-better-this-time"><i class="fa fa-check"></i><b>1.2.1</b> Is our improved algorithm better this time?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: Implementing in Python</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="password-philosophy.html"><a href="password-philosophy.html"><i class="fa fa-check"></i><b>2</b> Password Philosophy</a><ul>
+<li class="chapter" data-level="2.1" data-path="password-philosophy.html"><a href="password-philosophy.html#part-1-1"><i class="fa fa-check"></i><b>2.1</b> Part 1</a></li>
+<li class="chapter" data-level="2.2" data-path="password-philosophy.html"><a href="password-philosophy.html#part-2-1"><i class="fa fa-check"></i><b>2.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html"><i class="fa fa-check"></i><b>3</b> Toboggan Trajectory</a><ul>
+<li class="chapter" data-level="3.1" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-1-2"><i class="fa fa-check"></i><b>3.1</b> Part 1</a></li>
+<li class="chapter" data-level="3.2" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-2-2"><i class="fa fa-check"></i><b>3.2</b> Part 2</a></li>
+<li class="chapter" data-level="3.3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter"><i class="fa fa-check"></i><b>3.3</b> Extra: Is there a path that minimises the number of trees you encounter?</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="passport-processing.html"><a href="passport-processing.html"><i class="fa fa-check"></i><b>4</b> Passport Processing</a><ul>
+<li class="chapter" data-level="4.1" data-path="passport-processing.html"><a href="passport-processing.html#part-1-3"><i class="fa fa-check"></i><b>4.1</b> Part 1</a></li>
+<li class="chapter" data-level="4.2" data-path="passport-processing.html"><a href="passport-processing.html#part-2-3"><i class="fa fa-check"></i><b>4.2</b> Part 2</a></li>
+<li class="chapter" data-level="4.3" data-path="passport-processing.html"><a href="passport-processing.html#extra-solving-with-regular-expressions"><i class="fa fa-check"></i><b>4.3</b> Extra: Solving with regular expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="binary-boarding.html"><a href="binary-boarding.html"><i class="fa fa-check"></i><b>5</b> Binary Boarding</a><ul>
+<li class="chapter" data-level="5.1" data-path="binary-boarding.html"><a href="binary-boarding.html#part-1-4"><i class="fa fa-check"></i><b>5.1</b> Part 1</a></li>
+<li class="chapter" data-level="5.2" data-path="binary-boarding.html"><a href="binary-boarding.html#part-2-4"><i class="fa fa-check"></i><b>5.2</b> Part 2</a></li>
+<li class="chapter" data-level="5.3" data-path="binary-boarding.html"><a href="binary-boarding.html#extra-solving-algebraicly"><i class="fa fa-check"></i><b>5.3</b> Extra: Solving algebraicly</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="custom-customs.html"><a href="custom-customs.html"><i class="fa fa-check"></i><b>6</b> Custom Customs</a><ul>
+<li class="chapter" data-level="6.1" data-path="custom-customs.html"><a href="custom-customs.html#part-1-5"><i class="fa fa-check"></i><b>6.1</b> Part 1</a></li>
+<li class="chapter" data-level="6.2" data-path="custom-customs.html"><a href="custom-customs.html#part-2-5"><i class="fa fa-check"></i><b>6.2</b> Part 2</a></li>
+<li class="chapter" data-level="6.3" data-path="custom-customs.html"><a href="custom-customs.html#extra-solving-part-1-2-with-set-functions"><i class="fa fa-check"></i><b>6.3</b> Extra: solving part 1 &amp; 2 with set functions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="handy-haversacks.html"><a href="handy-haversacks.html"><i class="fa fa-check"></i><b>7</b> Handy Haversacks</a><ul>
+<li class="chapter" data-level="7.1" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-1-6"><i class="fa fa-check"></i><b>7.1</b> Part 1</a></li>
+<li class="chapter" data-level="7.2" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-2-6"><i class="fa fa-check"></i><b>7.2</b> Part 2</a></li>
+<li class="chapter" data-level="7.3" data-path="handy-haversacks.html"><a href="handy-haversacks.html#extra-alternative-solution-to-part-2"><i class="fa fa-check"></i><b>7.3</b> Extra: alternative solution to part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="handheld-halting.html"><a href="handheld-halting.html"><i class="fa fa-check"></i><b>8</b> Handheld Halting</a><ul>
+<li class="chapter" data-level="8.1" data-path="handheld-halting.html"><a href="handheld-halting.html#part-1-7"><i class="fa fa-check"></i><b>8.1</b> Part 1</a></li>
+<li class="chapter" data-level="8.2" data-path="handheld-halting.html"><a href="handheld-halting.html#part-2-7"><i class="fa fa-check"></i><b>8.2</b> Part 2</a></li>
+<li class="chapter" data-level="8.3" data-path="handheld-halting.html"><a href="handheld-halting.html#extra-update-the-computer-class"><i class="fa fa-check"></i><b>8.3</b> Extra: update the computer class</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="encoding-error.html"><a href="encoding-error.html"><i class="fa fa-check"></i><b>9</b> Encoding Error</a><ul>
+<li class="chapter" data-level="9.1" data-path="encoding-error.html"><a href="encoding-error.html#part-1-8"><i class="fa fa-check"></i><b>9.1</b> Part 1</a></li>
+<li class="chapter" data-level="9.2" data-path="encoding-error.html"><a href="encoding-error.html#part-2-8"><i class="fa fa-check"></i><b>9.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="adapter-array.html"><a href="adapter-array.html"><i class="fa fa-check"></i><b>10</b> Adapter Array</a><ul>
+<li class="chapter" data-level="10.1" data-path="adapter-array.html"><a href="adapter-array.html#part-1-9"><i class="fa fa-check"></i><b>10.1</b> Part 1</a></li>
+<li class="chapter" data-level="10.2" data-path="adapter-array.html"><a href="adapter-array.html#part-2-9"><i class="fa fa-check"></i><b>10.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="seating-system.html"><a href="seating-system.html"><i class="fa fa-check"></i><b>11</b> Seating System</a><ul>
+<li class="chapter" data-level="11.1" data-path="seating-system.html"><a href="seating-system.html#part-1-10"><i class="fa fa-check"></i><b>11.1</b> Part 1</a></li>
+<li class="chapter" data-level="11.2" data-path="seating-system.html"><a href="seating-system.html#part-2-10"><i class="fa fa-check"></i><b>11.2</b> Part 2</a></li>
+<li class="chapter" data-level="11.3" data-path="seating-system.html"><a href="seating-system.html#solving-faster"><i class="fa fa-check"></i><b>11.3</b> Solving faster</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="rain-risk.html"><a href="rain-risk.html"><i class="fa fa-check"></i><b>12</b> Rain Risk</a><ul>
+<li class="chapter" data-level="12.1" data-path="rain-risk.html"><a href="rain-risk.html#part-1-11"><i class="fa fa-check"></i><b>12.1</b> Part 1</a></li>
+<li class="chapter" data-level="12.2" data-path="rain-risk.html"><a href="rain-risk.html#part-2-11"><i class="fa fa-check"></i><b>12.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="shuttle-search.html"><a href="shuttle-search.html"><i class="fa fa-check"></i><b>13</b> Shuttle Search</a><ul>
+<li class="chapter" data-level="13.1" data-path="shuttle-search.html"><a href="shuttle-search.html#part-1-12"><i class="fa fa-check"></i><b>13.1</b> Part 1</a></li>
+<li class="chapter" data-level="13.2" data-path="shuttle-search.html"><a href="shuttle-search.html#part-2-12"><i class="fa fa-check"></i><b>13.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="docking-data.html"><a href="docking-data.html"><i class="fa fa-check"></i><b>14</b> Docking Data</a><ul>
+<li class="chapter" data-level="14.1" data-path="docking-data.html"><a href="docking-data.html#part-1-13"><i class="fa fa-check"></i><b>14.1</b> Part 1</a></li>
+<li class="chapter" data-level="14.2" data-path="docking-data.html"><a href="docking-data.html#part-2-13"><i class="fa fa-check"></i><b>14.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html"><i class="fa fa-check"></i><b>15</b> Rambunctious Recitation</a><ul>
+<li class="chapter" data-level="15.1" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html#part-1-14"><i class="fa fa-check"></i><b>15.1</b> Part 1</a></li>
+<li class="chapter" data-level="15.2" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html#part-2-14"><i class="fa fa-check"></i><b>15.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="ticket-translation.html"><a href="ticket-translation.html"><i class="fa fa-check"></i><b>16</b> Ticket Translation</a><ul>
+<li class="chapter" data-level="16.1" data-path="ticket-translation.html"><a href="ticket-translation.html#part-1-15"><i class="fa fa-check"></i><b>16.1</b> Part 1</a></li>
+<li class="chapter" data-level="16.2" data-path="ticket-translation.html"><a href="ticket-translation.html#part-2-15"><i class="fa fa-check"></i><b>16.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="conway-cubes.html"><a href="conway-cubes.html"><i class="fa fa-check"></i><b>17</b> Conway Cubes</a><ul>
+<li class="chapter" data-level="17.1" data-path="conway-cubes.html"><a href="conway-cubes.html#part-1-16"><i class="fa fa-check"></i><b>17.1</b> Part 1</a></li>
+<li class="chapter" data-level="17.2" data-path="conway-cubes.html"><a href="conway-cubes.html#part-2-16"><i class="fa fa-check"></i><b>17.2</b> Part 2</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Advent of Code 2020</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="conway-cubes" class="section level1">
+<h1><span class="header-section-number">Day 17</span> Conway Cubes</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2021/day/17">Day 17</a>.</p>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="conway-cubes.html#cb294-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_17_sample.txt&quot;</span>)</span>
+<span id="cb294-2"><a href="conway-cubes.html#cb294-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_17_input.txt&quot;</span>)</span></code></pre></div>
+<div id="part-1-16" class="section level2">
+<h2><span class="header-section-number">17.1</span> Part 1</h2>
+<p>We can use the R “array” data type for today’s problem: these are n-dimensional vectors. First, let’s create a function
+to convert our input into a 3 dimensional array.</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="conway-cubes.html#cb295-1"></a>to_array &lt;-<span class="st"> </span><span class="cf">function</span>(input, dimensions) {</span>
+<span id="cb295-2"><a href="conway-cubes.html#cb295-2"></a>  <span class="cf">if</span> (dimensions <span class="op">&lt;</span><span class="st"> </span><span class="dv">3</span>) {</span>
+<span id="cb295-3"><a href="conway-cubes.html#cb295-3"></a>    <span class="kw">stop</span>(<span class="st">&quot;dimensions must be at least 3&quot;</span>)</span>
+<span id="cb295-4"><a href="conway-cubes.html#cb295-4"></a>  }</span>
+<span id="cb295-5"><a href="conway-cubes.html#cb295-5"></a>  </span>
+<span id="cb295-6"><a href="conway-cubes.html#cb295-6"></a>  replacement &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;.&quot;</span> =<span class="st"> </span><span class="dv">0</span>, <span class="st">&quot;#&quot;</span> =<span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb295-7"><a href="conway-cubes.html#cb295-7"></a></span>
+<span id="cb295-8"><a href="conway-cubes.html#cb295-8"></a>  m &lt;-<span class="st"> </span>input <span class="op">%&gt;%</span></span>
+<span id="cb295-9"><a href="conway-cubes.html#cb295-9"></a><span class="st">    </span><span class="kw">str_extract_all</span>(<span class="st">&quot;.&quot;</span>, <span class="dt">simplify =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></span>
+<span id="cb295-10"><a href="conway-cubes.html#cb295-10"></a><span class="st">    </span><span class="kw">apply</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="cf">function</span>(.x) replacement[[.x]])</span>
+<span id="cb295-11"><a href="conway-cubes.html#cb295-11"></a>  </span>
+<span id="cb295-12"><a href="conway-cubes.html#cb295-12"></a>  <span class="kw">array</span>(m, <span class="dt">dim =</span> <span class="kw">c</span>(<span class="kw">nrow</span>(m), <span class="kw">ncol</span>(m), <span class="kw">rep</span>(<span class="dv">1</span>, dimensions <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)))</span>
+<span id="cb295-13"><a href="conway-cubes.html#cb295-13"></a>}</span>
+<span id="cb295-14"><a href="conway-cubes.html#cb295-14"></a></span>
+<span id="cb295-15"><a href="conway-cubes.html#cb295-15"></a><span class="kw">to_array</span>(sample, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## , , 1
+## 
+##      [,1] [,2] [,3]
+## [1,]    0    1    0
+## [2,]    0    0    1
+## [3,]    1    1    1</code></pre>
+<p>At each iteration we need to increase the size of the state by 1 on every side.</p>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="conway-cubes.html#cb297-1"></a>grow_state_3d &lt;-<span class="st"> </span><span class="cf">function</span>(state) {</span>
+<span id="cb297-2"><a href="conway-cubes.html#cb297-2"></a>  ds &lt;-<span class="st"> </span><span class="kw">dim</span>(state)</span>
+<span id="cb297-3"><a href="conway-cubes.html#cb297-3"></a>  </span>
+<span id="cb297-4"><a href="conway-cubes.html#cb297-4"></a>  next_state &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim =</span> ds <span class="op">+</span><span class="st"> </span><span class="dv">2</span>)</span>
+<span id="cb297-5"><a href="conway-cubes.html#cb297-5"></a>  </span>
+<span id="cb297-6"><a href="conway-cubes.html#cb297-6"></a>  <span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">1</span>]]) {</span>
+<span id="cb297-7"><a href="conway-cubes.html#cb297-7"></a>    <span class="cf">for</span> (y <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">2</span>]]) {</span>
+<span id="cb297-8"><a href="conway-cubes.html#cb297-8"></a>      <span class="cf">for</span> (z <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">3</span>]]) {</span>
+<span id="cb297-9"><a href="conway-cubes.html#cb297-9"></a>        next_state[x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, y <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, z <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span>state[x, y, z]</span>
+<span id="cb297-10"><a href="conway-cubes.html#cb297-10"></a>      }</span>
+<span id="cb297-11"><a href="conway-cubes.html#cb297-11"></a>    }</span>
+<span id="cb297-12"><a href="conway-cubes.html#cb297-12"></a>  }</span>
+<span id="cb297-13"><a href="conway-cubes.html#cb297-13"></a>  </span>
+<span id="cb297-14"><a href="conway-cubes.html#cb297-14"></a>  next_state</span>
+<span id="cb297-15"><a href="conway-cubes.html#cb297-15"></a>}</span></code></pre></div>
+<p>We need a function to iterate the states according to the rules.</p>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="conway-cubes.html#cb298-1"></a>iterate_state_3d &lt;-<span class="st"> </span><span class="cf">function</span>(state) {</span>
+<span id="cb298-2"><a href="conway-cubes.html#cb298-2"></a>  state &lt;-<span class="st"> </span><span class="kw">grow_state_3d</span>(state)</span>
+<span id="cb298-3"><a href="conway-cubes.html#cb298-3"></a>  ds &lt;-<span class="st"> </span><span class="kw">dim</span>(state)</span>
+<span id="cb298-4"><a href="conway-cubes.html#cb298-4"></a>  next_state &lt;-<span class="st"> </span>state</span>
+<span id="cb298-5"><a href="conway-cubes.html#cb298-5"></a>  </span>
+<span id="cb298-6"><a href="conway-cubes.html#cb298-6"></a>  <span class="co"># helper function to find the bounds of the array in a given dimension:</span></span>
+<span id="cb298-7"><a href="conway-cubes.html#cb298-7"></a>  <span class="co"># make sure we start no lower than 1, and no higher than the size of that dim</span></span>
+<span id="cb298-8"><a href="conway-cubes.html#cb298-8"></a>  gs &lt;-<span class="st"> </span><span class="cf">function</span>(a, i) <span class="kw">max</span>(<span class="dv">1</span>, a <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span><span class="kw">min</span>(ds[[i]], a <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb298-9"><a href="conway-cubes.html#cb298-9"></a> </span>
+<span id="cb298-10"><a href="conway-cubes.html#cb298-10"></a>  <span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">1</span>]]) {</span>
+<span id="cb298-11"><a href="conway-cubes.html#cb298-11"></a>    <span class="cf">for</span> (y <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">2</span>]]) {</span>
+<span id="cb298-12"><a href="conway-cubes.html#cb298-12"></a>      <span class="cf">for</span> (z <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">3</span>]]) {</span>
+<span id="cb298-13"><a href="conway-cubes.html#cb298-13"></a>        <span class="co"># get the bounds of the array for the dimensions</span></span>
+<span id="cb298-14"><a href="conway-cubes.html#cb298-14"></a>        xs &lt;-<span class="st"> </span><span class="kw">gs</span>(x, <span class="dv">1</span>)</span>
+<span id="cb298-15"><a href="conway-cubes.html#cb298-15"></a>        ys &lt;-<span class="st"> </span><span class="kw">gs</span>(y, <span class="dv">2</span>)</span>
+<span id="cb298-16"><a href="conway-cubes.html#cb298-16"></a>        zs &lt;-<span class="st"> </span><span class="kw">gs</span>(z, <span class="dv">3</span>)</span>
+<span id="cb298-17"><a href="conway-cubes.html#cb298-17"></a>        <span class="co"># sum the neighbours, subtract the current cell</span></span>
+<span id="cb298-18"><a href="conway-cubes.html#cb298-18"></a>        e &lt;-<span class="st"> </span><span class="kw">sum</span>(state[xs, ys, zs]) <span class="op">-</span><span class="st"> </span>state[x, y, z]</span>
+<span id="cb298-19"><a href="conway-cubes.html#cb298-19"></a>        <span class="co"># apply rules</span></span>
+<span id="cb298-20"><a href="conway-cubes.html#cb298-20"></a>        <span class="cf">if</span> (state[x, y, z] <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {</span>
+<span id="cb298-21"><a href="conway-cubes.html#cb298-21"></a>          <span class="cf">if</span> (e <span class="op">!=</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>e <span class="op">!=</span><span class="st"> </span><span class="dv">3</span>) {</span>
+<span id="cb298-22"><a href="conway-cubes.html#cb298-22"></a>            next_state[x, y, z] &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb298-23"><a href="conway-cubes.html#cb298-23"></a>          }</span>
+<span id="cb298-24"><a href="conway-cubes.html#cb298-24"></a>        } <span class="cf">else</span> {</span>
+<span id="cb298-25"><a href="conway-cubes.html#cb298-25"></a>          <span class="cf">if</span> (e <span class="op">==</span><span class="st"> </span><span class="dv">3</span>) {</span>
+<span id="cb298-26"><a href="conway-cubes.html#cb298-26"></a>            next_state[x, y, z] &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb298-27"><a href="conway-cubes.html#cb298-27"></a>          }</span>
+<span id="cb298-28"><a href="conway-cubes.html#cb298-28"></a>        }</span>
+<span id="cb298-29"><a href="conway-cubes.html#cb298-29"></a>      }</span>
+<span id="cb298-30"><a href="conway-cubes.html#cb298-30"></a>    }</span>
+<span id="cb298-31"><a href="conway-cubes.html#cb298-31"></a>  }</span>
+<span id="cb298-32"><a href="conway-cubes.html#cb298-32"></a>  <span class="co"># return the iterated state</span></span>
+<span id="cb298-33"><a href="conway-cubes.html#cb298-33"></a>  next_state </span>
+<span id="cb298-34"><a href="conway-cubes.html#cb298-34"></a>}</span></code></pre></div>
+<p>We can build a helper function to run as many iterations as requested:</p>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="conway-cubes.html#cb299-1"></a>run_n_iterations_3d &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
+<span id="cb299-2"><a href="conway-cubes.html#cb299-2"></a>  <span class="kw">reduce</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="op">~</span><span class="kw">iterate_state_3d</span>(.x), <span class="dt">.init =</span> <span class="kw">to_array</span>(input, <span class="dv">3</span>))</span>
+<span id="cb299-3"><a href="conway-cubes.html#cb299-3"></a>}</span></code></pre></div>
+<p>Now we can check our function runs as expected</p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="conway-cubes.html#cb300-1"></a>sample <span class="op">%&gt;%</span></span>
+<span id="cb300-2"><a href="conway-cubes.html#cb300-2"></a><span class="st">  </span><span class="kw">run_n_iterations_3d</span>(<span class="dv">6</span>) <span class="op">%&gt;%</span></span>
+<span id="cb300-3"><a href="conway-cubes.html#cb300-3"></a><span class="st">  </span><span class="kw">sum</span>() <span class="op">==</span><span class="st"> </span><span class="dv">112</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>And we can run with our actual data</p>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="conway-cubes.html#cb302-1"></a>actual <span class="op">%&gt;%</span></span>
+<span id="cb302-2"><a href="conway-cubes.html#cb302-2"></a><span class="st">  </span><span class="kw">run_n_iterations_3d</span>(<span class="dv">6</span>) <span class="op">%&gt;%</span></span>
+<span id="cb302-3"><a href="conway-cubes.html#cb302-3"></a><span class="st">  </span><span class="kw">sum</span>()</span></code></pre></div>
+<pre><code>## [1] 368</code></pre>
+</div>
+<div id="part-2-16" class="section level2">
+<h2><span class="header-section-number">17.2</span> Part 2</h2>
+<p>For part 2 we just need to extend our functions to include a 4th dimension.</p>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="conway-cubes.html#cb304-1"></a>grow_state_4d &lt;-<span class="st"> </span><span class="cf">function</span>(state) {</span>
+<span id="cb304-2"><a href="conway-cubes.html#cb304-2"></a>  ds &lt;-<span class="st"> </span><span class="kw">dim</span>(state)</span>
+<span id="cb304-3"><a href="conway-cubes.html#cb304-3"></a>  </span>
+<span id="cb304-4"><a href="conway-cubes.html#cb304-4"></a>  next_state &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim =</span> ds <span class="op">+</span><span class="st"> </span><span class="dv">2</span>)</span>
+<span id="cb304-5"><a href="conway-cubes.html#cb304-5"></a>  </span>
+<span id="cb304-6"><a href="conway-cubes.html#cb304-6"></a>  <span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">1</span>]]) {</span>
+<span id="cb304-7"><a href="conway-cubes.html#cb304-7"></a>    <span class="cf">for</span> (y <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">2</span>]]) {</span>
+<span id="cb304-8"><a href="conway-cubes.html#cb304-8"></a>      <span class="cf">for</span> (z <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">3</span>]]) {</span>
+<span id="cb304-9"><a href="conway-cubes.html#cb304-9"></a>        <span class="cf">for</span> (w <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">4</span>]]) {</span>
+<span id="cb304-10"><a href="conway-cubes.html#cb304-10"></a>          next_state[x <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, y <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, z <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, w <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span>state[x, y, z, w]</span>
+<span id="cb304-11"><a href="conway-cubes.html#cb304-11"></a>        }</span>
+<span id="cb304-12"><a href="conway-cubes.html#cb304-12"></a>      }</span>
+<span id="cb304-13"><a href="conway-cubes.html#cb304-13"></a>    }</span>
+<span id="cb304-14"><a href="conway-cubes.html#cb304-14"></a>  }</span>
+<span id="cb304-15"><a href="conway-cubes.html#cb304-15"></a>  </span>
+<span id="cb304-16"><a href="conway-cubes.html#cb304-16"></a>  next_state</span>
+<span id="cb304-17"><a href="conway-cubes.html#cb304-17"></a>}</span>
+<span id="cb304-18"><a href="conway-cubes.html#cb304-18"></a></span>
+<span id="cb304-19"><a href="conway-cubes.html#cb304-19"></a>iterate_state_4d &lt;-<span class="st"> </span><span class="cf">function</span>(state) {</span>
+<span id="cb304-20"><a href="conway-cubes.html#cb304-20"></a>  state &lt;-<span class="st"> </span><span class="kw">grow_state_4d</span>(state)</span>
+<span id="cb304-21"><a href="conway-cubes.html#cb304-21"></a>  ds &lt;-<span class="st"> </span><span class="kw">dim</span>(state)</span>
+<span id="cb304-22"><a href="conway-cubes.html#cb304-22"></a>  next_state &lt;-<span class="st"> </span>state</span>
+<span id="cb304-23"><a href="conway-cubes.html#cb304-23"></a>  </span>
+<span id="cb304-24"><a href="conway-cubes.html#cb304-24"></a>  gs &lt;-<span class="st"> </span><span class="cf">function</span>(a, i) <span class="kw">max</span>(<span class="dv">1</span>, a <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span><span class="kw">min</span>(ds[[i]], a <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb304-25"><a href="conway-cubes.html#cb304-25"></a> </span>
+<span id="cb304-26"><a href="conway-cubes.html#cb304-26"></a>  <span class="cf">for</span> (x <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">1</span>]]) {</span>
+<span id="cb304-27"><a href="conway-cubes.html#cb304-27"></a>    <span class="cf">for</span> (y <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">2</span>]]) {</span>
+<span id="cb304-28"><a href="conway-cubes.html#cb304-28"></a>      <span class="cf">for</span> (z <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">3</span>]]) {</span>
+<span id="cb304-29"><a href="conway-cubes.html#cb304-29"></a>        <span class="cf">for</span> (w <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ds[[<span class="dv">4</span>]]) {</span>
+<span id="cb304-30"><a href="conway-cubes.html#cb304-30"></a>          xs &lt;-<span class="st"> </span><span class="kw">gs</span>(x, <span class="dv">1</span>)</span>
+<span id="cb304-31"><a href="conway-cubes.html#cb304-31"></a>          ys &lt;-<span class="st"> </span><span class="kw">gs</span>(y, <span class="dv">2</span>)</span>
+<span id="cb304-32"><a href="conway-cubes.html#cb304-32"></a>          zs &lt;-<span class="st"> </span><span class="kw">gs</span>(z, <span class="dv">3</span>)</span>
+<span id="cb304-33"><a href="conway-cubes.html#cb304-33"></a>          ws &lt;-<span class="st"> </span><span class="kw">gs</span>(w, <span class="dv">4</span>)</span>
+<span id="cb304-34"><a href="conway-cubes.html#cb304-34"></a>          </span>
+<span id="cb304-35"><a href="conway-cubes.html#cb304-35"></a>          e &lt;-<span class="st"> </span><span class="kw">sum</span>(state[xs, ys, zs, ws]) <span class="op">-</span><span class="st"> </span>state[x, y, z, w]</span>
+<span id="cb304-36"><a href="conway-cubes.html#cb304-36"></a>          </span>
+<span id="cb304-37"><a href="conway-cubes.html#cb304-37"></a>          <span class="cf">if</span> (state[x, y, z, w] <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {</span>
+<span id="cb304-38"><a href="conway-cubes.html#cb304-38"></a>            <span class="cf">if</span> (e <span class="op">!=</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>e <span class="op">!=</span><span class="st"> </span><span class="dv">3</span>) {</span>
+<span id="cb304-39"><a href="conway-cubes.html#cb304-39"></a>              next_state[x, y, z, w] &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb304-40"><a href="conway-cubes.html#cb304-40"></a>            }</span>
+<span id="cb304-41"><a href="conway-cubes.html#cb304-41"></a>          } <span class="cf">else</span> {</span>
+<span id="cb304-42"><a href="conway-cubes.html#cb304-42"></a>            <span class="cf">if</span> (e <span class="op">==</span><span class="st"> </span><span class="dv">3</span>) {</span>
+<span id="cb304-43"><a href="conway-cubes.html#cb304-43"></a>              next_state[x, y, z, w] &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb304-44"><a href="conway-cubes.html#cb304-44"></a>            }</span>
+<span id="cb304-45"><a href="conway-cubes.html#cb304-45"></a>          }</span>
+<span id="cb304-46"><a href="conway-cubes.html#cb304-46"></a>        }</span>
+<span id="cb304-47"><a href="conway-cubes.html#cb304-47"></a>      }</span>
+<span id="cb304-48"><a href="conway-cubes.html#cb304-48"></a>    }</span>
+<span id="cb304-49"><a href="conway-cubes.html#cb304-49"></a>  }</span>
+<span id="cb304-50"><a href="conway-cubes.html#cb304-50"></a>  </span>
+<span id="cb304-51"><a href="conway-cubes.html#cb304-51"></a>  next_state </span>
+<span id="cb304-52"><a href="conway-cubes.html#cb304-52"></a>}</span>
+<span id="cb304-53"><a href="conway-cubes.html#cb304-53"></a></span>
+<span id="cb304-54"><a href="conway-cubes.html#cb304-54"></a>run_n_iterations_4d &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
+<span id="cb304-55"><a href="conway-cubes.html#cb304-55"></a>  <span class="kw">reduce</span>(<span class="dv">1</span><span class="op">:</span>n, <span class="op">~</span><span class="kw">iterate_state_4d</span>(.x), <span class="dt">.init =</span> <span class="kw">to_array</span>(input, <span class="dv">4</span>))</span>
+<span id="cb304-56"><a href="conway-cubes.html#cb304-56"></a>}</span></code></pre></div>
+<p>We can run with our sample data to test:</p>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="conway-cubes.html#cb305-1"></a>sample <span class="op">%&gt;%</span></span>
+<span id="cb305-2"><a href="conway-cubes.html#cb305-2"></a><span class="st">  </span><span class="kw">run_n_iterations_4d</span>(<span class="dv">6</span>) <span class="op">%&gt;%</span></span>
+<span id="cb305-3"><a href="conway-cubes.html#cb305-3"></a><span class="st">  </span><span class="kw">sum</span>() <span class="op">==</span><span class="st"> </span><span class="dv">848</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>And we can run with our actual data:</p>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="conway-cubes.html#cb307-1"></a>actual <span class="op">%&gt;%</span></span>
+<span id="cb307-2"><a href="conway-cubes.html#cb307-2"></a><span class="st">  </span><span class="kw">run_n_iterations_4d</span>(<span class="dv">6</span>) <span class="op">%&gt;%</span></span>
+<span id="cb307-3"><a href="conway-cubes.html#cb307-3"></a><span class="st">  </span><span class="kw">sum</span>()</span></code></pre></div>
+<pre><code>## [1] 2696</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ticket-translation.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

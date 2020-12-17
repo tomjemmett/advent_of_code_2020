@@ -1,0 +1,230 @@
+# Conway Cubes
+
+
+
+This is my attempt to solve [Day 17](https://adventofcode.com/2021/day/17).
+
+
+```r
+sample <- read_lines("samples/day_17_sample.txt")
+actual <- read_lines("inputs/day_17_input.txt")
+```
+
+## Part 1
+
+We can use the R "array" data type for today's problem: these are n-dimensional vectors. First, let's create a function
+to convert our input into a 3 dimensional array.
+
+
+```r
+to_array <- function(input, dimensions) {
+  if (dimensions < 3) {
+    stop("dimensions must be at least 3")
+  }
+  
+  replacement <- c("." = 0, "#" = 1)
+
+  m <- input %>%
+    str_extract_all(".", simplify = TRUE) %>%
+    apply(c(1,2), function(.x) replacement[[.x]])
+  
+  array(m, dim = c(nrow(m), ncol(m), rep(1, dimensions - 2)))
+}
+
+to_array(sample, 3)
+```
+
+```
+## , , 1
+## 
+##      [,1] [,2] [,3]
+## [1,]    0    1    0
+## [2,]    0    0    1
+## [3,]    1    1    1
+```
+
+At each iteration we need to increase the size of the state by 1 on every side.
+
+
+```r
+grow_state_3d <- function(state) {
+  ds <- dim(state)
+  
+  next_state <- array(0, dim = ds + 2)
+  
+  for (x in 1:ds[[1]]) {
+    for (y in 1:ds[[2]]) {
+      for (z in 1:ds[[3]]) {
+        next_state[x + 1, y + 1, z + 1] <- state[x, y, z]
+      }
+    }
+  }
+  
+  next_state
+}
+```
+
+We need a function to iterate the states according to the rules.
+
+
+```r
+iterate_state_3d <- function(state) {
+  state <- grow_state_3d(state)
+  ds <- dim(state)
+  next_state <- state
+  
+  # helper function to find the bounds of the array in a given dimension:
+  # make sure we start no lower than 1, and no higher than the size of that dim
+  gs <- function(a, i) max(1, a - 1):min(ds[[i]], a + 1)
+ 
+  for (x in 1:ds[[1]]) {
+    for (y in 1:ds[[2]]) {
+      for (z in 1:ds[[3]]) {
+        # get the bounds of the array for the dimensions
+        xs <- gs(x, 1)
+        ys <- gs(y, 2)
+        zs <- gs(z, 3)
+        # sum the neighbours, subtract the current cell
+        e <- sum(state[xs, ys, zs]) - state[x, y, z]
+        # apply rules
+        if (state[x, y, z] == 1) {
+          if (e != 2 & e != 3) {
+            next_state[x, y, z] <- 0
+          }
+        } else {
+          if (e == 3) {
+            next_state[x, y, z] <- 1
+          }
+        }
+      }
+    }
+  }
+  # return the iterated state
+  next_state 
+}
+```
+
+We can build a helper function to run as many iterations as requested:
+
+
+```r
+run_n_iterations_3d <- function(input, n) {
+  reduce(1:n, ~iterate_state_3d(.x), .init = to_array(input, 3))
+}
+```
+
+Now we can check our function runs as expected
+
+
+```r
+sample %>%
+  run_n_iterations_3d(6) %>%
+  sum() == 112
+```
+
+```
+## [1] TRUE
+```
+
+And we can run with our actual data
+
+
+```r
+actual %>%
+  run_n_iterations_3d(6) %>%
+  sum()
+```
+
+```
+## [1] 368
+```
+
+## Part 2
+
+For part 2 we just need to extend our functions to include a 4th dimension.
+
+
+```r
+grow_state_4d <- function(state) {
+  ds <- dim(state)
+  
+  next_state <- array(0, dim = ds + 2)
+  
+  for (x in 1:ds[[1]]) {
+    for (y in 1:ds[[2]]) {
+      for (z in 1:ds[[3]]) {
+        for (w in 1:ds[[4]]) {
+          next_state[x + 1, y + 1, z + 1, w + 1] <- state[x, y, z, w]
+        }
+      }
+    }
+  }
+  
+  next_state
+}
+
+iterate_state_4d <- function(state) {
+  state <- grow_state_4d(state)
+  ds <- dim(state)
+  next_state <- state
+  
+  gs <- function(a, i) max(1, a - 1):min(ds[[i]], a + 1)
+ 
+  for (x in 1:ds[[1]]) {
+    for (y in 1:ds[[2]]) {
+      for (z in 1:ds[[3]]) {
+        for (w in 1:ds[[4]]) {
+          xs <- gs(x, 1)
+          ys <- gs(y, 2)
+          zs <- gs(z, 3)
+          ws <- gs(w, 4)
+          
+          e <- sum(state[xs, ys, zs, ws]) - state[x, y, z, w]
+          
+          if (state[x, y, z, w] == 1) {
+            if (e != 2 & e != 3) {
+              next_state[x, y, z, w] <- 0
+            }
+          } else {
+            if (e == 3) {
+              next_state[x, y, z, w] <- 1
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  next_state 
+}
+
+run_n_iterations_4d <- function(input, n) {
+  reduce(1:n, ~iterate_state_4d(.x), .init = to_array(input, 4))
+}
+```
+
+We can run with our sample data to test:
+
+
+```r
+sample %>%
+  run_n_iterations_4d(6) %>%
+  sum() == 848
+```
+
+```
+## [1] TRUE
+```
+
+And we can run with our actual data:
+
+
+```r
+actual %>%
+  run_n_iterations_4d(6) %>%
+  sum()
+```
+
+```
+## [1] 2696
+```

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Day 16 Ticket Translation | Advent of Code 2020</title>
+  <meta name="description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Day 16 Ticket Translation | Advent of Code 2020" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Day 16 Ticket Translation | Advent of Code 2020" />
+  
+  <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
+  
+
+<meta name="author" content="Tom Jemmett" />
+
+
+<meta name="date" content="2020-12-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="rambunctious-recitation.html"/>
+<link rel="next" href="conway-cubes.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">Advent of Code 2020</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="report-repair.html"><a href="report-repair.html"><i class="fa fa-check"></i><b>1</b> Report Repair</a><ul>
+<li class="chapter" data-level="1.1" data-path="report-repair.html"><a href="report-repair.html#part-1"><i class="fa fa-check"></i><b>1.1</b> Part 1</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="report-repair.html"><a href="report-repair.html#is-the-improved-algorithm-any-better"><i class="fa fa-check"></i><b>1.1.1</b> is the improved algorithm any better?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="report-repair.html"><a href="report-repair.html#part-2"><i class="fa fa-check"></i><b>1.2</b> Part 2</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="report-repair.html"><a href="report-repair.html#is-our-improved-algorithm-better-this-time"><i class="fa fa-check"></i><b>1.2.1</b> Is our improved algorithm better this time?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: Implementing in Python</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="password-philosophy.html"><a href="password-philosophy.html"><i class="fa fa-check"></i><b>2</b> Password Philosophy</a><ul>
+<li class="chapter" data-level="2.1" data-path="password-philosophy.html"><a href="password-philosophy.html#part-1-1"><i class="fa fa-check"></i><b>2.1</b> Part 1</a></li>
+<li class="chapter" data-level="2.2" data-path="password-philosophy.html"><a href="password-philosophy.html#part-2-1"><i class="fa fa-check"></i><b>2.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html"><i class="fa fa-check"></i><b>3</b> Toboggan Trajectory</a><ul>
+<li class="chapter" data-level="3.1" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-1-2"><i class="fa fa-check"></i><b>3.1</b> Part 1</a></li>
+<li class="chapter" data-level="3.2" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-2-2"><i class="fa fa-check"></i><b>3.2</b> Part 2</a></li>
+<li class="chapter" data-level="3.3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter"><i class="fa fa-check"></i><b>3.3</b> Extra: Is there a path that minimises the number of trees you encounter?</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="passport-processing.html"><a href="passport-processing.html"><i class="fa fa-check"></i><b>4</b> Passport Processing</a><ul>
+<li class="chapter" data-level="4.1" data-path="passport-processing.html"><a href="passport-processing.html#part-1-3"><i class="fa fa-check"></i><b>4.1</b> Part 1</a></li>
+<li class="chapter" data-level="4.2" data-path="passport-processing.html"><a href="passport-processing.html#part-2-3"><i class="fa fa-check"></i><b>4.2</b> Part 2</a></li>
+<li class="chapter" data-level="4.3" data-path="passport-processing.html"><a href="passport-processing.html#extra-solving-with-regular-expressions"><i class="fa fa-check"></i><b>4.3</b> Extra: Solving with regular expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="binary-boarding.html"><a href="binary-boarding.html"><i class="fa fa-check"></i><b>5</b> Binary Boarding</a><ul>
+<li class="chapter" data-level="5.1" data-path="binary-boarding.html"><a href="binary-boarding.html#part-1-4"><i class="fa fa-check"></i><b>5.1</b> Part 1</a></li>
+<li class="chapter" data-level="5.2" data-path="binary-boarding.html"><a href="binary-boarding.html#part-2-4"><i class="fa fa-check"></i><b>5.2</b> Part 2</a></li>
+<li class="chapter" data-level="5.3" data-path="binary-boarding.html"><a href="binary-boarding.html#extra-solving-algebraicly"><i class="fa fa-check"></i><b>5.3</b> Extra: Solving algebraicly</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="custom-customs.html"><a href="custom-customs.html"><i class="fa fa-check"></i><b>6</b> Custom Customs</a><ul>
+<li class="chapter" data-level="6.1" data-path="custom-customs.html"><a href="custom-customs.html#part-1-5"><i class="fa fa-check"></i><b>6.1</b> Part 1</a></li>
+<li class="chapter" data-level="6.2" data-path="custom-customs.html"><a href="custom-customs.html#part-2-5"><i class="fa fa-check"></i><b>6.2</b> Part 2</a></li>
+<li class="chapter" data-level="6.3" data-path="custom-customs.html"><a href="custom-customs.html#extra-solving-part-1-2-with-set-functions"><i class="fa fa-check"></i><b>6.3</b> Extra: solving part 1 &amp; 2 with set functions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="handy-haversacks.html"><a href="handy-haversacks.html"><i class="fa fa-check"></i><b>7</b> Handy Haversacks</a><ul>
+<li class="chapter" data-level="7.1" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-1-6"><i class="fa fa-check"></i><b>7.1</b> Part 1</a></li>
+<li class="chapter" data-level="7.2" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-2-6"><i class="fa fa-check"></i><b>7.2</b> Part 2</a></li>
+<li class="chapter" data-level="7.3" data-path="handy-haversacks.html"><a href="handy-haversacks.html#extra-alternative-solution-to-part-2"><i class="fa fa-check"></i><b>7.3</b> Extra: alternative solution to part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="handheld-halting.html"><a href="handheld-halting.html"><i class="fa fa-check"></i><b>8</b> Handheld Halting</a><ul>
+<li class="chapter" data-level="8.1" data-path="handheld-halting.html"><a href="handheld-halting.html#part-1-7"><i class="fa fa-check"></i><b>8.1</b> Part 1</a></li>
+<li class="chapter" data-level="8.2" data-path="handheld-halting.html"><a href="handheld-halting.html#part-2-7"><i class="fa fa-check"></i><b>8.2</b> Part 2</a></li>
+<li class="chapter" data-level="8.3" data-path="handheld-halting.html"><a href="handheld-halting.html#extra-update-the-computer-class"><i class="fa fa-check"></i><b>8.3</b> Extra: update the computer class</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="encoding-error.html"><a href="encoding-error.html"><i class="fa fa-check"></i><b>9</b> Encoding Error</a><ul>
+<li class="chapter" data-level="9.1" data-path="encoding-error.html"><a href="encoding-error.html#part-1-8"><i class="fa fa-check"></i><b>9.1</b> Part 1</a></li>
+<li class="chapter" data-level="9.2" data-path="encoding-error.html"><a href="encoding-error.html#part-2-8"><i class="fa fa-check"></i><b>9.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="adapter-array.html"><a href="adapter-array.html"><i class="fa fa-check"></i><b>10</b> Adapter Array</a><ul>
+<li class="chapter" data-level="10.1" data-path="adapter-array.html"><a href="adapter-array.html#part-1-9"><i class="fa fa-check"></i><b>10.1</b> Part 1</a></li>
+<li class="chapter" data-level="10.2" data-path="adapter-array.html"><a href="adapter-array.html#part-2-9"><i class="fa fa-check"></i><b>10.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="seating-system.html"><a href="seating-system.html"><i class="fa fa-check"></i><b>11</b> Seating System</a><ul>
+<li class="chapter" data-level="11.1" data-path="seating-system.html"><a href="seating-system.html#part-1-10"><i class="fa fa-check"></i><b>11.1</b> Part 1</a></li>
+<li class="chapter" data-level="11.2" data-path="seating-system.html"><a href="seating-system.html#part-2-10"><i class="fa fa-check"></i><b>11.2</b> Part 2</a></li>
+<li class="chapter" data-level="11.3" data-path="seating-system.html"><a href="seating-system.html#solving-faster"><i class="fa fa-check"></i><b>11.3</b> Solving faster</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="rain-risk.html"><a href="rain-risk.html"><i class="fa fa-check"></i><b>12</b> Rain Risk</a><ul>
+<li class="chapter" data-level="12.1" data-path="rain-risk.html"><a href="rain-risk.html#part-1-11"><i class="fa fa-check"></i><b>12.1</b> Part 1</a></li>
+<li class="chapter" data-level="12.2" data-path="rain-risk.html"><a href="rain-risk.html#part-2-11"><i class="fa fa-check"></i><b>12.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="shuttle-search.html"><a href="shuttle-search.html"><i class="fa fa-check"></i><b>13</b> Shuttle Search</a><ul>
+<li class="chapter" data-level="13.1" data-path="shuttle-search.html"><a href="shuttle-search.html#part-1-12"><i class="fa fa-check"></i><b>13.1</b> Part 1</a></li>
+<li class="chapter" data-level="13.2" data-path="shuttle-search.html"><a href="shuttle-search.html#part-2-12"><i class="fa fa-check"></i><b>13.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="docking-data.html"><a href="docking-data.html"><i class="fa fa-check"></i><b>14</b> Docking Data</a><ul>
+<li class="chapter" data-level="14.1" data-path="docking-data.html"><a href="docking-data.html#part-1-13"><i class="fa fa-check"></i><b>14.1</b> Part 1</a></li>
+<li class="chapter" data-level="14.2" data-path="docking-data.html"><a href="docking-data.html#part-2-13"><i class="fa fa-check"></i><b>14.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html"><i class="fa fa-check"></i><b>15</b> Rambunctious Recitation</a><ul>
+<li class="chapter" data-level="15.1" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html#part-1-14"><i class="fa fa-check"></i><b>15.1</b> Part 1</a></li>
+<li class="chapter" data-level="15.2" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html#part-2-14"><i class="fa fa-check"></i><b>15.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="ticket-translation.html"><a href="ticket-translation.html"><i class="fa fa-check"></i><b>16</b> Ticket Translation</a><ul>
+<li class="chapter" data-level="16.1" data-path="ticket-translation.html"><a href="ticket-translation.html#part-1-15"><i class="fa fa-check"></i><b>16.1</b> Part 1</a></li>
+<li class="chapter" data-level="16.2" data-path="ticket-translation.html"><a href="ticket-translation.html#part-2-15"><i class="fa fa-check"></i><b>16.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="conway-cubes.html"><a href="conway-cubes.html"><i class="fa fa-check"></i><b>17</b> Conway Cubes</a><ul>
+<li class="chapter" data-level="17.1" data-path="conway-cubes.html"><a href="conway-cubes.html#part-1-16"><i class="fa fa-check"></i><b>17.1</b> Part 1</a></li>
+<li class="chapter" data-level="17.2" data-path="conway-cubes.html"><a href="conway-cubes.html#part-2-16"><i class="fa fa-check"></i><b>17.2</b> Part 2</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Advent of Code 2020</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ticket-translation" class="section level1">
+<h1><span class="header-section-number">Day 16</span> Ticket Translation</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2021/day/16">Day 16</a>.</p>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="ticket-translation.html#cb278-1"></a><span class="co"># process the files</span></span>
+<span id="cb278-2"><a href="ticket-translation.html#cb278-2"></a>process_file &lt;-<span class="st"> </span><span class="cf">function</span>(file) {</span>
+<span id="cb278-3"><a href="ticket-translation.html#cb278-3"></a>  file <span class="op">%&gt;%</span></span>
+<span id="cb278-4"><a href="ticket-translation.html#cb278-4"></a><span class="st">    </span><span class="co"># strip windows new line carriage return charaters</span></span>
+<span id="cb278-5"><a href="ticket-translation.html#cb278-5"></a><span class="st">    </span><span class="kw">str_replace_all</span>(<span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>, <span class="st">&quot;&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb278-6"><a href="ticket-translation.html#cb278-6"></a><span class="st">    </span><span class="co"># remove trailing whitespace</span></span>
+<span id="cb278-7"><a href="ticket-translation.html#cb278-7"></a><span class="st">    </span><span class="kw">str_trim</span>() <span class="op">%&gt;%</span></span>
+<span id="cb278-8"><a href="ticket-translation.html#cb278-8"></a><span class="st">    </span><span class="co"># split on double new lines</span></span>
+<span id="cb278-9"><a href="ticket-translation.html#cb278-9"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb278-10"><a href="ticket-translation.html#cb278-10"></a><span class="st">    </span><span class="co"># get the first result (input was a single vector)</span></span>
+<span id="cb278-11"><a href="ticket-translation.html#cb278-11"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb278-12"><a href="ticket-translation.html#cb278-12"></a><span class="st">    </span><span class="co"># iterate over these results, split on newlines</span></span>
+<span id="cb278-13"><a href="ticket-translation.html#cb278-13"></a><span class="st">    </span><span class="kw">map</span>(str_split, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb278-14"><a href="ticket-translation.html#cb278-14"></a><span class="st">    </span><span class="co"># iterate over the results, select just the first item from each</span></span>
+<span id="cb278-15"><a href="ticket-translation.html#cb278-15"></a><span class="st">    </span><span class="co"># (each result from str_split will be a list of character vectors)</span></span>
+<span id="cb278-16"><a href="ticket-translation.html#cb278-16"></a><span class="st">    </span><span class="kw">map</span>(<span class="dv">1</span>)</span>
+<span id="cb278-17"><a href="ticket-translation.html#cb278-17"></a>}</span>
+<span id="cb278-18"><a href="ticket-translation.html#cb278-18"></a>sample &lt;-<span class="st"> </span><span class="kw">read_file</span>(<span class="st">&quot;samples/day_16_sample.txt&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">process_file</span>()</span>
+<span id="cb278-19"><a href="ticket-translation.html#cb278-19"></a>actual &lt;-<span class="st"> </span><span class="kw">read_file</span>(<span class="st">&quot;inputs/day_16_input.txt&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">process_file</span>()</span></code></pre></div>
+<div id="part-1-15" class="section level2">
+<h2><span class="header-section-number">16.1</span> Part 1</h2>
+<p>First let’s build a function to process our “notes”. We can return a list containing the fields we are expecting (as a
+dataframe with columns for the ranges), our ticket, and the nearby tickets.</p>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="ticket-translation.html#cb279-1"></a>process_notes &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb279-2"><a href="ticket-translation.html#cb279-2"></a>  fields &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]] <span class="op">%&gt;%</span></span>
+<span id="cb279-3"><a href="ticket-translation.html#cb279-3"></a><span class="st">    </span><span class="kw">unglue_data</span>(<span class="st">&quot;{field}: {a}-{b} or {c}-{d}&quot;</span>, <span class="dt">convert =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb279-4"><a href="ticket-translation.html#cb279-4"></a>  </span>
+<span id="cb279-5"><a href="ticket-translation.html#cb279-5"></a>  my_ticket &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">str_split</span>(input[[<span class="dv">2</span>]][[<span class="dv">2</span>]], <span class="st">&quot;,&quot;</span>)[[<span class="dv">1</span>]])</span>
+<span id="cb279-6"><a href="ticket-translation.html#cb279-6"></a>  nearby_tickets &lt;-<span class="st"> </span><span class="kw">map</span>(<span class="kw">str_split</span>(input[[<span class="dv">3</span>]][<span class="op">-</span><span class="dv">1</span>], <span class="st">&quot;,&quot;</span>), as.numeric)</span>
+<span id="cb279-7"><a href="ticket-translation.html#cb279-7"></a>  </span>
+<span id="cb279-8"><a href="ticket-translation.html#cb279-8"></a>  <span class="kw">list</span>(<span class="dt">fields =</span> fields,</span>
+<span id="cb279-9"><a href="ticket-translation.html#cb279-9"></a>       <span class="dt">my_ticket =</span> my_ticket,</span>
+<span id="cb279-10"><a href="ticket-translation.html#cb279-10"></a>       <span class="dt">nearby_tickets =</span> nearby_tickets)</span>
+<span id="cb279-11"><a href="ticket-translation.html#cb279-11"></a>}</span></code></pre></div>
+<p>We can now process our <code>sample</code> and <code>actual</code> data.</p>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="ticket-translation.html#cb280-1"></a>psample &lt;-<span class="st"> </span><span class="kw">process_notes</span>(sample)</span>
+<span id="cb280-2"><a href="ticket-translation.html#cb280-2"></a>pactual &lt;-<span class="st"> </span><span class="kw">process_notes</span>(actual)</span>
+<span id="cb280-3"><a href="ticket-translation.html#cb280-3"></a></span>
+<span id="cb280-4"><a href="ticket-translation.html#cb280-4"></a>psample</span></code></pre></div>
+<pre><code>## $fields
+##   field  a  b  c  d
+## 1 class  1  3  5  7
+## 2   row  6 11 33 44
+## 3  seat 13 40 45 50
+## 
+## $my_ticket
+## [1]  7  1 14
+## 
+## $nearby_tickets
+## $nearby_tickets[[1]]
+## [1]  7  3 47
+## 
+## $nearby_tickets[[2]]
+## [1] 40  4 50
+## 
+## $nearby_tickets[[3]]
+## [1] 55  2 20
+## 
+## $nearby_tickets[[4]]
+## [1] 38  6 12</code></pre>
+<p>Now, we need to check if a value is valid. We can build a simple function to do this that will take a value and the
+fields dataset. It will return <code>TRUE</code> if the value is valid for one of the fields and <code>FALSE</code> otherwise.</p>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="ticket-translation.html#cb282-1"></a>value_is_valid &lt;-<span class="st"> </span><span class="cf">function</span>(value, fields) {</span>
+<span id="cb282-2"><a href="ticket-translation.html#cb282-2"></a>  <span class="kw">any</span>(</span>
+<span id="cb282-3"><a href="ticket-translation.html#cb282-3"></a>    fields<span class="op">$</span>a <span class="op">&lt;=</span><span class="st"> </span>value <span class="op">&amp;</span><span class="st"> </span>value <span class="op">&lt;=</span><span class="st"> </span>fields<span class="op">$</span>b,</span>
+<span id="cb282-4"><a href="ticket-translation.html#cb282-4"></a>    fields<span class="op">$</span>c <span class="op">&lt;=</span><span class="st"> </span>value <span class="op">&amp;</span><span class="st"> </span>value <span class="op">&lt;=</span><span class="st"> </span>fields<span class="op">$</span>d</span>
+<span id="cb282-5"><a href="ticket-translation.html#cb282-5"></a>  )</span>
+<span id="cb282-6"><a href="ticket-translation.html#cb282-6"></a>}</span></code></pre></div>
+<p>We now can take the <code>nearby_tickets</code>, flatten the nested list to a single numeric vector and discard any value that is
+not valid.</p>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="ticket-translation.html#cb283-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb283-2"><a href="ticket-translation.html#cb283-2"></a>  input<span class="op">$</span>nearby_tickets <span class="op">%&gt;%</span></span>
+<span id="cb283-3"><a href="ticket-translation.html#cb283-3"></a><span class="st">    </span><span class="kw">flatten_dbl</span>() <span class="op">%&gt;%</span></span>
+<span id="cb283-4"><a href="ticket-translation.html#cb283-4"></a><span class="st">    </span><span class="kw">discard</span>(value_is_valid, <span class="dt">fields =</span> input<span class="op">$</span>fields) <span class="op">%&gt;%</span></span>
+<span id="cb283-5"><a href="ticket-translation.html#cb283-5"></a><span class="st">    </span><span class="kw">sum</span>()</span>
+<span id="cb283-6"><a href="ticket-translation.html#cb283-6"></a>}</span></code></pre></div>
+<p>We can test with our sample data:</p>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="ticket-translation.html#cb284-1"></a><span class="kw">part_1</span>(psample) <span class="op">==</span><span class="st"> </span><span class="dv">71</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>And we can run with our actual data:</p>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="ticket-translation.html#cb286-1"></a><span class="kw">part_1</span>(pactual)</span></code></pre></div>
+<pre><code>## [1] 21978</code></pre>
+</div>
+<div id="part-2-15" class="section level2">
+<h2><span class="header-section-number">16.2</span> Part 2</h2>
+<p>We have a different sample for part 2:</p>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="ticket-translation.html#cb288-1"></a>psample_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">str_trim</span>(<span class="st">&quot;</span></span>
+<span id="cb288-2"><a href="ticket-translation.html#cb288-2"></a><span class="st">class: 0-1 or 4-19</span></span>
+<span id="cb288-3"><a href="ticket-translation.html#cb288-3"></a><span class="st">row: 0-5 or 8-19</span></span>
+<span id="cb288-4"><a href="ticket-translation.html#cb288-4"></a><span class="st">seat: 0-13 or 16-19</span></span>
+<span id="cb288-5"><a href="ticket-translation.html#cb288-5"></a></span>
+<span id="cb288-6"><a href="ticket-translation.html#cb288-6"></a><span class="st">your ticket:</span></span>
+<span id="cb288-7"><a href="ticket-translation.html#cb288-7"></a><span class="st">11,12,13</span></span>
+<span id="cb288-8"><a href="ticket-translation.html#cb288-8"></a></span>
+<span id="cb288-9"><a href="ticket-translation.html#cb288-9"></a><span class="st">nearby tickets:</span></span>
+<span id="cb288-10"><a href="ticket-translation.html#cb288-10"></a><span class="st">3,9,18</span></span>
+<span id="cb288-11"><a href="ticket-translation.html#cb288-11"></a><span class="st">15,1,5</span></span>
+<span id="cb288-12"><a href="ticket-translation.html#cb288-12"></a><span class="st">5,14,9</span></span>
+<span id="cb288-13"><a href="ticket-translation.html#cb288-13"></a><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb288-14"><a href="ticket-translation.html#cb288-14"></a><span class="st">  </span><span class="kw">process_file</span>() <span class="op">%&gt;%</span></span>
+<span id="cb288-15"><a href="ticket-translation.html#cb288-15"></a><span class="st">  </span><span class="kw">process_notes</span>()</span></code></pre></div>
+<p>For part 2 we can use <code>{dplyr}</code> to find the possible fields that a value could take at a position, then we can loop
+over the possible fields reducing the rows in the table by finding a field that is the only candidate for a position,
+then removing that field from other positions.</p>
+<p>This assumes that there will always be just 1 possible candidate at each point.</p>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="ticket-translation.html#cb289-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb289-2"><a href="ticket-translation.html#cb289-2"></a>  valid_tickets &lt;-<span class="st"> </span>input<span class="op">$</span>nearby_tickets <span class="op">%&gt;%</span></span>
+<span id="cb289-3"><a href="ticket-translation.html#cb289-3"></a><span class="st">    </span><span class="kw">keep</span>(<span class="op">~</span><span class="kw">all</span>(<span class="kw">map_lgl</span>(.x, value_is_valid, <span class="dt">fields =</span> input<span class="op">$</span>fields)))</span>
+<span id="cb289-4"><a href="ticket-translation.html#cb289-4"></a>  </span>
+<span id="cb289-5"><a href="ticket-translation.html#cb289-5"></a>  possible_fields &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">value =</span> <span class="kw">flatten_dbl</span>(valid_tickets),</span>
+<span id="cb289-6"><a href="ticket-translation.html#cb289-6"></a>                                <span class="dt">pos =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(input<span class="op">$</span>fields)) <span class="op">%&gt;%</span></span>
+<span id="cb289-7"><a href="ticket-translation.html#cb289-7"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">fields =</span> <span class="kw">map</span>(value, <span class="cf">function</span>(.x) {</span>
+<span id="cb289-8"><a href="ticket-translation.html#cb289-8"></a>      input<span class="op">$</span>fields <span class="op">%&gt;%</span></span>
+<span id="cb289-9"><a href="ticket-translation.html#cb289-9"></a><span class="st">        </span><span class="kw">filter</span>((a <span class="op">&lt;=</span><span class="st"> </span>.x <span class="op">&amp;</span><span class="st"> </span>.x <span class="op">&lt;=</span>b) <span class="op">|</span><span class="st"> </span>(c <span class="op">&lt;=</span><span class="st"> </span>.x <span class="op">&amp;</span><span class="st"> </span>.x <span class="op">&lt;=</span><span class="st"> </span>d)) <span class="op">%&gt;%</span></span>
+<span id="cb289-10"><a href="ticket-translation.html#cb289-10"></a><span class="st">        </span><span class="kw">pull</span>(field)</span>
+<span id="cb289-11"><a href="ticket-translation.html#cb289-11"></a>    })) <span class="op">%&gt;%</span></span>
+<span id="cb289-12"><a href="ticket-translation.html#cb289-12"></a><span class="st">    </span><span class="kw">unnest_longer</span>(<span class="dt">col =</span> fields) <span class="op">%&gt;%</span></span>
+<span id="cb289-13"><a href="ticket-translation.html#cb289-13"></a><span class="st">    </span><span class="kw">group_by</span>(pos) <span class="op">%&gt;%</span></span>
+<span id="cb289-14"><a href="ticket-translation.html#cb289-14"></a><span class="st">    </span><span class="kw">count</span>(fields) <span class="op">%&gt;%</span></span>
+<span id="cb289-15"><a href="ticket-translation.html#cb289-15"></a><span class="st">    </span><span class="kw">filter</span>(n <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(n))</span>
+<span id="cb289-16"><a href="ticket-translation.html#cb289-16"></a>  </span>
+<span id="cb289-17"><a href="ticket-translation.html#cb289-17"></a>  input<span class="op">$</span>fields<span class="op">$</span>pos &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb289-18"><a href="ticket-translation.html#cb289-18"></a>  </span>
+<span id="cb289-19"><a href="ticket-translation.html#cb289-19"></a>  <span class="cf">while</span> (<span class="kw">nrow</span>(possible_fields) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb289-20"><a href="ticket-translation.html#cb289-20"></a>    f &lt;-<span class="st"> </span><span class="kw">filter</span>(possible_fields, <span class="kw">n</span>() <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb289-21"><a href="ticket-translation.html#cb289-21"></a>    possible_fields &lt;-<span class="st"> </span><span class="kw">filter</span>(possible_fields, fields <span class="op">!=</span><span class="st"> </span>f<span class="op">$</span>fields)</span>
+<span id="cb289-22"><a href="ticket-translation.html#cb289-22"></a>    </span>
+<span id="cb289-23"><a href="ticket-translation.html#cb289-23"></a>    input<span class="op">$</span>fields[input<span class="op">$</span>fields<span class="op">$</span>field <span class="op">==</span><span class="st"> </span>f<span class="op">$</span>fields, <span class="st">&quot;pos&quot;</span>] &lt;-<span class="st"> </span>f<span class="op">$</span>pos</span>
+<span id="cb289-24"><a href="ticket-translation.html#cb289-24"></a>  }</span>
+<span id="cb289-25"><a href="ticket-translation.html#cb289-25"></a></span>
+<span id="cb289-26"><a href="ticket-translation.html#cb289-26"></a>  input<span class="op">$</span>fields <span class="op">%&gt;%</span></span>
+<span id="cb289-27"><a href="ticket-translation.html#cb289-27"></a><span class="st">    </span><span class="kw">select</span>(field, pos)</span>
+<span id="cb289-28"><a href="ticket-translation.html#cb289-28"></a>}</span></code></pre></div>
+<p>We can test our function matches the provided sample:</p>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="ticket-translation.html#cb290-1"></a><span class="kw">part_2</span>(psample_<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##   field pos
+## 1 class   2
+## 2   row   1
+## 3  seat   3</code></pre>
+<p>And now we can solve the actual problem. Find the fields and their positions, the apply those positions to <code>my_ticket</code>:</p>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb292-1"><a href="ticket-translation.html#cb292-1"></a>ps &lt;-<span class="st"> </span>pactual <span class="op">%&gt;%</span></span>
+<span id="cb292-2"><a href="ticket-translation.html#cb292-2"></a><span class="st">  </span><span class="kw">part_2</span>() <span class="op">%&gt;%</span></span>
+<span id="cb292-3"><a href="ticket-translation.html#cb292-3"></a><span class="st">  </span><span class="kw">filter</span>(<span class="kw">str_detect</span>(field, <span class="st">&quot;^departure&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb292-4"><a href="ticket-translation.html#cb292-4"></a><span class="st">  </span><span class="kw">pull</span>(pos)</span>
+<span id="cb292-5"><a href="ticket-translation.html#cb292-5"></a></span>
+<span id="cb292-6"><a href="ticket-translation.html#cb292-6"></a><span class="kw">prod</span>(pactual<span class="op">$</span>my_ticket[ps])</span></code></pre></div>
+<pre><code>## [1] 1053686852011</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="rambunctious-recitation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="conway-cubes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

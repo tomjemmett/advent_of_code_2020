@@ -53,3 +53,9 @@ part-2-13
 rambunctious-recitation
 part-1-14
 part-2-14
+ticket-translation
+part-1-15
+part-2-15
+conway-cubes
+part-1-16
+part-2-16
