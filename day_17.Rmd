@@ -21,23 +21,27 @@ We can use the R "array" data type for today's problem: these are n-dimensional 
 to convert our input into a 3 dimensional array.
 
 ```{r part 1 to array}
-to_array <- function(input) {
+to_array <- function(input, dimensions) {
+  if (dimensions < 3) {
+    stop("dimensions must be at least 3")
+  }
+  
   replacement <- c("." = 0, "#" = 1)
 
   m <- input %>%
     str_extract_all(".", simplify = TRUE) %>%
     apply(c(1,2), function(.x) replacement[[.x]])
   
-  array(m, dim = c(nrow(m), ncol(m), 1))
+  array(m, dim = c(nrow(m), ncol(m), rep(1, dimensions - 2)))
 }
 
-to_array(sample)
+to_array(sample, 3)
 ```
 
 At each iteration we need to increase the size of the state by 1 on every side.
 
 ```{r part 1 grow state}
-grow_state <- function(state) {
+grow_state_3d <- function(state) {
   ds <- dim(state)
   
   next_state <- array(0, dim = ds + 2)
@@ -57,8 +61,8 @@ grow_state <- function(state) {
 We need a function to iterate the states according to the rules.
 
 ```{r}
-iterate_state <- function(state) {
-  state <- grow_state(state)
+iterate_state_3d <- function(state) {
+  state <- grow_state_3d(state)
   ds <- dim(state)
   next_state <- state
   
@@ -96,8 +100,8 @@ iterate_state <- function(state) {
 We can build a helper function to run as many iterations as requested:
 
 ```{r part 1 run n iterations}
-run_n_iterations <- function(input, n) {
-  reduce(1:n, ~iterate_state(.x), .init = to_array(input))
+run_n_iterations_3d <- function(input, n) {
+  reduce(1:n, ~iterate_state_3d(.x), .init = to_array(input, 3))
 }
 ```
 
@@ -105,7 +109,7 @@ Now we can check our function runs as expected
 
 ```{r part 1 sample test}
 sample %>%
-  run_n_iterations(6) %>%
+  run_n_iterations_3d(6) %>%
   sum() == 112
 ```
 
@@ -113,7 +117,7 @@ And we can run with our actual data
 
 ```{r part 1 actual}
 actual %>%
-  run_n_iterations(6) %>%
+  run_n_iterations_3d(6) %>%
   sum()
 ```
 
@@ -122,17 +126,7 @@ actual %>%
 For part 2 we just need to extend our functions to include a 4th dimension.
 
 ```{r}
-to_array <- function(input) {
-  replacement <- c("." = 0, "#" = 1)
-
-  m <- input %>%
-    str_extract_all(".", simplify = TRUE) %>%
-    apply(c(1,2), function(.x) replacement[[.x]])
-  
-  array(m, dim = c(nrow(m), ncol(m), 1, 1))
-}
-
-grow_state <- function(state) {
+grow_state_4d <- function(state) {
   ds <- dim(state)
   
   next_state <- array(0, dim = ds + 2)
@@ -150,8 +144,8 @@ grow_state <- function(state) {
   next_state
 }
 
-iterate_state <- function(state) {
-  state <- grow_state(state)
+iterate_state_4d <- function(state) {
+  state <- grow_state_4d(state)
   ds <- dim(state)
   next_state <- state
   
@@ -184,13 +178,17 @@ iterate_state <- function(state) {
   
   next_state 
 }
+
+run_n_iterations_4d <- function(input, n) {
+  reduce(1:n, ~iterate_state_4d(.x), .init = to_array(input, 4))
+}
 ```
 
 We can run with our sample data to test:
 
 ```{r part 2 sample test}
 sample %>%
-  run_n_iterations(6) %>%
+  run_n_iterations_4d(6) %>%
   sum() == 848
 ```
 
@@ -198,7 +196,6 @@ And we can run with our actual data:
 
 ```{r part 2 actual}
 actual %>%
-  to_array() %>%
-  run_n_iterations(6) %>%
+  run_n_iterations_4d(6) %>%
   sum()
 ```
