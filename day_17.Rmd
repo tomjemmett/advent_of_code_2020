@@ -113,7 +113,6 @@ And we can run with our actual data
 
 ```{r part 1 actual}
 actual %>%
-  to_array() %>%
   run_n_iterations(6) %>%
   sum()
 ```
