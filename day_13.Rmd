@@ -6,7 +6,7 @@ options(crayon.enabled = NULL)
 library(tidyverse)
 ```
 
-This is my attempt to solve [Day 13](https://adventofcode.com/2021/day/13).
+This is my attempt to solve [Day 13](https://adventofcode.com/2020/day/13).
 
 ```{r load data}
 sample <- read_lines("samples/day_13_sample.txt")

@@ -8,7 +8,7 @@ library(tidyverse)
 library(unglue)
 ```
 
-This is my attempt to solve [Day 17](https://adventofcode.com/2021/day/17).
+This is my attempt to solve [Day 17](https://adventofcode.com/2020/day/17).
 
 ```{r load data}
 sample <- read_lines("samples/day_17_sample.txt")
