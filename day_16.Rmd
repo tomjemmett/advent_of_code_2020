@@ -114,7 +114,8 @@ nearby tickets:
 15,1,5
 5,14,9
 ") %>%
-  process_file()
+  process_file() %>%
+  process_notes()
 ```
 
 For part 2 we can use `{dplyr}` to find the possible fields that a value could take at a position, then we can loop
