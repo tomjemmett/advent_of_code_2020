@@ -1,0 +1,197 @@
+# Operation Order
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(crayon.enabled = NULL, # for when rendering on github actions
+        scipen = 999)          # make sure we never print in scientific notation
+library(tidyverse)
+library(unglue)
+library(R6)
+```
+
+This is my attempt to solve [Day 18](https://adventofcode.com/2020/day/18).
+
+```{r load data}
+sample <- read_lines("samples/day_18_sample.txt")
+actual <- read_lines("inputs/day_18_input.txt")
+```
+
+## Part 1
+
+First I think it would be useful to have a [stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type)) to solve
+today's problem. This is pretty simple to construct using R6. Here I use a fixed stack size (default to 100).
+
+```{r stack class}
+Stack <- R6Class(
+  "Stack",
+  public = list(
+    initialize = function(stack_size = 100) {
+      private$stack <- vector("list", stack_size)
+      private$stack_size <- stack_size
+    },
+    push = function(v) {
+      if (self$is_full()) {
+        stop("stack is full")
+      }
+      private$ptr <- private$ptr + 1
+      private$stack[[private$ptr]] <- v
+    },
+    pop = function() {
+      if (self$is_empty()) {
+        stop("no items in stack")
+      }
+      v <- private$stack[[private$ptr]]
+      private$ptr <- private$ptr - 1
+      v
+    },
+    is_empty = function() {
+      private$ptr == 0
+    },
+    is_full = function() {
+      private$ptr == private$stack_size
+    }
+  ),
+  private = list(
+    ptr = 0,
+    stack_size = 0,
+    stack = NULL
+  )
+)
+```
+
+We can then create a function which will step through the input and add items to the stack. When we a function and a
+value we can update an accumulator (which we default to 0). If we reach a `(` we can push the accumulator and function
+to the stack and reset these to the defaults. When we reach a `)` we can pop the values off the stack and start using
+these again.
+
+```{r part 1 function}
+part_1 <- function(input) {
+  part_1_parse <- function(input) {
+    stack <- Stack$new()
+    
+    i <- 0
+    acc <- 0
+    fn <- `+`
+    
+    while (i < length(input)) {
+      s <- input[[(i <- i + 1)]]
+      if (s == "(") {
+        stack$push(acc)
+        stack$push(fn)
+        
+        acc <- 0
+        fn <- `+`
+        next()
+      } else if (s == ")") {
+        fn <- stack$pop()
+        acc <- fn(stack$pop(), acc)
+      } else if (s == "+" | s == "*") {
+        fn <- get(s)
+      } else {
+        acc <- fn(acc, as.numeric(s))
+      }
+    }
+    
+    acc
+  }
+  
+  input %>%
+    str_replace_all(" ", "") %>%
+    str_extract_all(".") %>%
+    map_dbl(part_1_parse)
+}
+```
+
+We can now check out function matches the provided sample:
+
+```{r part 1 sample test}
+all(part_1(sample) == c(71, 51, 26, 437, 12240, 13632))
+```
+
+And we can run the function on the actual data.
+
+```{r part 1 actual}
+sum(part_1(actual))
+```
+
+## Part 2
+
+Part 2 can make use of our stack again, but this time we first parse the data by iterating over and adding all of the
+values we would like to multiply to the stack. We immediately run addition and add these values to the stack instead.
+
+Our parse function this time is recursive, when we reach a `(` we call our function again to parse that block. This 
+returns the value of the accumulator and the position that we got up to.
+
+```{r part 2 function}
+part_2 <- function(input) {
+  part_2_parse <- function(input, i = 1) {
+    stack <- Stack$new()
+    
+    while (i <= length(input)) {
+      a <- input[[i]]
+      
+      # we have found a bracket, escape loop
+      if (a == ")") break()
+      
+      if (a == "(") {
+        p <- part_2_parse(input, i + 1)
+        # add value from inside bracket to stack
+        stack$push(as.numeric(p[[1]]))
+        # skip to matching parenthesis
+        i <- p[[2]]
+      } else if (a == "+") {
+        i <- i + 1
+        b <- input[[i]]
+        if (b == "(") {
+          p <- part_2_parse(input, i + 1)
+          b <- as.numeric(p$acc)
+          i <- p$i
+        }
+        av <- stack$pop()
+        bv <- as.numeric(b)
+        stack$push(av + bv)
+      } else if (a == "*") {
+        i <- i + 1
+        b <- input[[i]]
+        if (b == "(") {
+          p <- part_2_parse(input, i + 1)
+          b <- as.numeric(p$acc)
+          i <- p$i
+        }
+        bv <- as.numeric(b)
+        stack$push(bv)
+      } else {
+        stack$push(as.numeric(a))
+      }
+      
+      i <- i + 1
+    }
+    
+    acc <- 1
+    while (!stack$is_empty()) {
+      acc <- acc * stack$pop()
+    }
+    
+    # return the accumulated value and the index we got to
+    list(acc = acc, i = i)
+  }
+  
+  input %>%
+    str_replace_all(" ", "") %>%
+    str_extract_all(".") %>%
+    map(part_2_parse) %>%
+    map_dbl("acc")
+}
+```
+
+We can now check out function matches the provided sample:
+
+```{r part 2 sample test}
+all(part_2(sample) == c(231, 51, 46, 1445, 669060, 23340))
+```
+
+And we can run the function on the actual data.
+
+```{r part 2 actual}
+sum(part_2(actual))
+```
