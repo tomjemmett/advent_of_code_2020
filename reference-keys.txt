@@ -59,3 +59,15 @@ part-2-15
 conway-cubes
 part-1-16
 part-2-16
+operation-order
+part-1-17
+part-2-17
+monster-messages
+part-1-18
+part-2-18
+jurassic-jigsaw
+part-1-19
+part-2-19
+allergen-assessment
+part-1-20
+part-2-20

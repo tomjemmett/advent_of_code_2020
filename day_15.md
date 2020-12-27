@@ -2,7 +2,7 @@
 
 
 
-This is my attempt to solve [Day 15](https://adventofcode.com/2021/day/15).
+This is my attempt to solve [Day 15](https://adventofcode.com/2020/day/15).
 
 
 ```r

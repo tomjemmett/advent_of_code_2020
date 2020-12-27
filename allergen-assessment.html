@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Day 9 Encoding Error | Advent of Code 2020</title>
+  <title>Day 21 Allergen Assessment | Advent of Code 2020</title>
   <meta name="description" content="My attempt to complete AOC 2020 in R" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Day 9 Encoding Error | Advent of Code 2020" />
+  <meta property="og:title" content="Day 21 Allergen Assessment | Advent of Code 2020" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Day 9 Encoding Error | Advent of Code 2020" />
+  <meta name="twitter:title" content="Day 21 Allergen Assessment | Advent of Code 2020" />
   
   <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="handheld-halting.html"/>
-<link rel="next" href="adapter-array.html"/>
+<link rel="prev" href="jurassic-jigsaw.html"/>
+<link rel="next" href="part-1-20.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -246,78 +246,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="encoding-error" class="section level1">
-<h1><span class="header-section-number">Day 9</span> Encoding Error</h1>
-<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/9">Day 9</a>.</p>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="encoding-error.html#cb152-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_09_sample.txt&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span>
-<span id="cb152-2"><a href="encoding-error.html#cb152-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_09_input.txt&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span></code></pre></div>
-<div id="part-1-8" class="section level2">
-<h2><span class="header-section-number">9.1</span> Part 1</h2>
-<p>We can solve part 1 by creating a function that slides a window (<code>r</code>) across the <code>input</code> and checks to see if the value
-of the element <code>i</code> just after the end of the current window, minus all of the values in that window, is in the window.</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="encoding-error.html#cb153-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
-<span id="cb153-2"><a href="encoding-error.html#cb153-2"></a>  i &lt;-<span class="st"> </span>n <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb153-3"><a href="encoding-error.html#cb153-3"></a>  r &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span>n</span>
-<span id="cb153-4"><a href="encoding-error.html#cb153-4"></a>  <span class="cf">while</span> (<span class="kw">any</span>((input[[i]] <span class="op">-</span><span class="st"> </span>input[r]) <span class="op">%in%</span><span class="st"> </span>input[r])) {</span>
-<span id="cb153-5"><a href="encoding-error.html#cb153-5"></a>    r &lt;-<span class="st"> </span>r <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb153-6"><a href="encoding-error.html#cb153-6"></a>    i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb153-7"><a href="encoding-error.html#cb153-7"></a>  }</span>
-<span id="cb153-8"><a href="encoding-error.html#cb153-8"></a>  input[[i]]</span>
-<span id="cb153-9"><a href="encoding-error.html#cb153-9"></a>}</span></code></pre></div>
-<p>We can now check our function gives us the right answer for the sample:</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="encoding-error.html#cb154-1"></a>ps1 &lt;-<span class="st"> </span><span class="kw">part_1</span>(sample, <span class="dv">5</span>)</span>
-<span id="cb154-2"><a href="encoding-error.html#cb154-2"></a>ps1 <span class="op">==</span><span class="st"> </span><span class="dv">127</span></span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<p>This gives us the correct answer, so we can now run on the actual input:</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="encoding-error.html#cb156-1"></a>pa1 &lt;-<span class="st"> </span><span class="kw">part_1</span>(actual, <span class="dv">25</span>)</span>
-<span id="cb156-2"><a href="encoding-error.html#cb156-2"></a>pa1</span></code></pre></div>
-<pre><code>## [1] 57195069</code></pre>
-</div>
-<div id="part-2-8" class="section level2">
-<h2><span class="header-section-number">9.2</span> Part 2</h2>
-<p>The naive approach here is to start to use nested for loops to sum the values. There is probably a smarter way of
-solving this, but it’s the approach I will use.</p>
-<p>Instead of using the <code>sum</code>, <code>min</code> and <code>max</code> functions available in R I am going to keep track of the values: this should
-give us a slight performance boost by not having to iterate through all of the values each time.</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="encoding-error.html#cb158-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, t) {</span>
-<span id="cb158-2"><a href="encoding-error.html#cb158-2"></a>  s &lt;-<span class="st"> </span><span class="kw">which</span>(input <span class="op">==</span><span class="st"> </span>t)</span>
-<span id="cb158-3"><a href="encoding-error.html#cb158-3"></a>  <span class="co"># we need to loop until just before the index of the target in the input</span></span>
-<span id="cb158-4"><a href="encoding-error.html#cb158-4"></a>  <span class="co"># as we are using nested loops it should be s - 2 here</span></span>
-<span id="cb158-5"><a href="encoding-error.html#cb158-5"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(s <span class="op">-</span><span class="st"> </span><span class="dv">2</span>)) {</span>
-<span id="cb158-6"><a href="encoding-error.html#cb158-6"></a>    sv &lt;-<span class="st"> </span>input[[i]] <span class="co"># keep track of the sum</span></span>
-<span id="cb158-7"><a href="encoding-error.html#cb158-7"></a>    minv &lt;-<span class="st"> </span>sv       <span class="co"># and the min value</span></span>
-<span id="cb158-8"><a href="encoding-error.html#cb158-8"></a>    maxv &lt;-<span class="st"> </span>sv       <span class="co"># and the max value</span></span>
-<span id="cb158-9"><a href="encoding-error.html#cb158-9"></a>    <span class="co"># now we need to loop from the next value (i + 1) to just before the target</span></span>
-<span id="cb158-10"><a href="encoding-error.html#cb158-10"></a>    <span class="cf">for</span> (j <span class="cf">in</span> (i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span>(s <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
-<span id="cb158-11"><a href="encoding-error.html#cb158-11"></a>      <span class="co"># update the sum</span></span>
-<span id="cb158-12"><a href="encoding-error.html#cb158-12"></a>      sv &lt;-<span class="st"> </span>sv <span class="op">+</span><span class="st"> </span>input[[j]]</span>
-<span id="cb158-13"><a href="encoding-error.html#cb158-13"></a>      <span class="co"># if we exceed the target then break out the loop and move to the next i</span></span>
-<span id="cb158-14"><a href="encoding-error.html#cb158-14"></a>      <span class="cf">if</span> (sv <span class="op">&gt;</span><span class="st"> </span>t) <span class="cf">next</span>()</span>
-<span id="cb158-15"><a href="encoding-error.html#cb158-15"></a>      <span class="co"># update the min and max values</span></span>
-<span id="cb158-16"><a href="encoding-error.html#cb158-16"></a>      <span class="cf">if</span> (input[[j]] <span class="op">&lt;</span><span class="st"> </span>minv) minv &lt;-<span class="st"> </span>input[[j]]</span>
-<span id="cb158-17"><a href="encoding-error.html#cb158-17"></a>      <span class="cf">if</span> (input[[j]] <span class="op">&gt;</span><span class="st"> </span>maxv) maxv &lt;-<span class="st"> </span>input[[j]]</span>
-<span id="cb158-18"><a href="encoding-error.html#cb158-18"></a>      <span class="co"># if our sum is equal to the target, then return the sum of the min and</span></span>
-<span id="cb158-19"><a href="encoding-error.html#cb158-19"></a>      <span class="co"># max value</span></span>
-<span id="cb158-20"><a href="encoding-error.html#cb158-20"></a>      <span class="cf">if</span> (sv <span class="op">==</span><span class="st"> </span>t) <span class="kw">return</span> (minv <span class="op">+</span><span class="st"> </span>maxv)</span>
-<span id="cb158-21"><a href="encoding-error.html#cb158-21"></a>    }</span>
-<span id="cb158-22"><a href="encoding-error.html#cb158-22"></a>  }</span>
-<span id="cb158-23"><a href="encoding-error.html#cb158-23"></a>}</span></code></pre></div>
-<p>We can test on the sample:</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="encoding-error.html#cb159-1"></a><span class="kw">part_2</span>(sample, ps1) <span class="op">==</span><span class="st"> </span><span class="dv">62</span></span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
-<p>And run on the actual input:</p>
-<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="encoding-error.html#cb161-1"></a><span class="kw">part_2</span>(actual, pa1)</span></code></pre></div>
-<pre><code>## [1] 7409241</code></pre>
-
-</div>
+<div id="allergen-assessment" class="section level1">
+<h1><span class="header-section-number">Day 21</span> Allergen Assessment</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2021/day/21">Day 21</a>.</p>
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="allergen-assessment.html#cb350-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_21_sample.txt&quot;</span>)</span>
+<span id="cb350-2"><a href="allergen-assessment.html#cb350-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_21_input.txt&quot;</span>)</span></code></pre></div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="handheld-halting.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="adapter-array.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="jurassic-jigsaw.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="part-1-20.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

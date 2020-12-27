@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Day 20 Jurassic Jigsaw | Advent of Code 2020</title>
+  <meta name="description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Day 20 Jurassic Jigsaw | Advent of Code 2020" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Day 20 Jurassic Jigsaw | Advent of Code 2020" />
+  
+  <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
+  
+
+<meta name="author" content="Tom Jemmett" />
+
+
+<meta name="date" content="2020-12-27" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="monster-messages.html"/>
+<link rel="next" href="allergen-assessment.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">Advent of Code 2020</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="report-repair.html"><a href="report-repair.html"><i class="fa fa-check"></i><b>1</b> Report Repair</a><ul>
+<li class="chapter" data-level="1.1" data-path="report-repair.html"><a href="report-repair.html#part-1"><i class="fa fa-check"></i><b>1.1</b> Part 1</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="report-repair.html"><a href="report-repair.html#is-the-improved-algorithm-any-better"><i class="fa fa-check"></i><b>1.1.1</b> is the improved algorithm any better?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="report-repair.html"><a href="report-repair.html#part-2"><i class="fa fa-check"></i><b>1.2</b> Part 2</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="report-repair.html"><a href="report-repair.html#is-our-improved-algorithm-better-this-time"><i class="fa fa-check"></i><b>1.2.1</b> Is our improved algorithm better this time?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: Implementing in Python</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="password-philosophy.html"><a href="password-philosophy.html"><i class="fa fa-check"></i><b>2</b> Password Philosophy</a><ul>
+<li class="chapter" data-level="2.1" data-path="password-philosophy.html"><a href="password-philosophy.html#part-1-1"><i class="fa fa-check"></i><b>2.1</b> Part 1</a></li>
+<li class="chapter" data-level="2.2" data-path="password-philosophy.html"><a href="password-philosophy.html#part-2-1"><i class="fa fa-check"></i><b>2.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html"><i class="fa fa-check"></i><b>3</b> Toboggan Trajectory</a><ul>
+<li class="chapter" data-level="3.1" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-1-2"><i class="fa fa-check"></i><b>3.1</b> Part 1</a></li>
+<li class="chapter" data-level="3.2" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-2-2"><i class="fa fa-check"></i><b>3.2</b> Part 2</a></li>
+<li class="chapter" data-level="3.3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter"><i class="fa fa-check"></i><b>3.3</b> Extra: Is there a path that minimises the number of trees you encounter?</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="passport-processing.html"><a href="passport-processing.html"><i class="fa fa-check"></i><b>4</b> Passport Processing</a><ul>
+<li class="chapter" data-level="4.1" data-path="passport-processing.html"><a href="passport-processing.html#part-1-3"><i class="fa fa-check"></i><b>4.1</b> Part 1</a></li>
+<li class="chapter" data-level="4.2" data-path="passport-processing.html"><a href="passport-processing.html#part-2-3"><i class="fa fa-check"></i><b>4.2</b> Part 2</a></li>
+<li class="chapter" data-level="4.3" data-path="passport-processing.html"><a href="passport-processing.html#extra-solving-with-regular-expressions"><i class="fa fa-check"></i><b>4.3</b> Extra: Solving with regular expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="binary-boarding.html"><a href="binary-boarding.html"><i class="fa fa-check"></i><b>5</b> Binary Boarding</a><ul>
+<li class="chapter" data-level="5.1" data-path="binary-boarding.html"><a href="binary-boarding.html#part-1-4"><i class="fa fa-check"></i><b>5.1</b> Part 1</a></li>
+<li class="chapter" data-level="5.2" data-path="binary-boarding.html"><a href="binary-boarding.html#part-2-4"><i class="fa fa-check"></i><b>5.2</b> Part 2</a></li>
+<li class="chapter" data-level="5.3" data-path="binary-boarding.html"><a href="binary-boarding.html#extra-solving-algebraicly"><i class="fa fa-check"></i><b>5.3</b> Extra: Solving algebraicly</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="custom-customs.html"><a href="custom-customs.html"><i class="fa fa-check"></i><b>6</b> Custom Customs</a><ul>
+<li class="chapter" data-level="6.1" data-path="custom-customs.html"><a href="custom-customs.html#part-1-5"><i class="fa fa-check"></i><b>6.1</b> Part 1</a></li>
+<li class="chapter" data-level="6.2" data-path="custom-customs.html"><a href="custom-customs.html#part-2-5"><i class="fa fa-check"></i><b>6.2</b> Part 2</a></li>
+<li class="chapter" data-level="6.3" data-path="custom-customs.html"><a href="custom-customs.html#extra-solving-part-1-2-with-set-functions"><i class="fa fa-check"></i><b>6.3</b> Extra: solving part 1 &amp; 2 with set functions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="handy-haversacks.html"><a href="handy-haversacks.html"><i class="fa fa-check"></i><b>7</b> Handy Haversacks</a><ul>
+<li class="chapter" data-level="7.1" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-1-6"><i class="fa fa-check"></i><b>7.1</b> Part 1</a></li>
+<li class="chapter" data-level="7.2" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-2-6"><i class="fa fa-check"></i><b>7.2</b> Part 2</a></li>
+<li class="chapter" data-level="7.3" data-path="handy-haversacks.html"><a href="handy-haversacks.html#extra-alternative-solution-to-part-2"><i class="fa fa-check"></i><b>7.3</b> Extra: alternative solution to part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="handheld-halting.html"><a href="handheld-halting.html"><i class="fa fa-check"></i><b>8</b> Handheld Halting</a><ul>
+<li class="chapter" data-level="8.1" data-path="handheld-halting.html"><a href="handheld-halting.html#part-1-7"><i class="fa fa-check"></i><b>8.1</b> Part 1</a></li>
+<li class="chapter" data-level="8.2" data-path="handheld-halting.html"><a href="handheld-halting.html#part-2-7"><i class="fa fa-check"></i><b>8.2</b> Part 2</a></li>
+<li class="chapter" data-level="8.3" data-path="handheld-halting.html"><a href="handheld-halting.html#extra-update-the-computer-class"><i class="fa fa-check"></i><b>8.3</b> Extra: update the computer class</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="encoding-error.html"><a href="encoding-error.html"><i class="fa fa-check"></i><b>9</b> Encoding Error</a><ul>
+<li class="chapter" data-level="9.1" data-path="encoding-error.html"><a href="encoding-error.html#part-1-8"><i class="fa fa-check"></i><b>9.1</b> Part 1</a></li>
+<li class="chapter" data-level="9.2" data-path="encoding-error.html"><a href="encoding-error.html#part-2-8"><i class="fa fa-check"></i><b>9.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="adapter-array.html"><a href="adapter-array.html"><i class="fa fa-check"></i><b>10</b> Adapter Array</a><ul>
+<li class="chapter" data-level="10.1" data-path="adapter-array.html"><a href="adapter-array.html#part-1-9"><i class="fa fa-check"></i><b>10.1</b> Part 1</a></li>
+<li class="chapter" data-level="10.2" data-path="adapter-array.html"><a href="adapter-array.html#part-2-9"><i class="fa fa-check"></i><b>10.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="seating-system.html"><a href="seating-system.html"><i class="fa fa-check"></i><b>11</b> Seating System</a><ul>
+<li class="chapter" data-level="11.1" data-path="seating-system.html"><a href="seating-system.html#part-1-10"><i class="fa fa-check"></i><b>11.1</b> Part 1</a></li>
+<li class="chapter" data-level="11.2" data-path="seating-system.html"><a href="seating-system.html#part-2-10"><i class="fa fa-check"></i><b>11.2</b> Part 2</a></li>
+<li class="chapter" data-level="11.3" data-path="seating-system.html"><a href="seating-system.html#solving-faster"><i class="fa fa-check"></i><b>11.3</b> Solving faster</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="rain-risk.html"><a href="rain-risk.html"><i class="fa fa-check"></i><b>12</b> Rain Risk</a><ul>
+<li class="chapter" data-level="12.1" data-path="rain-risk.html"><a href="rain-risk.html#part-1-11"><i class="fa fa-check"></i><b>12.1</b> Part 1</a></li>
+<li class="chapter" data-level="12.2" data-path="rain-risk.html"><a href="rain-risk.html#part-2-11"><i class="fa fa-check"></i><b>12.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="shuttle-search.html"><a href="shuttle-search.html"><i class="fa fa-check"></i><b>13</b> Shuttle Search</a><ul>
+<li class="chapter" data-level="13.1" data-path="shuttle-search.html"><a href="shuttle-search.html#part-1-12"><i class="fa fa-check"></i><b>13.1</b> Part 1</a></li>
+<li class="chapter" data-level="13.2" data-path="shuttle-search.html"><a href="shuttle-search.html#part-2-12"><i class="fa fa-check"></i><b>13.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="docking-data.html"><a href="docking-data.html"><i class="fa fa-check"></i><b>14</b> Docking Data</a><ul>
+<li class="chapter" data-level="14.1" data-path="docking-data.html"><a href="docking-data.html#part-1-13"><i class="fa fa-check"></i><b>14.1</b> Part 1</a></li>
+<li class="chapter" data-level="14.2" data-path="docking-data.html"><a href="docking-data.html#part-2-13"><i class="fa fa-check"></i><b>14.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html"><i class="fa fa-check"></i><b>15</b> Rambunctious Recitation</a><ul>
+<li class="chapter" data-level="15.1" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html#part-1-14"><i class="fa fa-check"></i><b>15.1</b> Part 1</a></li>
+<li class="chapter" data-level="15.2" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html#part-2-14"><i class="fa fa-check"></i><b>15.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="ticket-translation.html"><a href="ticket-translation.html"><i class="fa fa-check"></i><b>16</b> Ticket Translation</a><ul>
+<li class="chapter" data-level="16.1" data-path="ticket-translation.html"><a href="ticket-translation.html#part-1-15"><i class="fa fa-check"></i><b>16.1</b> Part 1</a></li>
+<li class="chapter" data-level="16.2" data-path="ticket-translation.html"><a href="ticket-translation.html#part-2-15"><i class="fa fa-check"></i><b>16.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="conway-cubes.html"><a href="conway-cubes.html"><i class="fa fa-check"></i><b>17</b> Conway Cubes</a><ul>
+<li class="chapter" data-level="17.1" data-path="conway-cubes.html"><a href="conway-cubes.html#part-1-16"><i class="fa fa-check"></i><b>17.1</b> Part 1</a></li>
+<li class="chapter" data-level="17.2" data-path="conway-cubes.html"><a href="conway-cubes.html#part-2-16"><i class="fa fa-check"></i><b>17.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="operation-order.html"><a href="operation-order.html"><i class="fa fa-check"></i><b>18</b> Operation Order</a><ul>
+<li class="chapter" data-level="18.1" data-path="operation-order.html"><a href="operation-order.html#part-1-17"><i class="fa fa-check"></i><b>18.1</b> Part 1</a></li>
+<li class="chapter" data-level="18.2" data-path="operation-order.html"><a href="operation-order.html#part-2-17"><i class="fa fa-check"></i><b>18.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="monster-messages.html"><a href="monster-messages.html"><i class="fa fa-check"></i><b>19</b> Monster Messages</a><ul>
+<li class="chapter" data-level="19.1" data-path="monster-messages.html"><a href="monster-messages.html#part-1-18"><i class="fa fa-check"></i><b>19.1</b> Part 1</a></li>
+<li class="chapter" data-level="19.2" data-path="monster-messages.html"><a href="monster-messages.html#part-2-18"><i class="fa fa-check"></i><b>19.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="jurassic-jigsaw.html"><a href="jurassic-jigsaw.html"><i class="fa fa-check"></i><b>20</b> Jurassic Jigsaw</a><ul>
+<li class="chapter" data-level="20.1" data-path="jurassic-jigsaw.html"><a href="jurassic-jigsaw.html#part-1-19"><i class="fa fa-check"></i><b>20.1</b> Part 1</a></li>
+<li class="chapter" data-level="20.2" data-path="jurassic-jigsaw.html"><a href="jurassic-jigsaw.html#part-2-19"><i class="fa fa-check"></i><b>20.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="allergen-assessment.html"><a href="allergen-assessment.html"><i class="fa fa-check"></i><b>21</b> Allergen Assessment</a></li>
+<li class="chapter" data-level="22" data-path="part-1-20.html"><a href="part-1-20.html"><i class="fa fa-check"></i><b>22</b> Part 1</a></li>
+<li class="chapter" data-level="23" data-path="part-2-20.html"><a href="part-2-20.html"><i class="fa fa-check"></i><b>23</b> Part 2</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Advent of Code 2020</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="jurassic-jigsaw" class="section level1">
+<h1><span class="header-section-number">Day 20</span> Jurassic Jigsaw</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/20">Day 20</a>.</p>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="jurassic-jigsaw.html#cb336-1"></a>process_file &lt;-<span class="st"> </span><span class="cf">function</span>(file) {</span>
+<span id="cb336-2"><a href="jurassic-jigsaw.html#cb336-2"></a>  f &lt;-<span class="st"> </span><span class="kw">read_file</span>(file) <span class="op">%&gt;%</span></span>
+<span id="cb336-3"><a href="jurassic-jigsaw.html#cb336-3"></a><span class="st">    </span><span class="kw">str_trim</span>() <span class="op">%&gt;%</span></span>
+<span id="cb336-4"><a href="jurassic-jigsaw.html#cb336-4"></a><span class="st">    </span><span class="kw">str_remove_all</span>(<span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb336-5"><a href="jurassic-jigsaw.html#cb336-5"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb336-6"><a href="jurassic-jigsaw.html#cb336-6"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb336-7"><a href="jurassic-jigsaw.html#cb336-7"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb336-8"><a href="jurassic-jigsaw.html#cb336-8"></a>  </span>
+<span id="cb336-9"><a href="jurassic-jigsaw.html#cb336-9"></a>  t &lt;-<span class="st"> </span>f <span class="op">%&gt;%</span></span>
+<span id="cb336-10"><a href="jurassic-jigsaw.html#cb336-10"></a><span class="st">    </span><span class="kw">map</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb336-11"><a href="jurassic-jigsaw.html#cb336-11"></a><span class="st">    </span><span class="kw">str_extract</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">d+&quot;</span>)</span>
+<span id="cb336-12"><a href="jurassic-jigsaw.html#cb336-12"></a>  </span>
+<span id="cb336-13"><a href="jurassic-jigsaw.html#cb336-13"></a>  f <span class="op">%&gt;%</span></span>
+<span id="cb336-14"><a href="jurassic-jigsaw.html#cb336-14"></a><span class="st">    </span><span class="kw">set_names</span>(t) <span class="op">%&gt;%</span></span>
+<span id="cb336-15"><a href="jurassic-jigsaw.html#cb336-15"></a><span class="st">    </span><span class="kw">map</span>(<span class="op">~</span><span class="st"> </span><span class="kw">str_extract_all</span>(.x[<span class="op">-</span><span class="dv">1</span>], <span class="st">&quot;.&quot;</span>, <span class="dt">simplify =</span> <span class="ot">TRUE</span>))</span>
+<span id="cb336-16"><a href="jurassic-jigsaw.html#cb336-16"></a>}</span>
+<span id="cb336-17"><a href="jurassic-jigsaw.html#cb336-17"></a></span>
+<span id="cb336-18"><a href="jurassic-jigsaw.html#cb336-18"></a>sample &lt;-<span class="st"> </span><span class="kw">process_file</span>(<span class="st">&quot;samples/day_20_sample.txt&quot;</span>)</span>
+<span id="cb336-19"><a href="jurassic-jigsaw.html#cb336-19"></a>actual &lt;-<span class="st"> </span><span class="kw">process_file</span>(<span class="st">&quot;inputs/day_20_input.txt&quot;</span>)</span></code></pre></div>
+<div id="part-1-19" class="section level2">
+<h2><span class="header-section-number">20.1</span> Part 1</h2>
+<p>We can solve part 1 by looking which pieces have edges that don’t have any matches to other pieces.</p>
+<div class="sourceCode" id="cb337"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb337-1"><a href="jurassic-jigsaw.html#cb337-1"></a>get_edges &lt;-<span class="st"> </span><span class="cf">function</span>(.x) <span class="kw">c</span>(</span>
+<span id="cb337-2"><a href="jurassic-jigsaw.html#cb337-2"></a>  <span class="kw">paste</span>(.x[ <span class="dv">1</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>),</span>
+<span id="cb337-3"><a href="jurassic-jigsaw.html#cb337-3"></a>  <span class="kw">paste</span>(.x[ <span class="dv">1</span>, <span class="dv">10</span><span class="op">:</span><span class="dv">1</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>),</span>
+<span id="cb337-4"><a href="jurassic-jigsaw.html#cb337-4"></a>  <span class="kw">paste</span>(.x[<span class="dv">10</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>),</span>
+<span id="cb337-5"><a href="jurassic-jigsaw.html#cb337-5"></a>  <span class="kw">paste</span>(.x[<span class="dv">10</span>, <span class="dv">10</span><span class="op">:</span><span class="dv">1</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>),</span>
+<span id="cb337-6"><a href="jurassic-jigsaw.html#cb337-6"></a>  <span class="kw">paste</span>(.x[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,  <span class="dv">1</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>),</span>
+<span id="cb337-7"><a href="jurassic-jigsaw.html#cb337-7"></a>  <span class="kw">paste</span>(.x[<span class="dv">10</span><span class="op">:</span><span class="dv">1</span>,  <span class="dv">1</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>),</span>
+<span id="cb337-8"><a href="jurassic-jigsaw.html#cb337-8"></a>  <span class="kw">paste</span>(.x[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">10</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>),</span>
+<span id="cb337-9"><a href="jurassic-jigsaw.html#cb337-9"></a>  <span class="kw">paste</span>(.x[<span class="dv">10</span><span class="op">:</span><span class="dv">1</span>, <span class="dv">10</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb337-10"><a href="jurassic-jigsaw.html#cb337-10"></a>)</span>
+<span id="cb337-11"><a href="jurassic-jigsaw.html#cb337-11"></a></span>
+<span id="cb337-12"><a href="jurassic-jigsaw.html#cb337-12"></a>find_corners &lt;-<span class="st"> </span><span class="cf">function</span>(edges) {</span>
+<span id="cb337-13"><a href="jurassic-jigsaw.html#cb337-13"></a>  <span class="kw">names</span>(edges)[<span class="kw">imap</span>(edges, <span class="cf">function</span>(.x, .i) {</span>
+<span id="cb337-14"><a href="jurassic-jigsaw.html#cb337-14"></a>    other_edges &lt;-<span class="st"> </span><span class="kw">flatten_chr</span>(edges[<span class="kw">names</span>(edges) <span class="op">!=</span><span class="st"> </span>.i])</span>
+<span id="cb337-15"><a href="jurassic-jigsaw.html#cb337-15"></a>    </span>
+<span id="cb337-16"><a href="jurassic-jigsaw.html#cb337-16"></a>    <span class="kw">length</span>(other_edges[other_edges <span class="op">%in%</span><span class="st"> </span>.x])</span>
+<span id="cb337-17"><a href="jurassic-jigsaw.html#cb337-17"></a>  }) <span class="op">==</span><span class="st"> </span><span class="dv">4</span>]</span>
+<span id="cb337-18"><a href="jurassic-jigsaw.html#cb337-18"></a>}</span></code></pre></div>
+<p>We can now simply find the corner pieces for our input.</p>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="jurassic-jigsaw.html#cb338-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb338-2"><a href="jurassic-jigsaw.html#cb338-2"></a>  edges &lt;-<span class="st"> </span><span class="kw">map</span>(input, get_edges)</span>
+<span id="cb338-3"><a href="jurassic-jigsaw.html#cb338-3"></a>  corners &lt;-<span class="st"> </span><span class="kw">find_corners</span>(edges)</span>
+<span id="cb338-4"><a href="jurassic-jigsaw.html#cb338-4"></a>  <span class="kw">prod</span>(<span class="kw">as.numeric</span>(corners))</span>
+<span id="cb338-5"><a href="jurassic-jigsaw.html#cb338-5"></a>}</span></code></pre></div>
+<p>We can run this function with the sample data:</p>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb339-1"><a href="jurassic-jigsaw.html#cb339-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">20899048083289</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>We can now run this with our actual data:</p>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb341-1"><a href="jurassic-jigsaw.html#cb341-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 174206308298779</code></pre>
+</div>
+<div id="part-2-19" class="section level2">
+<h2><span class="header-section-number">20.2</span> Part 2</h2>
+<p>We now need to fully construct the image. First we can produce a function which takes a piece and returns all of the
+8 reflections and rotations of that image (identity, 90/180/270 degree rotations, horizontal/vertical reflections and
+the corner-to-corner reflections).</p>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb343-1"><a href="jurassic-jigsaw.html#cb343-1"></a>get_rotations_and_reflections &lt;-<span class="st"> </span><span class="cf">function</span>(i) {</span>
+<span id="cb343-2"><a href="jurassic-jigsaw.html#cb343-2"></a>  rot90 &lt;-<span class="st"> </span><span class="cf">function</span>(m) {</span>
+<span id="cb343-3"><a href="jurassic-jigsaw.html#cb343-3"></a>    <span class="kw">matrix</span>(m[<span class="kw">matrix</span>(<span class="kw">c</span>(<span class="kw">rep</span>(<span class="dv">10</span><span class="op">:</span><span class="dv">1</span>, <span class="dt">each =</span> <span class="dv">10</span>),</span>
+<span id="cb343-4"><a href="jurassic-jigsaw.html#cb343-4"></a>                      <span class="kw">rep</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">10</span>)),</span>
+<span id="cb343-5"><a href="jurassic-jigsaw.html#cb343-5"></a>                    <span class="dt">ncol =</span> <span class="dv">2</span>)],</span>
+<span id="cb343-6"><a href="jurassic-jigsaw.html#cb343-6"></a>           <span class="dt">ncol =</span> <span class="dv">10</span>,</span>
+<span id="cb343-7"><a href="jurassic-jigsaw.html#cb343-7"></a>           <span class="dt">nrow =</span> <span class="dv">10</span>)</span>
+<span id="cb343-8"><a href="jurassic-jigsaw.html#cb343-8"></a>  }</span>
+<span id="cb343-9"><a href="jurassic-jigsaw.html#cb343-9"></a>  </span>
+<span id="cb343-10"><a href="jurassic-jigsaw.html#cb343-10"></a>  ret &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">i =</span> i)</span>
+<span id="cb343-11"><a href="jurassic-jigsaw.html#cb343-11"></a>  </span>
+<span id="cb343-12"><a href="jurassic-jigsaw.html#cb343-12"></a>  ret<span class="op">$</span>a &lt;-<span class="st"> </span><span class="kw">rot90</span>(i)                   <span class="co">#  90 deg</span></span>
+<span id="cb343-13"><a href="jurassic-jigsaw.html#cb343-13"></a>  ret<span class="op">$</span>b &lt;-<span class="st"> </span><span class="kw">rot90</span>(ret<span class="op">$</span>a)               <span class="co"># 180 deg</span></span>
+<span id="cb343-14"><a href="jurassic-jigsaw.html#cb343-14"></a>  ret<span class="op">$</span>c &lt;-<span class="st"> </span><span class="kw">rot90</span>(ret<span class="op">$</span>b)               <span class="co"># 270 deg</span></span>
+<span id="cb343-15"><a href="jurassic-jigsaw.html#cb343-15"></a>  ret<span class="op">$</span>d &lt;-<span class="st"> </span>i[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dv">10</span><span class="op">:</span><span class="dv">1</span>]              <span class="co"># horizontal reflection</span></span>
+<span id="cb343-16"><a href="jurassic-jigsaw.html#cb343-16"></a>  ret<span class="op">$</span>e &lt;-<span class="st"> </span>i[<span class="dv">10</span><span class="op">:</span><span class="dv">1</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>]              <span class="co"># vertical reflection</span></span>
+<span id="cb343-17"><a href="jurassic-jigsaw.html#cb343-17"></a>  ret<span class="op">$</span>f &lt;-<span class="st"> </span><span class="kw">rot90</span>(<span class="kw">rot90</span>(<span class="kw">rot90</span>(ret<span class="op">$</span>d))) <span class="co"># TLBR reflection</span></span>
+<span id="cb343-18"><a href="jurassic-jigsaw.html#cb343-18"></a>  ret<span class="op">$</span>g &lt;-<span class="st"> </span><span class="kw">rot90</span>(<span class="kw">rot90</span>(<span class="kw">rot90</span>(ret<span class="op">$</span>e))) <span class="co"># BLTR reflection</span></span>
+<span id="cb343-19"><a href="jurassic-jigsaw.html#cb343-19"></a></span>
+<span id="cb343-20"><a href="jurassic-jigsaw.html#cb343-20"></a>  ret</span>
+<span id="cb343-21"><a href="jurassic-jigsaw.html#cb343-21"></a>}</span></code></pre></div>
+<p>We also can create a function like the function for finding corners to find the outside edges.</p>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="jurassic-jigsaw.html#cb344-1"></a>find_outside_edges &lt;-<span class="st"> </span><span class="cf">function</span>(edges) {</span>
+<span id="cb344-2"><a href="jurassic-jigsaw.html#cb344-2"></a>  <span class="kw">names</span>(edges)[<span class="kw">imap</span>(edges, <span class="cf">function</span>(.x, .i) {</span>
+<span id="cb344-3"><a href="jurassic-jigsaw.html#cb344-3"></a>    other_edges &lt;-<span class="st"> </span><span class="kw">flatten_chr</span>(edges[<span class="kw">names</span>(edges) <span class="op">!=</span><span class="st"> </span>.i])</span>
+<span id="cb344-4"><a href="jurassic-jigsaw.html#cb344-4"></a>    </span>
+<span id="cb344-5"><a href="jurassic-jigsaw.html#cb344-5"></a>    <span class="kw">length</span>(other_edges[other_edges <span class="op">%in%</span><span class="st"> </span>.x])</span>
+<span id="cb344-6"><a href="jurassic-jigsaw.html#cb344-6"></a>  }) <span class="op">==</span><span class="st"> </span><span class="dv">6</span>]</span>
+<span id="cb344-7"><a href="jurassic-jigsaw.html#cb344-7"></a>}</span></code></pre></div>
+<p>Solving part 2 is now pretty tedious. First, we find the corners and outside edges. We select a corner and place it in
+the top left corner.</p>
+<p>Then, we iterate from left to right on the top row finding the single piece that matches (hoping that there are unique
+pieces and we don’t need to implement a backtracking algorithm). We then can find the next corner piece and repeat for
+for the other edges.</p>
+<p>Once we have found the edges, we can fill in the inside of the image, and then we can construct the image without the
+borders.</p>
+<p>Then we can simply move from left to right, top to bottom scanning for the sea monsters. If we find a sea monster we
+can decrease a counter.</p>
+<p>We simply return the counter as the final result.</p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb345-1"><a href="jurassic-jigsaw.html#cb345-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb345-2"><a href="jurassic-jigsaw.html#cb345-2"></a>  size &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">length</span>(input))</span>
+<span id="cb345-3"><a href="jurassic-jigsaw.html#cb345-3"></a>  edges &lt;-<span class="st"> </span><span class="kw">map</span>(input, get_edges)</span>
+<span id="cb345-4"><a href="jurassic-jigsaw.html#cb345-4"></a>  corners &lt;-<span class="st"> </span><span class="kw">find_corners</span>(edges)</span>
+<span id="cb345-5"><a href="jurassic-jigsaw.html#cb345-5"></a>  outside_edges &lt;-<span class="st"> </span><span class="kw">find_outside_edges</span>(edges)</span>
+<span id="cb345-6"><a href="jurassic-jigsaw.html#cb345-6"></a>  </span>
+<span id="cb345-7"><a href="jurassic-jigsaw.html#cb345-7"></a>  inside_pieces &lt;-<span class="st"> </span><span class="kw">names</span>(edges) <span class="op">%&gt;%</span></span>
+<span id="cb345-8"><a href="jurassic-jigsaw.html#cb345-8"></a><span class="st">    </span><span class="kw">discard</span>(<span class="op">~</span><span class="st"> </span>.x <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(corners, outside_edges))</span>
+<span id="cb345-9"><a href="jurassic-jigsaw.html#cb345-9"></a>  </span>
+<span id="cb345-10"><a href="jurassic-jigsaw.html#cb345-10"></a>  all_orientations &lt;-<span class="st"> </span><span class="kw">map</span>(input, get_rotations_and_reflections)</span>
+<span id="cb345-11"><a href="jurassic-jigsaw.html#cb345-11"></a>  </span>
+<span id="cb345-12"><a href="jurassic-jigsaw.html#cb345-12"></a>  full_map_pieces &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="st">&quot;&quot;</span>, <span class="dt">nrow =</span> size, <span class="dt">ncol =</span> size)</span>
+<span id="cb345-13"><a href="jurassic-jigsaw.html#cb345-13"></a>  full_map_orientations &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="st">&quot;&quot;</span>, <span class="dt">nrow =</span> size, <span class="dt">ncol =</span> size)</span>
+<span id="cb345-14"><a href="jurassic-jigsaw.html#cb345-14"></a>  </span>
+<span id="cb345-15"><a href="jurassic-jigsaw.html#cb345-15"></a>  <span class="co"># complete top row</span></span>
+<span id="cb345-16"><a href="jurassic-jigsaw.html#cb345-16"></a>  </span>
+<span id="cb345-17"><a href="jurassic-jigsaw.html#cb345-17"></a>  <span class="co"># pick top left corner, choose first corner</span></span>
+<span id="cb345-18"><a href="jurassic-jigsaw.html#cb345-18"></a>  tl &lt;-<span class="st"> </span>corners[[<span class="dv">1</span>]]</span>
+<span id="cb345-19"><a href="jurassic-jigsaw.html#cb345-19"></a>  <span class="co"># remove this corner</span></span>
+<span id="cb345-20"><a href="jurassic-jigsaw.html#cb345-20"></a>  corners &lt;-<span class="st"> </span>corners[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb345-21"><a href="jurassic-jigsaw.html#cb345-21"></a></span>
+<span id="cb345-22"><a href="jurassic-jigsaw.html#cb345-22"></a>  tl_outside_edges &lt;-<span class="st"> </span>edges[[tl]] <span class="op">%&gt;%</span></span>
+<span id="cb345-23"><a href="jurassic-jigsaw.html#cb345-23"></a><span class="st">    </span><span class="kw">discard</span>(<span class="op">~</span><span class="st"> </span>.x <span class="op">%in%</span><span class="st"> </span><span class="kw">flatten_chr</span>(edges[<span class="kw">names</span>(edges) <span class="op">!=</span><span class="st"> </span>tl]))</span>
+<span id="cb345-24"><a href="jurassic-jigsaw.html#cb345-24"></a>  </span>
+<span id="cb345-25"><a href="jurassic-jigsaw.html#cb345-25"></a>  <span class="co"># we will find two options here, one will just be a reflecion in the diagonal</span></span>
+<span id="cb345-26"><a href="jurassic-jigsaw.html#cb345-26"></a>  <span class="co"># so we can discard</span></span>
+<span id="cb345-27"><a href="jurassic-jigsaw.html#cb345-27"></a>  tlo &lt;-<span class="st"> </span>all_orientations[[tl]] <span class="op">%&gt;%</span></span>
+<span id="cb345-28"><a href="jurassic-jigsaw.html#cb345-28"></a><span class="st">    </span><span class="kw">keep</span>(<span class="op">~</span><span class="st"> </span><span class="kw">paste</span>(.x[<span class="dv">1</span>,], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>) <span class="op">%in%</span><span class="st"> </span>tl_outside_edges) <span class="op">%&gt;%</span></span>
+<span id="cb345-29"><a href="jurassic-jigsaw.html#cb345-29"></a><span class="st">    </span><span class="kw">keep</span>(<span class="op">~</span><span class="st"> </span><span class="kw">paste</span>(.x[,<span class="dv">1</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>) <span class="op">%in%</span><span class="st"> </span>tl_outside_edges) <span class="op">%&gt;%</span></span>
+<span id="cb345-30"><a href="jurassic-jigsaw.html#cb345-30"></a><span class="st">    </span><span class="kw">names</span>() <span class="op">%&gt;%</span></span>
+<span id="cb345-31"><a href="jurassic-jigsaw.html#cb345-31"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>)</span>
+<span id="cb345-32"><a href="jurassic-jigsaw.html#cb345-32"></a>  </span>
+<span id="cb345-33"><a href="jurassic-jigsaw.html#cb345-33"></a>  full_map_pieces[<span class="dv">1</span>, <span class="dv">1</span>] &lt;-<span class="st"> </span>j &lt;-<span class="st"> </span>tl</span>
+<span id="cb345-34"><a href="jurassic-jigsaw.html#cb345-34"></a>  full_map_orientations[<span class="dv">1</span>, <span class="dv">1</span>] &lt;-<span class="st"> </span>k &lt;-<span class="st"> </span>tlo</span>
+<span id="cb345-35"><a href="jurassic-jigsaw.html#cb345-35"></a>  </span>
+<span id="cb345-36"><a href="jurassic-jigsaw.html#cb345-36"></a>  <span class="co"># now, fill in top row: assumes a single result is found</span></span>
+<span id="cb345-37"><a href="jurassic-jigsaw.html#cb345-37"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(size <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb345-38"><a href="jurassic-jigsaw.html#cb345-38"></a>    t &lt;-<span class="st"> </span><span class="kw">paste</span>(all_orientations[[j]][[k]][,<span class="dv">10</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb345-39"><a href="jurassic-jigsaw.html#cb345-39"></a>    </span>
+<span id="cb345-40"><a href="jurassic-jigsaw.html#cb345-40"></a>    r &lt;-<span class="st"> </span>all_orientations[outside_edges] <span class="op">%&gt;%</span></span>
+<span id="cb345-41"><a href="jurassic-jigsaw.html#cb345-41"></a><span class="st">      </span><span class="kw">map_depth</span>(<span class="dv">2</span>, <span class="op">~</span><span class="kw">paste</span>(.x[,<span class="dv">1</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb345-42"><a href="jurassic-jigsaw.html#cb345-42"></a><span class="st">      </span><span class="kw">map</span>(keep, <span class="op">~</span>.x <span class="op">==</span><span class="st"> </span>t) <span class="op">%&gt;%</span></span>
+<span id="cb345-43"><a href="jurassic-jigsaw.html#cb345-43"></a><span class="st">      </span><span class="kw">discard</span>(<span class="op">~</span><span class="kw">length</span>(.x) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb345-44"><a href="jurassic-jigsaw.html#cb345-44"></a>    </span>
+<span id="cb345-45"><a href="jurassic-jigsaw.html#cb345-45"></a>    <span class="kw">stopifnot</span>(<span class="kw">length</span>(r) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">length</span>(r[[<span class="dv">1</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb345-46"><a href="jurassic-jigsaw.html#cb345-46"></a>    </span>
+<span id="cb345-47"><a href="jurassic-jigsaw.html#cb345-47"></a>    full_map_pieces[<span class="dv">1</span>, i] &lt;-<span class="st"> </span>j &lt;-<span class="st"> </span><span class="kw">names</span>(r)</span>
+<span id="cb345-48"><a href="jurassic-jigsaw.html#cb345-48"></a>    full_map_orientations[<span class="dv">1</span>, i] &lt;-<span class="st"> </span>k &lt;-<span class="st"> </span><span class="kw">names</span>(r[[<span class="dv">1</span>]])</span>
+<span id="cb345-49"><a href="jurassic-jigsaw.html#cb345-49"></a>    </span>
+<span id="cb345-50"><a href="jurassic-jigsaw.html#cb345-50"></a>    <span class="co"># remove edge</span></span>
+<span id="cb345-51"><a href="jurassic-jigsaw.html#cb345-51"></a>    outside_edges &lt;-<span class="st"> </span>outside_edges[outside_edges <span class="op">!=</span><span class="st"> </span>j]</span>
+<span id="cb345-52"><a href="jurassic-jigsaw.html#cb345-52"></a>  }</span>
+<span id="cb345-53"><a href="jurassic-jigsaw.html#cb345-53"></a>  </span>
+<span id="cb345-54"><a href="jurassic-jigsaw.html#cb345-54"></a>  <span class="co"># add in top right corner</span></span>
+<span id="cb345-55"><a href="jurassic-jigsaw.html#cb345-55"></a>  t &lt;-<span class="st"> </span><span class="kw">paste</span>(all_orientations[[j]][[k]][,<span class="dv">10</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb345-56"><a href="jurassic-jigsaw.html#cb345-56"></a>  r &lt;-<span class="st"> </span>all_orientations[corners] <span class="op">%&gt;%</span></span>
+<span id="cb345-57"><a href="jurassic-jigsaw.html#cb345-57"></a><span class="st">      </span><span class="kw">map_depth</span>(<span class="dv">2</span>, <span class="op">~</span><span class="kw">paste</span>(.x[,<span class="dv">1</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb345-58"><a href="jurassic-jigsaw.html#cb345-58"></a><span class="st">      </span><span class="kw">map</span>(keep, <span class="op">~</span>.x <span class="op">==</span><span class="st"> </span>t) <span class="op">%&gt;%</span></span>
+<span id="cb345-59"><a href="jurassic-jigsaw.html#cb345-59"></a><span class="st">      </span><span class="kw">discard</span>(<span class="op">~</span><span class="kw">length</span>(.x) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb345-60"><a href="jurassic-jigsaw.html#cb345-60"></a>  </span>
+<span id="cb345-61"><a href="jurassic-jigsaw.html#cb345-61"></a>  <span class="kw">stopifnot</span>(<span class="kw">length</span>(r) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">length</span>(r[[<span class="dv">1</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb345-62"><a href="jurassic-jigsaw.html#cb345-62"></a>    </span>
+<span id="cb345-63"><a href="jurassic-jigsaw.html#cb345-63"></a>  full_map_pieces[<span class="dv">1</span>, size] &lt;-<span class="st"> </span>j &lt;-<span class="st"> </span><span class="kw">names</span>(r)</span>
+<span id="cb345-64"><a href="jurassic-jigsaw.html#cb345-64"></a>  full_map_orientations[<span class="dv">1</span>, size] &lt;-<span class="st"> </span>k &lt;-<span class="st"> </span><span class="kw">names</span>(r[[<span class="dv">1</span>]])</span>
+<span id="cb345-65"><a href="jurassic-jigsaw.html#cb345-65"></a>  </span>
+<span id="cb345-66"><a href="jurassic-jigsaw.html#cb345-66"></a>  <span class="co"># remove corner</span></span>
+<span id="cb345-67"><a href="jurassic-jigsaw.html#cb345-67"></a>  corners &lt;-<span class="st"> </span>corners[corners <span class="op">!=</span><span class="st"> </span>j]</span>
+<span id="cb345-68"><a href="jurassic-jigsaw.html#cb345-68"></a>  </span>
+<span id="cb345-69"><a href="jurassic-jigsaw.html#cb345-69"></a>  <span class="co"># yuck, repeat for right, then bottom, then bottom</span></span>
+<span id="cb345-70"><a href="jurassic-jigsaw.html#cb345-70"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(size <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb345-71"><a href="jurassic-jigsaw.html#cb345-71"></a>    t &lt;-<span class="st"> </span><span class="kw">paste</span>(all_orientations[[j]][[k]][<span class="dv">10</span>,], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb345-72"><a href="jurassic-jigsaw.html#cb345-72"></a>    </span>
+<span id="cb345-73"><a href="jurassic-jigsaw.html#cb345-73"></a>    r &lt;-<span class="st"> </span>all_orientations[outside_edges] <span class="op">%&gt;%</span></span>
+<span id="cb345-74"><a href="jurassic-jigsaw.html#cb345-74"></a><span class="st">      </span><span class="kw">map_depth</span>(<span class="dv">2</span>, <span class="op">~</span><span class="kw">paste</span>(.x[<span class="dv">1</span>,], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb345-75"><a href="jurassic-jigsaw.html#cb345-75"></a><span class="st">      </span><span class="kw">map</span>(keep, <span class="op">~</span>.x <span class="op">==</span><span class="st"> </span>t) <span class="op">%&gt;%</span></span>
+<span id="cb345-76"><a href="jurassic-jigsaw.html#cb345-76"></a><span class="st">      </span><span class="kw">discard</span>(<span class="op">~</span><span class="kw">length</span>(.x) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb345-77"><a href="jurassic-jigsaw.html#cb345-77"></a>    </span>
+<span id="cb345-78"><a href="jurassic-jigsaw.html#cb345-78"></a>    <span class="kw">stopifnot</span>(<span class="kw">length</span>(r) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">length</span>(r[[<span class="dv">1</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb345-79"><a href="jurassic-jigsaw.html#cb345-79"></a>    </span>
+<span id="cb345-80"><a href="jurassic-jigsaw.html#cb345-80"></a>    full_map_pieces[i, size] &lt;-<span class="st"> </span>j &lt;-<span class="st"> </span><span class="kw">names</span>(r)</span>
+<span id="cb345-81"><a href="jurassic-jigsaw.html#cb345-81"></a>    full_map_orientations[i, size] &lt;-<span class="st"> </span>k &lt;-<span class="st"> </span><span class="kw">names</span>(r[[<span class="dv">1</span>]])</span>
+<span id="cb345-82"><a href="jurassic-jigsaw.html#cb345-82"></a>    </span>
+<span id="cb345-83"><a href="jurassic-jigsaw.html#cb345-83"></a>    <span class="co"># remove edge</span></span>
+<span id="cb345-84"><a href="jurassic-jigsaw.html#cb345-84"></a>    outside_edges &lt;-<span class="st"> </span>outside_edges[outside_edges <span class="op">!=</span><span class="st"> </span>j]</span>
+<span id="cb345-85"><a href="jurassic-jigsaw.html#cb345-85"></a>  }</span>
+<span id="cb345-86"><a href="jurassic-jigsaw.html#cb345-86"></a>  </span>
+<span id="cb345-87"><a href="jurassic-jigsaw.html#cb345-87"></a>  <span class="co"># add in bottom right corner</span></span>
+<span id="cb345-88"><a href="jurassic-jigsaw.html#cb345-88"></a>  t &lt;-<span class="st"> </span><span class="kw">paste</span>(all_orientations[[j]][[k]][<span class="dv">10</span>,], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb345-89"><a href="jurassic-jigsaw.html#cb345-89"></a>  r &lt;-<span class="st"> </span>all_orientations[corners] <span class="op">%&gt;%</span></span>
+<span id="cb345-90"><a href="jurassic-jigsaw.html#cb345-90"></a><span class="st">      </span><span class="kw">map_depth</span>(<span class="dv">2</span>, <span class="op">~</span><span class="kw">paste</span>(.x[<span class="dv">1</span>,], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb345-91"><a href="jurassic-jigsaw.html#cb345-91"></a><span class="st">      </span><span class="kw">map</span>(keep, <span class="op">~</span>.x <span class="op">==</span><span class="st"> </span>t) <span class="op">%&gt;%</span></span>
+<span id="cb345-92"><a href="jurassic-jigsaw.html#cb345-92"></a><span class="st">      </span><span class="kw">discard</span>(<span class="op">~</span><span class="kw">length</span>(.x) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb345-93"><a href="jurassic-jigsaw.html#cb345-93"></a>  </span>
+<span id="cb345-94"><a href="jurassic-jigsaw.html#cb345-94"></a>  <span class="kw">stopifnot</span>(<span class="kw">length</span>(r) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">length</span>(r[[<span class="dv">1</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb345-95"><a href="jurassic-jigsaw.html#cb345-95"></a>    </span>
+<span id="cb345-96"><a href="jurassic-jigsaw.html#cb345-96"></a>  full_map_pieces[size, size] &lt;-<span class="st"> </span>j &lt;-<span class="st"> </span><span class="kw">names</span>(r)</span>
+<span id="cb345-97"><a href="jurassic-jigsaw.html#cb345-97"></a>  full_map_orientations[size, size] &lt;-<span class="st"> </span>k &lt;-<span class="st"> </span><span class="kw">names</span>(r[[<span class="dv">1</span>]])</span>
+<span id="cb345-98"><a href="jurassic-jigsaw.html#cb345-98"></a>  </span>
+<span id="cb345-99"><a href="jurassic-jigsaw.html#cb345-99"></a>  <span class="co"># remove corner</span></span>
+<span id="cb345-100"><a href="jurassic-jigsaw.html#cb345-100"></a>  corners &lt;-<span class="st"> </span>corners[corners <span class="op">!=</span><span class="st"> </span>j]</span>
+<span id="cb345-101"><a href="jurassic-jigsaw.html#cb345-101"></a>  </span>
+<span id="cb345-102"><a href="jurassic-jigsaw.html#cb345-102"></a>  <span class="co"># do bottom row</span></span>
+<span id="cb345-103"><a href="jurassic-jigsaw.html#cb345-103"></a>  <span class="cf">for</span> (i <span class="cf">in</span> (size <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span><span class="dv">2</span>) {</span>
+<span id="cb345-104"><a href="jurassic-jigsaw.html#cb345-104"></a>    t &lt;-<span class="st"> </span><span class="kw">paste</span>(all_orientations[[j]][[k]][,<span class="dv">1</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb345-105"><a href="jurassic-jigsaw.html#cb345-105"></a>    </span>
+<span id="cb345-106"><a href="jurassic-jigsaw.html#cb345-106"></a>    r &lt;-<span class="st"> </span>all_orientations[outside_edges] <span class="op">%&gt;%</span></span>
+<span id="cb345-107"><a href="jurassic-jigsaw.html#cb345-107"></a><span class="st">      </span><span class="kw">map_depth</span>(<span class="dv">2</span>, <span class="op">~</span><span class="kw">paste</span>(.x[,<span class="dv">10</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb345-108"><a href="jurassic-jigsaw.html#cb345-108"></a><span class="st">      </span><span class="kw">map</span>(keep, <span class="op">~</span>.x <span class="op">==</span><span class="st"> </span>t) <span class="op">%&gt;%</span></span>
+<span id="cb345-109"><a href="jurassic-jigsaw.html#cb345-109"></a><span class="st">      </span><span class="kw">discard</span>(<span class="op">~</span><span class="kw">length</span>(.x) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb345-110"><a href="jurassic-jigsaw.html#cb345-110"></a>    </span>
+<span id="cb345-111"><a href="jurassic-jigsaw.html#cb345-111"></a>    <span class="kw">stopifnot</span>(<span class="kw">length</span>(r) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">length</span>(r[[<span class="dv">1</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb345-112"><a href="jurassic-jigsaw.html#cb345-112"></a>    </span>
+<span id="cb345-113"><a href="jurassic-jigsaw.html#cb345-113"></a>    full_map_pieces[size, i] &lt;-<span class="st"> </span>j &lt;-<span class="st"> </span><span class="kw">names</span>(r)</span>
+<span id="cb345-114"><a href="jurassic-jigsaw.html#cb345-114"></a>    full_map_orientations[size, i] &lt;-<span class="st"> </span>k &lt;-<span class="st"> </span><span class="kw">names</span>(r[[<span class="dv">1</span>]])</span>
+<span id="cb345-115"><a href="jurassic-jigsaw.html#cb345-115"></a>    </span>
+<span id="cb345-116"><a href="jurassic-jigsaw.html#cb345-116"></a>    <span class="co"># remove edge</span></span>
+<span id="cb345-117"><a href="jurassic-jigsaw.html#cb345-117"></a>    outside_edges &lt;-<span class="st"> </span>outside_edges[outside_edges <span class="op">!=</span><span class="st"> </span>j]</span>
+<span id="cb345-118"><a href="jurassic-jigsaw.html#cb345-118"></a>  }</span>
+<span id="cb345-119"><a href="jurassic-jigsaw.html#cb345-119"></a>  </span>
+<span id="cb345-120"><a href="jurassic-jigsaw.html#cb345-120"></a>  <span class="co"># bottom left corner is last remaining now. We just need to find it&#39;s</span></span>
+<span id="cb345-121"><a href="jurassic-jigsaw.html#cb345-121"></a>  <span class="co"># orientation</span></span>
+<span id="cb345-122"><a href="jurassic-jigsaw.html#cb345-122"></a>  t &lt;-<span class="st"> </span><span class="kw">paste</span>(all_orientations[[j]][[k]][,<span class="dv">1</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb345-123"><a href="jurassic-jigsaw.html#cb345-123"></a>  r &lt;-<span class="st"> </span>all_orientations[corners] <span class="op">%&gt;%</span></span>
+<span id="cb345-124"><a href="jurassic-jigsaw.html#cb345-124"></a><span class="st">      </span><span class="kw">map_depth</span>(<span class="dv">2</span>, <span class="op">~</span><span class="kw">paste</span>(.x[,<span class="dv">10</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb345-125"><a href="jurassic-jigsaw.html#cb345-125"></a><span class="st">      </span><span class="kw">map</span>(keep, <span class="op">~</span>.x <span class="op">==</span><span class="st"> </span>t) <span class="op">%&gt;%</span></span>
+<span id="cb345-126"><a href="jurassic-jigsaw.html#cb345-126"></a><span class="st">      </span><span class="kw">discard</span>(<span class="op">~</span><span class="kw">length</span>(.x) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb345-127"><a href="jurassic-jigsaw.html#cb345-127"></a>  </span>
+<span id="cb345-128"><a href="jurassic-jigsaw.html#cb345-128"></a>  <span class="kw">stopifnot</span>(<span class="kw">length</span>(r) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">length</span>(r[[<span class="dv">1</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb345-129"><a href="jurassic-jigsaw.html#cb345-129"></a>    </span>
+<span id="cb345-130"><a href="jurassic-jigsaw.html#cb345-130"></a>  full_map_pieces[size, <span class="dv">1</span>] &lt;-<span class="st"> </span>j &lt;-<span class="st"> </span><span class="kw">names</span>(r)</span>
+<span id="cb345-131"><a href="jurassic-jigsaw.html#cb345-131"></a>  full_map_orientations[size, <span class="dv">1</span>] &lt;-<span class="st"> </span>k &lt;-<span class="st"> </span><span class="kw">names</span>(r[[<span class="dv">1</span>]])</span>
+<span id="cb345-132"><a href="jurassic-jigsaw.html#cb345-132"></a>  </span>
+<span id="cb345-133"><a href="jurassic-jigsaw.html#cb345-133"></a>  <span class="co"># finally, fill in left edge</span></span>
+<span id="cb345-134"><a href="jurassic-jigsaw.html#cb345-134"></a>  <span class="cf">for</span> (i <span class="cf">in</span> (size <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span><span class="dv">2</span>) {</span>
+<span id="cb345-135"><a href="jurassic-jigsaw.html#cb345-135"></a>    t &lt;-<span class="st"> </span><span class="kw">paste</span>(all_orientations[[j]][[k]][<span class="dv">1</span>,], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb345-136"><a href="jurassic-jigsaw.html#cb345-136"></a>    </span>
+<span id="cb345-137"><a href="jurassic-jigsaw.html#cb345-137"></a>    r &lt;-<span class="st"> </span>all_orientations[outside_edges] <span class="op">%&gt;%</span></span>
+<span id="cb345-138"><a href="jurassic-jigsaw.html#cb345-138"></a><span class="st">      </span><span class="kw">map_depth</span>(<span class="dv">2</span>, <span class="op">~</span><span class="kw">paste</span>(.x[<span class="dv">10</span>,], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb345-139"><a href="jurassic-jigsaw.html#cb345-139"></a><span class="st">      </span><span class="kw">map</span>(keep, <span class="op">~</span>.x <span class="op">==</span><span class="st"> </span>t) <span class="op">%&gt;%</span></span>
+<span id="cb345-140"><a href="jurassic-jigsaw.html#cb345-140"></a><span class="st">      </span><span class="kw">discard</span>(<span class="op">~</span><span class="kw">length</span>(.x) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb345-141"><a href="jurassic-jigsaw.html#cb345-141"></a>    </span>
+<span id="cb345-142"><a href="jurassic-jigsaw.html#cb345-142"></a>    <span class="kw">stopifnot</span>(<span class="kw">length</span>(r) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">length</span>(r[[<span class="dv">1</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb345-143"><a href="jurassic-jigsaw.html#cb345-143"></a>    </span>
+<span id="cb345-144"><a href="jurassic-jigsaw.html#cb345-144"></a>    full_map_pieces[i, <span class="dv">1</span>] &lt;-<span class="st"> </span>j &lt;-<span class="st"> </span><span class="kw">names</span>(r)</span>
+<span id="cb345-145"><a href="jurassic-jigsaw.html#cb345-145"></a>    full_map_orientations[i, <span class="dv">1</span>] &lt;-<span class="st"> </span>k &lt;-<span class="st"> </span><span class="kw">names</span>(r[[<span class="dv">1</span>]])</span>
+<span id="cb345-146"><a href="jurassic-jigsaw.html#cb345-146"></a>    </span>
+<span id="cb345-147"><a href="jurassic-jigsaw.html#cb345-147"></a>    <span class="co"># remove edge</span></span>
+<span id="cb345-148"><a href="jurassic-jigsaw.html#cb345-148"></a>    outside_edges &lt;-<span class="st"> </span>outside_edges[outside_edges <span class="op">!=</span><span class="st"> </span>j]</span>
+<span id="cb345-149"><a href="jurassic-jigsaw.html#cb345-149"></a>  }</span>
+<span id="cb345-150"><a href="jurassic-jigsaw.html#cb345-150"></a>  </span>
+<span id="cb345-151"><a href="jurassic-jigsaw.html#cb345-151"></a>  inside_pieces</span>
+<span id="cb345-152"><a href="jurassic-jigsaw.html#cb345-152"></a>  </span>
+<span id="cb345-153"><a href="jurassic-jigsaw.html#cb345-153"></a>  <span class="co"># now, fill in centre.</span></span>
+<span id="cb345-154"><a href="jurassic-jigsaw.html#cb345-154"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(size <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb345-155"><a href="jurassic-jigsaw.html#cb345-155"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span>(size <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb345-156"><a href="jurassic-jigsaw.html#cb345-156"></a>      aj &lt;-<span class="st"> </span>full_map_pieces[i, j <span class="op">-</span><span class="st"> </span><span class="dv">1</span>] </span>
+<span id="cb345-157"><a href="jurassic-jigsaw.html#cb345-157"></a>      ak &lt;-<span class="st"> </span>full_map_orientations[i, j <span class="op">-</span><span class="st"> </span><span class="dv">1</span>]</span>
+<span id="cb345-158"><a href="jurassic-jigsaw.html#cb345-158"></a>      a &lt;-<span class="st"> </span><span class="kw">paste</span>(all_orientations[[aj]][[ak]][,<span class="dv">10</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb345-159"><a href="jurassic-jigsaw.html#cb345-159"></a>      </span>
+<span id="cb345-160"><a href="jurassic-jigsaw.html#cb345-160"></a>      bj &lt;-<span class="st"> </span>full_map_pieces[i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, j] </span>
+<span id="cb345-161"><a href="jurassic-jigsaw.html#cb345-161"></a>      bk &lt;-<span class="st"> </span>full_map_orientations[i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, j]</span>
+<span id="cb345-162"><a href="jurassic-jigsaw.html#cb345-162"></a>      b &lt;-<span class="st"> </span><span class="kw">paste</span>(all_orientations[[bj]][[bk]][<span class="dv">10</span>,], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb345-163"><a href="jurassic-jigsaw.html#cb345-163"></a>      </span>
+<span id="cb345-164"><a href="jurassic-jigsaw.html#cb345-164"></a>      r &lt;-<span class="st"> </span>all_orientations[inside_pieces] <span class="op">%&gt;%</span></span>
+<span id="cb345-165"><a href="jurassic-jigsaw.html#cb345-165"></a><span class="st">        </span><span class="kw">map</span>(keep, <span class="op">~</span><span class="kw">paste</span>(.x[,<span class="dv">1</span>], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>) <span class="op">==</span><span class="st"> </span>a) <span class="op">%&gt;%</span></span>
+<span id="cb345-166"><a href="jurassic-jigsaw.html#cb345-166"></a><span class="st">        </span><span class="kw">map</span>(keep, <span class="op">~</span><span class="kw">paste</span>(.x[<span class="dv">1</span>,], <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>) <span class="op">==</span><span class="st"> </span>b) <span class="op">%&gt;%</span></span>
+<span id="cb345-167"><a href="jurassic-jigsaw.html#cb345-167"></a><span class="st">        </span><span class="kw">discard</span>(<span class="op">~</span><span class="kw">length</span>(.x) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb345-168"><a href="jurassic-jigsaw.html#cb345-168"></a>      </span>
+<span id="cb345-169"><a href="jurassic-jigsaw.html#cb345-169"></a>      <span class="kw">stopifnot</span>(<span class="kw">length</span>(r) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="kw">length</span>(r[[<span class="dv">1</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb345-170"><a href="jurassic-jigsaw.html#cb345-170"></a>      </span>
+<span id="cb345-171"><a href="jurassic-jigsaw.html#cb345-171"></a>      full_map_pieces[i, j] &lt;-<span class="st"> </span><span class="kw">names</span>(r)</span>
+<span id="cb345-172"><a href="jurassic-jigsaw.html#cb345-172"></a>      full_map_orientations[i, j] &lt;-<span class="st"> </span><span class="kw">names</span>(r[[<span class="dv">1</span>]])</span>
+<span id="cb345-173"><a href="jurassic-jigsaw.html#cb345-173"></a>      </span>
+<span id="cb345-174"><a href="jurassic-jigsaw.html#cb345-174"></a>      <span class="co"># remove edge</span></span>
+<span id="cb345-175"><a href="jurassic-jigsaw.html#cb345-175"></a>      inside_pieces &lt;-<span class="st"> </span>inside_pieces[inside_pieces <span class="op">!=</span><span class="st"> </span>full_map_pieces[i, j]]</span>
+<span id="cb345-176"><a href="jurassic-jigsaw.html#cb345-176"></a>    }</span>
+<span id="cb345-177"><a href="jurassic-jigsaw.html#cb345-177"></a>  }</span>
+<span id="cb345-178"><a href="jurassic-jigsaw.html#cb345-178"></a>  </span>
+<span id="cb345-179"><a href="jurassic-jigsaw.html#cb345-179"></a>  <span class="co"># we can now reconstruct the image: we need to remove the border&#39;s from the images</span></span>
+<span id="cb345-180"><a href="jurassic-jigsaw.html#cb345-180"></a>  image &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dt">nrow =</span> size <span class="op">*</span><span class="st"> </span><span class="dv">8</span>, <span class="dt">ncol =</span> size <span class="op">*</span><span class="st"> </span><span class="dv">8</span>)</span>
+<span id="cb345-181"><a href="jurassic-jigsaw.html#cb345-181"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>size) {</span>
+<span id="cb345-182"><a href="jurassic-jigsaw.html#cb345-182"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>size) {</span>
+<span id="cb345-183"><a href="jurassic-jigsaw.html#cb345-183"></a>      istart &lt;-<span class="st"> </span>(i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">*</span><span class="st"> </span><span class="dv">8</span></span>
+<span id="cb345-184"><a href="jurassic-jigsaw.html#cb345-184"></a>      jstart &lt;-<span class="st"> </span>(j <span class="op">-</span><span class="st"> </span><span class="dv">1</span>) <span class="op">*</span><span class="st"> </span><span class="dv">8</span></span>
+<span id="cb345-185"><a href="jurassic-jigsaw.html#cb345-185"></a>      </span>
+<span id="cb345-186"><a href="jurassic-jigsaw.html#cb345-186"></a>      aj &lt;-<span class="st"> </span>full_map_pieces[i, j ] </span>
+<span id="cb345-187"><a href="jurassic-jigsaw.html#cb345-187"></a>      ak &lt;-<span class="st"> </span>full_map_orientations[i, j]</span>
+<span id="cb345-188"><a href="jurassic-jigsaw.html#cb345-188"></a>      current &lt;-<span class="st"> </span>all_orientations[[aj]][[ak]][<span class="dv">2</span><span class="op">:</span><span class="dv">9</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">9</span>]</span>
+<span id="cb345-189"><a href="jurassic-jigsaw.html#cb345-189"></a>      image[istart<span class="op">:</span>(istart <span class="op">+</span><span class="st"> </span><span class="dv">7</span>) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>, jstart<span class="op">:</span>(jstart <span class="op">+</span><span class="st"> </span><span class="dv">7</span>) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span>current</span>
+<span id="cb345-190"><a href="jurassic-jigsaw.html#cb345-190"></a>    }</span>
+<span id="cb345-191"><a href="jurassic-jigsaw.html#cb345-191"></a>  }</span>
+<span id="cb345-192"><a href="jurassic-jigsaw.html#cb345-192"></a>  </span>
+<span id="cb345-193"><a href="jurassic-jigsaw.html#cb345-193"></a>  sea_monster &lt;-<span class="st"> </span><span class="kw">local</span>({</span>
+<span id="cb345-194"><a href="jurassic-jigsaw.html#cb345-194"></a>    t &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;                  # &quot;</span>,</span>
+<span id="cb345-195"><a href="jurassic-jigsaw.html#cb345-195"></a>           <span class="st">&quot;#    ##    ##    ###&quot;</span>,</span>
+<span id="cb345-196"><a href="jurassic-jigsaw.html#cb345-196"></a>           <span class="st">&quot; #  #  #  #  #  #   &quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb345-197"><a href="jurassic-jigsaw.html#cb345-197"></a><span class="st">      </span><span class="kw">str_extract_all</span>(<span class="st">&quot;.&quot;</span>, <span class="dt">simplify =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb345-198"><a href="jurassic-jigsaw.html#cb345-198"></a>    <span class="kw">which</span>(t <span class="op">==</span><span class="st"> &quot;#&quot;</span>, <span class="ot">TRUE</span>) <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb345-199"><a href="jurassic-jigsaw.html#cb345-199"></a>  })</span>
+<span id="cb345-200"><a href="jurassic-jigsaw.html#cb345-200"></a></span>
+<span id="cb345-201"><a href="jurassic-jigsaw.html#cb345-201"></a>  <span class="co"># iterate over the image, count how many cells are sea monsters</span></span>
+<span id="cb345-202"><a href="jurassic-jigsaw.html#cb345-202"></a>  count &lt;-<span class="st"> </span><span class="kw">sum</span>(image <span class="op">==</span><span class="st"> &quot;#&quot;</span>)</span>
+<span id="cb345-203"><a href="jurassic-jigsaw.html#cb345-203"></a>  <span class="co"># hard code in size of sea monster</span></span>
+<span id="cb345-204"><a href="jurassic-jigsaw.html#cb345-204"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(image) <span class="op">-</span><span class="st"> </span><span class="dv">3</span>)) {</span>
+<span id="cb345-205"><a href="jurassic-jigsaw.html#cb345-205"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">ncol</span>(image) <span class="op">-</span><span class="st"> </span><span class="dv">20</span>)) {</span>
+<span id="cb345-206"><a href="jurassic-jigsaw.html#cb345-206"></a>      ix &lt;-<span class="st"> </span>sea_monster</span>
+<span id="cb345-207"><a href="jurassic-jigsaw.html#cb345-207"></a>      </span>
+<span id="cb345-208"><a href="jurassic-jigsaw.html#cb345-208"></a>      ix[,<span class="dv">1</span>] &lt;-<span class="st"> </span>ix[,<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>i</span>
+<span id="cb345-209"><a href="jurassic-jigsaw.html#cb345-209"></a>      ix[,<span class="dv">2</span>] &lt;-<span class="st"> </span>ix[,<span class="dv">2</span>] <span class="op">+</span><span class="st"> </span>j</span>
+<span id="cb345-210"><a href="jurassic-jigsaw.html#cb345-210"></a>      </span>
+<span id="cb345-211"><a href="jurassic-jigsaw.html#cb345-211"></a>      t &lt;-<span class="st"> </span>image[ix] <span class="op">==</span><span class="st"> &quot;#&quot;</span></span>
+<span id="cb345-212"><a href="jurassic-jigsaw.html#cb345-212"></a>      <span class="cf">if</span> (<span class="kw">all</span>(t)) {</span>
+<span id="cb345-213"><a href="jurassic-jigsaw.html#cb345-213"></a>        count &lt;-<span class="st"> </span>count <span class="op">-</span><span class="st"> </span><span class="kw">sum</span>(t) </span>
+<span id="cb345-214"><a href="jurassic-jigsaw.html#cb345-214"></a>      }</span>
+<span id="cb345-215"><a href="jurassic-jigsaw.html#cb345-215"></a>    }</span>
+<span id="cb345-216"><a href="jurassic-jigsaw.html#cb345-216"></a>  }</span>
+<span id="cb345-217"><a href="jurassic-jigsaw.html#cb345-217"></a>  </span>
+<span id="cb345-218"><a href="jurassic-jigsaw.html#cb345-218"></a>  count</span>
+<span id="cb345-219"><a href="jurassic-jigsaw.html#cb345-219"></a>}</span></code></pre></div>
+<p>We can run the function now on the sample:</p>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="jurassic-jigsaw.html#cb346-1"></a><span class="kw">part_2</span>(sample)</span></code></pre></div>
+<pre><code>## [1] 273</code></pre>
+<p>And we can run for our actual data:</p>
+<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="jurassic-jigsaw.html#cb348-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 2409</code></pre>
+<p>This felt rather tedious and procedural, perhaps there is a neater solution. Improvements could be made to my code by
+extracting some of the repeated logic into functions.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="monster-messages.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="allergen-assessment.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
