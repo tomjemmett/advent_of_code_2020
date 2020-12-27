@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="jurassic-jigsaw.html"/>
-<link rel="next" href="part-1-20.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -226,9 +226,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="20.1" data-path="jurassic-jigsaw.html"><a href="jurassic-jigsaw.html#part-1-19"><i class="fa fa-check"></i><b>20.1</b> Part 1</a></li>
 <li class="chapter" data-level="20.2" data-path="jurassic-jigsaw.html"><a href="jurassic-jigsaw.html#part-2-19"><i class="fa fa-check"></i><b>20.2</b> Part 2</a></li>
 </ul></li>
-<li class="chapter" data-level="21" data-path="allergen-assessment.html"><a href="allergen-assessment.html"><i class="fa fa-check"></i><b>21</b> Allergen Assessment</a></li>
-<li class="chapter" data-level="22" data-path="part-1-20.html"><a href="part-1-20.html"><i class="fa fa-check"></i><b>22</b> Part 1</a></li>
-<li class="chapter" data-level="23" data-path="part-2-20.html"><a href="part-2-20.html"><i class="fa fa-check"></i><b>23</b> Part 2</a></li>
+<li class="chapter" data-level="21" data-path="allergen-assessment.html"><a href="allergen-assessment.html"><i class="fa fa-check"></i><b>21</b> Allergen Assessment</a><ul>
+<li class="chapter" data-level="21.1" data-path="allergen-assessment.html"><a href="allergen-assessment.html#part-1-20"><i class="fa fa-check"></i><b>21.1</b> Part 1</a></li>
+<li class="chapter" data-level="21.2" data-path="allergen-assessment.html"><a href="allergen-assessment.html#part-2-20"><i class="fa fa-check"></i><b>21.2</b> Part 2</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -251,14 +252,90 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This is my attempt to solve <a href="https://adventofcode.com/2021/day/21">Day 21</a>.</p>
 <div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="allergen-assessment.html#cb350-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_21_sample.txt&quot;</span>)</span>
 <span id="cb350-2"><a href="allergen-assessment.html#cb350-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_21_input.txt&quot;</span>)</span></code></pre></div>
+<div id="part-1-20" class="section level2">
+<h2><span class="header-section-number">21.1</span> Part 1</h2>
+<p>First, let’s build a function which takes the input and return’s all of the possible combinations (the “cross product”)
+of ingredients and allergens.</p>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="allergen-assessment.html#cb351-1"></a>ingredient_allergen_combinations &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb351-2"><a href="allergen-assessment.html#cb351-2"></a>  input <span class="op">%&gt;%</span></span>
+<span id="cb351-3"><a href="allergen-assessment.html#cb351-3"></a><span class="st">    </span><span class="kw">str_remove_all</span>(<span class="st">&quot;contains |</span><span class="ch">\\</span><span class="st">)&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb351-4"><a href="allergen-assessment.html#cb351-4"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot; </span><span class="ch">\\</span><span class="st">(&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb351-5"><a href="allergen-assessment.html#cb351-5"></a><span class="st">    </span><span class="kw">map_dfr</span>(<span class="op">~</span><span class="kw">list</span>(</span>
+<span id="cb351-6"><a href="allergen-assessment.html#cb351-6"></a>      <span class="dt">ingredient =</span> <span class="kw">str_split</span>(.x[[<span class="dv">1</span>]], <span class="st">&quot; &quot;</span>)[[<span class="dv">1</span>]],</span>
+<span id="cb351-7"><a href="allergen-assessment.html#cb351-7"></a>      <span class="dt">allergen =</span> <span class="kw">str_split</span>(.x[[<span class="dv">2</span>]], <span class="st">&quot;, &quot;</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb351-8"><a href="allergen-assessment.html#cb351-8"></a>    ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cross_df</span>(), <span class="dt">.id =</span> <span class="st">&quot;food&quot;</span>)</span>
+<span id="cb351-9"><a href="allergen-assessment.html#cb351-9"></a>}</span></code></pre></div>
+<p>Next we need to find for each allergen which ingredients could be that allergen. We can do this by simply counting the
+allergen’s and ingredients, then for each allergen filter out all of the ingredients which don’t appear in every food.</p>
+<p>Here we do this by grouping by allergen’s and then filtering the <code>n</code> column (created by <code>count()</code>) to only include rows
+which are equal to the maximum value.</p>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="allergen-assessment.html#cb352-1"></a>get_allergen_ingredients &lt;-<span class="st"> </span><span class="cf">function</span>(data) {</span>
+<span id="cb352-2"><a href="allergen-assessment.html#cb352-2"></a>  data <span class="op">%&gt;%</span></span>
+<span id="cb352-3"><a href="allergen-assessment.html#cb352-3"></a><span class="st">    </span><span class="kw">group_by</span>(allergen) <span class="op">%&gt;%</span></span>
+<span id="cb352-4"><a href="allergen-assessment.html#cb352-4"></a><span class="st">    </span><span class="kw">count</span>(ingredient) <span class="op">%&gt;%</span></span>
+<span id="cb352-5"><a href="allergen-assessment.html#cb352-5"></a><span class="st">    </span><span class="kw">filter</span>(n <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(n)) <span class="op">%&gt;%</span></span>
+<span id="cb352-6"><a href="allergen-assessment.html#cb352-6"></a><span class="st">    </span><span class="kw">ungroup</span>()</span>
+<span id="cb352-7"><a href="allergen-assessment.html#cb352-7"></a>}</span></code></pre></div>
+<p>We can now put this together to solve part 1. We simply need to take the data frame containing all of the foods and
+their ingredients, find the possibly ingredients for each allergen, and then remove these from the data frame.</p>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="allergen-assessment.html#cb353-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb353-2"><a href="allergen-assessment.html#cb353-2"></a>  df &lt;-<span class="st"> </span><span class="kw">ingredient_allergen_combinations</span>(input)</span>
+<span id="cb353-3"><a href="allergen-assessment.html#cb353-3"></a>  </span>
+<span id="cb353-4"><a href="allergen-assessment.html#cb353-4"></a>  allergen_ingredients &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></span>
+<span id="cb353-5"><a href="allergen-assessment.html#cb353-5"></a><span class="st">    </span><span class="kw">get_allergen_ingredients</span>() <span class="op">%&gt;%</span></span>
+<span id="cb353-6"><a href="allergen-assessment.html#cb353-6"></a><span class="st">    </span><span class="kw">distinct</span>(ingredient)</span>
+<span id="cb353-7"><a href="allergen-assessment.html#cb353-7"></a>  </span>
+<span id="cb353-8"><a href="allergen-assessment.html#cb353-8"></a>  df <span class="op">%&gt;%</span></span>
+<span id="cb353-9"><a href="allergen-assessment.html#cb353-9"></a><span class="st">    </span><span class="kw">anti_join</span>(allergen_ingredients, <span class="dt">by =</span> <span class="st">&quot;ingredient&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb353-10"><a href="allergen-assessment.html#cb353-10"></a><span class="st">    </span><span class="kw">distinct</span>(food, ingredient) <span class="op">%&gt;%</span></span>
+<span id="cb353-11"><a href="allergen-assessment.html#cb353-11"></a><span class="st">    </span><span class="kw">nrow</span>()</span>
+<span id="cb353-12"><a href="allergen-assessment.html#cb353-12"></a>}</span></code></pre></div>
+<p>We can test our function works against the sample:</p>
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="allergen-assessment.html#cb354-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">5</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>And we can run our function on the actual data:</p>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="allergen-assessment.html#cb356-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 2307</code></pre>
+</div>
+<div id="part-2-20" class="section level2">
+<h2><span class="header-section-number">21.2</span> Part 2</h2>
+<p>For part 2 we can reuse the functions we created in part 1 and use the <code>{igraph}</code> package to create a bipartite graph
+of the ingredients and allergen’s, then find the maximum bipartite match for this graph. This will give us our answer.</p>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="allergen-assessment.html#cb358-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb358-2"><a href="allergen-assessment.html#cb358-2"></a>  df &lt;-<span class="st"> </span><span class="kw">ingredient_allergen_combinations</span>(input)</span>
+<span id="cb358-3"><a href="allergen-assessment.html#cb358-3"></a>  </span>
+<span id="cb358-4"><a href="allergen-assessment.html#cb358-4"></a>  allergen_ingredients &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></span>
+<span id="cb358-5"><a href="allergen-assessment.html#cb358-5"></a><span class="st">    </span><span class="kw">get_allergen_ingredients</span>()</span>
+<span id="cb358-6"><a href="allergen-assessment.html#cb358-6"></a>  </span>
+<span id="cb358-7"><a href="allergen-assessment.html#cb358-7"></a>  vertices &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(</span>
+<span id="cb358-8"><a href="allergen-assessment.html#cb358-8"></a>    <span class="kw">tibble</span>(<span class="dt">name =</span> <span class="kw">unique</span>(allergen_ingredients<span class="op">$</span>ingredient), <span class="dt">type =</span> <span class="dv">1</span>),</span>
+<span id="cb358-9"><a href="allergen-assessment.html#cb358-9"></a>    <span class="kw">tibble</span>(<span class="dt">name =</span> <span class="kw">unique</span>(allergen_ingredients<span class="op">$</span>allergen), <span class="dt">type =</span> <span class="dv">0</span>)</span>
+<span id="cb358-10"><a href="allergen-assessment.html#cb358-10"></a>  )</span>
+<span id="cb358-11"><a href="allergen-assessment.html#cb358-11"></a>  </span>
+<span id="cb358-12"><a href="allergen-assessment.html#cb358-12"></a>  g &lt;-<span class="st"> </span>allergen_ingredients <span class="op">%&gt;%</span></span>
+<span id="cb358-13"><a href="allergen-assessment.html#cb358-13"></a><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>n) <span class="op">%&gt;%</span></span>
+<span id="cb358-14"><a href="allergen-assessment.html#cb358-14"></a><span class="st">    </span><span class="kw">graph_from_data_frame</span>(<span class="dt">vertices =</span> vertices)</span>
+<span id="cb358-15"><a href="allergen-assessment.html#cb358-15"></a>  </span>
+<span id="cb358-16"><a href="allergen-assessment.html#cb358-16"></a>  m &lt;-<span class="st"> </span><span class="kw">max_bipartite_match</span>(g)<span class="op">$</span>matching</span>
+<span id="cb358-17"><a href="allergen-assessment.html#cb358-17"></a>  </span>
+<span id="cb358-18"><a href="allergen-assessment.html#cb358-18"></a>  <span class="kw">paste</span>(m[<span class="kw">sort</span>(<span class="kw">filter</span>(vertices, type <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)<span class="op">$</span>name)], <span class="dt">collapse =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb358-19"><a href="allergen-assessment.html#cb358-19"></a>}</span></code></pre></div>
+<p>We can test that our function works on the provided sample data:</p>
+<div class="sourceCode" id="cb359"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb359-1"><a href="allergen-assessment.html#cb359-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> &quot;mxmxvkd,sqjhc,fvjkl&quot;</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>And we can run our function on the actual data:</p>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="allergen-assessment.html#cb361-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<pre><code>## [1] &quot;cljf,frtfg,vvfjj,qmrps,hvnkk,qnvx,cpxmpc,qsjszn&quot;</code></pre>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="jurassic-jigsaw.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="part-1-20.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="jurassic-jigsaw.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

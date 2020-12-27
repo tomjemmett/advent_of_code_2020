@@ -226,9 +226,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="20.1" data-path="jurassic-jigsaw.html"><a href="jurassic-jigsaw.html#part-1-19"><i class="fa fa-check"></i><b>20.1</b> Part 1</a></li>
 <li class="chapter" data-level="20.2" data-path="jurassic-jigsaw.html"><a href="jurassic-jigsaw.html#part-2-19"><i class="fa fa-check"></i><b>20.2</b> Part 2</a></li>
 </ul></li>
-<li class="chapter" data-level="21" data-path="allergen-assessment.html"><a href="allergen-assessment.html"><i class="fa fa-check"></i><b>21</b> Allergen Assessment</a></li>
-<li class="chapter" data-level="22" data-path="part-1-20.html"><a href="part-1-20.html"><i class="fa fa-check"></i><b>22</b> Part 1</a></li>
-<li class="chapter" data-level="23" data-path="part-2-20.html"><a href="part-2-20.html"><i class="fa fa-check"></i><b>23</b> Part 2</a></li>
+<li class="chapter" data-level="21" data-path="allergen-assessment.html"><a href="allergen-assessment.html"><i class="fa fa-check"></i><b>21</b> Allergen Assessment</a><ul>
+<li class="chapter" data-level="21.1" data-path="allergen-assessment.html"><a href="allergen-assessment.html#part-1-20"><i class="fa fa-check"></i><b>21.1</b> Part 1</a></li>
+<li class="chapter" data-level="21.2" data-path="allergen-assessment.html"><a href="allergen-assessment.html#part-2-20"><i class="fa fa-check"></i><b>21.2</b> Part 2</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -307,8 +308,8 @@ that the target we increase the lower number pointer.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_1_naive(sample, 2020)      2.84µs   3.45µs   256847.        0B     25.7
-## 2 part_1_improved(sample, 2020)  61.89µs  67.16µs    13873.        0B     17.1</code></pre>
+## 1 part_1_naive(sample, 2020)       2.7µs   3.33µs   282429.        0B     28.2
+## 2 part_1_improved(sample, 2020)   57.9µs  64.79µs    14939.        0B     17.0</code></pre>
 <p>For me, the improved algorithm actually takes longer on the sample data! This is because the improved algorithm has to
 sort the data, which is costly, and then it performs far more comparisons per iteration.</p>
 <p>However, when we have more data, these extra steps lead to big improvements, as can be seen when running with the actual
@@ -318,8 +319,8 @@ data.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_1_naive(actual, 2020)     681.4µs  713.5µs     1368.        0B     2.03
-## 2 part_1_improved(actual, 2020)   86.2µs   90.4µs    10422.    1.66KB    14.9</code></pre>
+## 1 part_1_naive(actual, 2020)     648.6µs  708.2µs     1242.        0B     2.02
+## 2 part_1_improved(actual, 2020)   82.7µs   89.2µs    10947.    1.66KB    14.9</code></pre>
 <p>The improved algorithm was roughly 10x faster for me on the actual data.</p>
 </div>
 </div>
@@ -408,8 +409,8 @@ continue the search by looping.</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_2_naive(actual, 2020)     117.4ms  119.1ms      8.40        0B     2.10
-## 2 part_2_improved(actual, 2020)   15.3ms   15.5ms     64.4     1.66KB   708.</code></pre>
+## 1 part_2_naive(actual, 2020)     112.4ms  115.3ms      7.53        0B     2.51
+## 2 part_2_improved(actual, 2020)   15.1ms   15.6ms     64.7     1.66KB   496.</code></pre>
 <p>On my machine the improved approach is again about 10x quicker.</p>
 </div>
 </div>
@@ -445,8 +446,8 @@ is a constant time operation in python - it’s near instantaneous).</p>
 <pre><code>## # A tibble: 2 x 6
 ##   expression                         min   median `itr/sec` mem_alloc `gc/sec`
 ##   &lt;bch:expr&gt;                    &lt;bch:tm&gt; &lt;bch:tm&gt;     &lt;dbl&gt; &lt;bch:byt&gt;    &lt;dbl&gt;
-## 1 part_2_improved(actual, 2020)  14.89ms  15.45ms      64.1    1.66KB    39.1 
-## 2 py$part_2_py(actual, 2020)      1.26ms   1.31ms     744.    17.45KB     2.03</code></pre>
+## 1 part_2_improved(actual, 2020)  14.84ms  15.35ms      64.6    1.66KB    37.4 
+## 2 py$part_2_py(actual, 2020)      1.17ms   1.26ms     783.    17.45KB     3.08</code></pre>
 
 </div>
 </div>

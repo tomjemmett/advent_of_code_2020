@@ -10,7 +10,7 @@ sample <- read_lines("samples/day_21_sample.txt")
 actual <- read_lines("inputs/day_21_input.txt")
 ```
 
-# Part 1
+## Part 1
 
 First, let's build a function which takes the input and return's all of the possible combinations (the "cross product")
 of ingredients and allergens.
@@ -86,7 +86,7 @@ part_1(actual)
 ## [1] 2307
 ```
 
-# Part 2
+## Part 2
 
 For part 2 we can reuse the functions we created in part 1 and use the `{igraph}` package to create a bipartite graph
 of the ingredients and allergen's, then find the maximum bipartite match for this graph. This will give us our answer.
