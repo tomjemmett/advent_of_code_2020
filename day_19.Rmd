@@ -90,7 +90,7 @@ part_1(actual)
 
 This is a work in progress, it's not giving the correct result.
 
-```{r}
+```{r part 2 function}
 part_2 <- function(input) {
   rules <- local({
     a <- input[[1]] %>%
@@ -112,7 +112,7 @@ part_2 <- function(input) {
 }
 ```
 
-```{r part 1 sample test}
+```{r part 2 sample data}
 part_2_sample <- list(c(
   "42: 9 14 | 10 1",
   "9: 14 27 | 1 26",
