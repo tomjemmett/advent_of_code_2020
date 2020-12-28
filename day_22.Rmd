@@ -29,7 +29,11 @@ We can create a function that applies the rules of the game.
 
 ```{r part 1 function}
 part_1 <- function(input) {
-  while (all(map(input, length) > 0)) {
+  player_1 <- input[[1]]
+  player_2 <- input[[2]]
+  
+  # repeat while both players have cards
+  while(length(player_1) > 0 & length(player_2) > 0) {
     # get the first cards for player 1 and player 2
     a <- player_1[[1]]
     b <- player_2[[1]]
@@ -39,17 +43,17 @@ part_1 <- function(input) {
     player_2 <- player_2[-1]
     
     if (a > b) {
-      input[[1]] <- c(input[[1]], a, b)
+      player_1 <- c(player_1, a, b)
     } else {
-      input[[2]] <- c(input[[2]], b, a)
+      player_2 <- c(player_2, b, a)
     }
   }
   
   # get the winners cards
-  r <- if (length(input[[1]]) > 0) {
-    input[[1]]
+  r <- if (length(player_1) > 0) {
+    player_1
   } else {
-    input[[2]]
+    player_2
   }
   
   # return the results as required for the puzzle
