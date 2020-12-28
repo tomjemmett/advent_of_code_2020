@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Day 22 Crab Combat | Advent of Code 2020</title>
+  <meta name="description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Day 22 Crab Combat | Advent of Code 2020" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="My attempt to complete AOC 2020 in R" />
+  <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Day 22 Crab Combat | Advent of Code 2020" />
+  
+  <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
+  
+
+<meta name="author" content="Tom Jemmett" />
+
+
+<meta name="date" content="2020-12-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="allergen-assessment.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">Advent of Code 2020</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="report-repair.html"><a href="report-repair.html"><i class="fa fa-check"></i><b>1</b> Report Repair</a><ul>
+<li class="chapter" data-level="1.1" data-path="report-repair.html"><a href="report-repair.html#part-1"><i class="fa fa-check"></i><b>1.1</b> Part 1</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="report-repair.html"><a href="report-repair.html#is-the-improved-algorithm-any-better"><i class="fa fa-check"></i><b>1.1.1</b> is the improved algorithm any better?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="report-repair.html"><a href="report-repair.html#part-2"><i class="fa fa-check"></i><b>1.2</b> Part 2</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="report-repair.html"><a href="report-repair.html#is-our-improved-algorithm-better-this-time"><i class="fa fa-check"></i><b>1.2.1</b> Is our improved algorithm better this time?</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="report-repair.html"><a href="report-repair.html#extra-implementing-in-python"><i class="fa fa-check"></i><b>1.3</b> Extra: Implementing in Python</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="password-philosophy.html"><a href="password-philosophy.html"><i class="fa fa-check"></i><b>2</b> Password Philosophy</a><ul>
+<li class="chapter" data-level="2.1" data-path="password-philosophy.html"><a href="password-philosophy.html#part-1-1"><i class="fa fa-check"></i><b>2.1</b> Part 1</a></li>
+<li class="chapter" data-level="2.2" data-path="password-philosophy.html"><a href="password-philosophy.html#part-2-1"><i class="fa fa-check"></i><b>2.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html"><i class="fa fa-check"></i><b>3</b> Toboggan Trajectory</a><ul>
+<li class="chapter" data-level="3.1" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-1-2"><i class="fa fa-check"></i><b>3.1</b> Part 1</a></li>
+<li class="chapter" data-level="3.2" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#part-2-2"><i class="fa fa-check"></i><b>3.2</b> Part 2</a></li>
+<li class="chapter" data-level="3.3" data-path="toboggan-trajectory.html"><a href="toboggan-trajectory.html#extra-is-there-a-path-that-minimises-the-number-of-trees-you-encounter"><i class="fa fa-check"></i><b>3.3</b> Extra: Is there a path that minimises the number of trees you encounter?</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="passport-processing.html"><a href="passport-processing.html"><i class="fa fa-check"></i><b>4</b> Passport Processing</a><ul>
+<li class="chapter" data-level="4.1" data-path="passport-processing.html"><a href="passport-processing.html#part-1-3"><i class="fa fa-check"></i><b>4.1</b> Part 1</a></li>
+<li class="chapter" data-level="4.2" data-path="passport-processing.html"><a href="passport-processing.html#part-2-3"><i class="fa fa-check"></i><b>4.2</b> Part 2</a></li>
+<li class="chapter" data-level="4.3" data-path="passport-processing.html"><a href="passport-processing.html#extra-solving-with-regular-expressions"><i class="fa fa-check"></i><b>4.3</b> Extra: Solving with regular expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="binary-boarding.html"><a href="binary-boarding.html"><i class="fa fa-check"></i><b>5</b> Binary Boarding</a><ul>
+<li class="chapter" data-level="5.1" data-path="binary-boarding.html"><a href="binary-boarding.html#part-1-4"><i class="fa fa-check"></i><b>5.1</b> Part 1</a></li>
+<li class="chapter" data-level="5.2" data-path="binary-boarding.html"><a href="binary-boarding.html#part-2-4"><i class="fa fa-check"></i><b>5.2</b> Part 2</a></li>
+<li class="chapter" data-level="5.3" data-path="binary-boarding.html"><a href="binary-boarding.html#extra-solving-algebraicly"><i class="fa fa-check"></i><b>5.3</b> Extra: Solving algebraicly</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="custom-customs.html"><a href="custom-customs.html"><i class="fa fa-check"></i><b>6</b> Custom Customs</a><ul>
+<li class="chapter" data-level="6.1" data-path="custom-customs.html"><a href="custom-customs.html#part-1-5"><i class="fa fa-check"></i><b>6.1</b> Part 1</a></li>
+<li class="chapter" data-level="6.2" data-path="custom-customs.html"><a href="custom-customs.html#part-2-5"><i class="fa fa-check"></i><b>6.2</b> Part 2</a></li>
+<li class="chapter" data-level="6.3" data-path="custom-customs.html"><a href="custom-customs.html#extra-solving-part-1-2-with-set-functions"><i class="fa fa-check"></i><b>6.3</b> Extra: solving part 1 &amp; 2 with set functions</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="handy-haversacks.html"><a href="handy-haversacks.html"><i class="fa fa-check"></i><b>7</b> Handy Haversacks</a><ul>
+<li class="chapter" data-level="7.1" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-1-6"><i class="fa fa-check"></i><b>7.1</b> Part 1</a></li>
+<li class="chapter" data-level="7.2" data-path="handy-haversacks.html"><a href="handy-haversacks.html#part-2-6"><i class="fa fa-check"></i><b>7.2</b> Part 2</a></li>
+<li class="chapter" data-level="7.3" data-path="handy-haversacks.html"><a href="handy-haversacks.html#extra-alternative-solution-to-part-2"><i class="fa fa-check"></i><b>7.3</b> Extra: alternative solution to part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="handheld-halting.html"><a href="handheld-halting.html"><i class="fa fa-check"></i><b>8</b> Handheld Halting</a><ul>
+<li class="chapter" data-level="8.1" data-path="handheld-halting.html"><a href="handheld-halting.html#part-1-7"><i class="fa fa-check"></i><b>8.1</b> Part 1</a></li>
+<li class="chapter" data-level="8.2" data-path="handheld-halting.html"><a href="handheld-halting.html#part-2-7"><i class="fa fa-check"></i><b>8.2</b> Part 2</a></li>
+<li class="chapter" data-level="8.3" data-path="handheld-halting.html"><a href="handheld-halting.html#extra-update-the-computer-class"><i class="fa fa-check"></i><b>8.3</b> Extra: update the computer class</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="encoding-error.html"><a href="encoding-error.html"><i class="fa fa-check"></i><b>9</b> Encoding Error</a><ul>
+<li class="chapter" data-level="9.1" data-path="encoding-error.html"><a href="encoding-error.html#part-1-8"><i class="fa fa-check"></i><b>9.1</b> Part 1</a></li>
+<li class="chapter" data-level="9.2" data-path="encoding-error.html"><a href="encoding-error.html#part-2-8"><i class="fa fa-check"></i><b>9.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="adapter-array.html"><a href="adapter-array.html"><i class="fa fa-check"></i><b>10</b> Adapter Array</a><ul>
+<li class="chapter" data-level="10.1" data-path="adapter-array.html"><a href="adapter-array.html#part-1-9"><i class="fa fa-check"></i><b>10.1</b> Part 1</a></li>
+<li class="chapter" data-level="10.2" data-path="adapter-array.html"><a href="adapter-array.html#part-2-9"><i class="fa fa-check"></i><b>10.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="seating-system.html"><a href="seating-system.html"><i class="fa fa-check"></i><b>11</b> Seating System</a><ul>
+<li class="chapter" data-level="11.1" data-path="seating-system.html"><a href="seating-system.html#part-1-10"><i class="fa fa-check"></i><b>11.1</b> Part 1</a></li>
+<li class="chapter" data-level="11.2" data-path="seating-system.html"><a href="seating-system.html#part-2-10"><i class="fa fa-check"></i><b>11.2</b> Part 2</a></li>
+<li class="chapter" data-level="11.3" data-path="seating-system.html"><a href="seating-system.html#solving-faster"><i class="fa fa-check"></i><b>11.3</b> Solving faster</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="rain-risk.html"><a href="rain-risk.html"><i class="fa fa-check"></i><b>12</b> Rain Risk</a><ul>
+<li class="chapter" data-level="12.1" data-path="rain-risk.html"><a href="rain-risk.html#part-1-11"><i class="fa fa-check"></i><b>12.1</b> Part 1</a></li>
+<li class="chapter" data-level="12.2" data-path="rain-risk.html"><a href="rain-risk.html#part-2-11"><i class="fa fa-check"></i><b>12.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="shuttle-search.html"><a href="shuttle-search.html"><i class="fa fa-check"></i><b>13</b> Shuttle Search</a><ul>
+<li class="chapter" data-level="13.1" data-path="shuttle-search.html"><a href="shuttle-search.html#part-1-12"><i class="fa fa-check"></i><b>13.1</b> Part 1</a></li>
+<li class="chapter" data-level="13.2" data-path="shuttle-search.html"><a href="shuttle-search.html#part-2-12"><i class="fa fa-check"></i><b>13.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="docking-data.html"><a href="docking-data.html"><i class="fa fa-check"></i><b>14</b> Docking Data</a><ul>
+<li class="chapter" data-level="14.1" data-path="docking-data.html"><a href="docking-data.html#part-1-13"><i class="fa fa-check"></i><b>14.1</b> Part 1</a></li>
+<li class="chapter" data-level="14.2" data-path="docking-data.html"><a href="docking-data.html#part-2-13"><i class="fa fa-check"></i><b>14.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html"><i class="fa fa-check"></i><b>15</b> Rambunctious Recitation</a><ul>
+<li class="chapter" data-level="15.1" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html#part-1-14"><i class="fa fa-check"></i><b>15.1</b> Part 1</a></li>
+<li class="chapter" data-level="15.2" data-path="rambunctious-recitation.html"><a href="rambunctious-recitation.html#part-2-14"><i class="fa fa-check"></i><b>15.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="ticket-translation.html"><a href="ticket-translation.html"><i class="fa fa-check"></i><b>16</b> Ticket Translation</a><ul>
+<li class="chapter" data-level="16.1" data-path="ticket-translation.html"><a href="ticket-translation.html#part-1-15"><i class="fa fa-check"></i><b>16.1</b> Part 1</a></li>
+<li class="chapter" data-level="16.2" data-path="ticket-translation.html"><a href="ticket-translation.html#part-2-15"><i class="fa fa-check"></i><b>16.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="conway-cubes.html"><a href="conway-cubes.html"><i class="fa fa-check"></i><b>17</b> Conway Cubes</a><ul>
+<li class="chapter" data-level="17.1" data-path="conway-cubes.html"><a href="conway-cubes.html#part-1-16"><i class="fa fa-check"></i><b>17.1</b> Part 1</a></li>
+<li class="chapter" data-level="17.2" data-path="conway-cubes.html"><a href="conway-cubes.html#part-2-16"><i class="fa fa-check"></i><b>17.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="operation-order.html"><a href="operation-order.html"><i class="fa fa-check"></i><b>18</b> Operation Order</a><ul>
+<li class="chapter" data-level="18.1" data-path="operation-order.html"><a href="operation-order.html#part-1-17"><i class="fa fa-check"></i><b>18.1</b> Part 1</a></li>
+<li class="chapter" data-level="18.2" data-path="operation-order.html"><a href="operation-order.html#part-2-17"><i class="fa fa-check"></i><b>18.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="monster-messages.html"><a href="monster-messages.html"><i class="fa fa-check"></i><b>19</b> Monster Messages</a><ul>
+<li class="chapter" data-level="19.1" data-path="monster-messages.html"><a href="monster-messages.html#part-1-18"><i class="fa fa-check"></i><b>19.1</b> Part 1</a></li>
+<li class="chapter" data-level="19.2" data-path="monster-messages.html"><a href="monster-messages.html#part-2-18"><i class="fa fa-check"></i><b>19.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="jurassic-jigsaw.html"><a href="jurassic-jigsaw.html"><i class="fa fa-check"></i><b>20</b> Jurassic Jigsaw</a><ul>
+<li class="chapter" data-level="20.1" data-path="jurassic-jigsaw.html"><a href="jurassic-jigsaw.html#part-1-19"><i class="fa fa-check"></i><b>20.1</b> Part 1</a></li>
+<li class="chapter" data-level="20.2" data-path="jurassic-jigsaw.html"><a href="jurassic-jigsaw.html#part-2-19"><i class="fa fa-check"></i><b>20.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="allergen-assessment.html"><a href="allergen-assessment.html"><i class="fa fa-check"></i><b>21</b> Allergen Assessment</a><ul>
+<li class="chapter" data-level="21.1" data-path="allergen-assessment.html"><a href="allergen-assessment.html#part-1-20"><i class="fa fa-check"></i><b>21.1</b> Part 1</a></li>
+<li class="chapter" data-level="21.2" data-path="allergen-assessment.html"><a href="allergen-assessment.html#part-2-20"><i class="fa fa-check"></i><b>21.2</b> Part 2</a></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="crab-combat.html"><a href="crab-combat.html"><i class="fa fa-check"></i><b>22</b> Crab Combat</a><ul>
+<li class="chapter" data-level="22.1" data-path="crab-combat.html"><a href="crab-combat.html#part-1-21"><i class="fa fa-check"></i><b>22.1</b> Part 1</a></li>
+<li class="chapter" data-level="22.2" data-path="crab-combat.html"><a href="crab-combat.html#part-2-21"><i class="fa fa-check"></i><b>22.2</b> Part 2</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Advent of Code 2020</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="crab-combat" class="section level1">
+<h1><span class="header-section-number">Day 22</span> Crab Combat</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/22">Day 22</a>.</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="crab-combat.html#cb363-1"></a>process_file &lt;-<span class="st"> </span><span class="cf">function</span>(file) {</span>
+<span id="cb363-2"><a href="crab-combat.html#cb363-2"></a>  <span class="kw">read_file</span>(file) <span class="op">%&gt;%</span></span>
+<span id="cb363-3"><a href="crab-combat.html#cb363-3"></a><span class="st">    </span><span class="kw">str_trim</span>() <span class="op">%&gt;%</span></span>
+<span id="cb363-4"><a href="crab-combat.html#cb363-4"></a><span class="st">    </span><span class="kw">str_remove_all</span>(<span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb363-5"><a href="crab-combat.html#cb363-5"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb363-6"><a href="crab-combat.html#cb363-6"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb363-7"><a href="crab-combat.html#cb363-7"></a><span class="st">    </span><span class="kw">map</span>(<span class="op">~</span><span class="kw">as.numeric</span>(<span class="kw">str_split</span>(.x, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)[[<span class="dv">1</span>]][<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb363-8"><a href="crab-combat.html#cb363-8"></a>}</span>
+<span id="cb363-9"><a href="crab-combat.html#cb363-9"></a></span>
+<span id="cb363-10"><a href="crab-combat.html#cb363-10"></a>sample &lt;-<span class="st"> </span><span class="kw">process_file</span>(<span class="st">&quot;samples/day_22_sample.txt&quot;</span>)</span>
+<span id="cb363-11"><a href="crab-combat.html#cb363-11"></a>actual &lt;-<span class="st"> </span><span class="kw">process_file</span>(<span class="st">&quot;inputs/day_22_input.txt&quot;</span>)</span></code></pre></div>
+<div id="part-1-21" class="section level2">
+<h2><span class="header-section-number">22.1</span> Part 1</h2>
+<p>We can create a function that applies the rules of the game.</p>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="crab-combat.html#cb364-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb364-2"><a href="crab-combat.html#cb364-2"></a>  player_<span class="dv">1</span> &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]]</span>
+<span id="cb364-3"><a href="crab-combat.html#cb364-3"></a>  player_<span class="dv">2</span> &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]]</span>
+<span id="cb364-4"><a href="crab-combat.html#cb364-4"></a>  </span>
+<span id="cb364-5"><a href="crab-combat.html#cb364-5"></a>  <span class="co"># repeat while both players have cards</span></span>
+<span id="cb364-6"><a href="crab-combat.html#cb364-6"></a>  <span class="cf">while</span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb364-7"><a href="crab-combat.html#cb364-7"></a>    <span class="co"># get the first cards for player 1 and player 2</span></span>
+<span id="cb364-8"><a href="crab-combat.html#cb364-8"></a>    a &lt;-<span class="st"> </span>player_<span class="dv">1</span>[[<span class="dv">1</span>]]</span>
+<span id="cb364-9"><a href="crab-combat.html#cb364-9"></a>    b &lt;-<span class="st"> </span>player_<span class="dv">2</span>[[<span class="dv">1</span>]]</span>
+<span id="cb364-10"><a href="crab-combat.html#cb364-10"></a>    </span>
+<span id="cb364-11"><a href="crab-combat.html#cb364-11"></a>    <span class="co"># and remove the first cards</span></span>
+<span id="cb364-12"><a href="crab-combat.html#cb364-12"></a>    player_<span class="dv">1</span> &lt;-<span class="st"> </span>player_<span class="dv">1</span>[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb364-13"><a href="crab-combat.html#cb364-13"></a>    player_<span class="dv">2</span> &lt;-<span class="st"> </span>player_<span class="dv">2</span>[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb364-14"><a href="crab-combat.html#cb364-14"></a>    </span>
+<span id="cb364-15"><a href="crab-combat.html#cb364-15"></a>    <span class="cf">if</span> (a <span class="op">&gt;</span><span class="st"> </span>b) {</span>
+<span id="cb364-16"><a href="crab-combat.html#cb364-16"></a>      player_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">1</span>, a, b)</span>
+<span id="cb364-17"><a href="crab-combat.html#cb364-17"></a>    } <span class="cf">else</span> {</span>
+<span id="cb364-18"><a href="crab-combat.html#cb364-18"></a>      player_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">2</span>, b, a)</span>
+<span id="cb364-19"><a href="crab-combat.html#cb364-19"></a>    }</span>
+<span id="cb364-20"><a href="crab-combat.html#cb364-20"></a>  }</span>
+<span id="cb364-21"><a href="crab-combat.html#cb364-21"></a>  </span>
+<span id="cb364-22"><a href="crab-combat.html#cb364-22"></a>  <span class="co"># get the winners cards</span></span>
+<span id="cb364-23"><a href="crab-combat.html#cb364-23"></a>  r &lt;-<span class="st"> </span><span class="cf">if</span> (<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb364-24"><a href="crab-combat.html#cb364-24"></a>    player_<span class="dv">1</span></span>
+<span id="cb364-25"><a href="crab-combat.html#cb364-25"></a>  } <span class="cf">else</span> {</span>
+<span id="cb364-26"><a href="crab-combat.html#cb364-26"></a>    player_<span class="dv">2</span></span>
+<span id="cb364-27"><a href="crab-combat.html#cb364-27"></a>  }</span>
+<span id="cb364-28"><a href="crab-combat.html#cb364-28"></a>  </span>
+<span id="cb364-29"><a href="crab-combat.html#cb364-29"></a>  <span class="co"># return the results as required for the puzzle</span></span>
+<span id="cb364-30"><a href="crab-combat.html#cb364-30"></a>  <span class="kw">sum</span>(r <span class="op">*</span><span class="st"> </span><span class="kw">rev</span>(<span class="kw">seq_along</span>(r)))</span>
+<span id="cb364-31"><a href="crab-combat.html#cb364-31"></a>}</span></code></pre></div>
+<p>We can verify that this function returns the correct results against the sample data:</p>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="crab-combat.html#cb365-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">306</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>And we can run the function against our actual data:</p>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="crab-combat.html#cb367-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 35818</code></pre>
+</div>
+<div id="part-2-21" class="section level2">
+<h2><span class="header-section-number">22.2</span> Part 2</h2>
+<p>Part 2 is a more complex problem. The naive implementation takes a number of minutes to run, but there is a useful
+optimisation that
+<a href="https://www.reddit.com/r/adventofcode/comments/khyjgv/2020_day_22_solutions/ggpcsnd/">u/daggerdraggon</a> posted on
+Reddit.</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="crab-combat.html#cb369-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb369-2"><a href="crab-combat.html#cb369-2"></a>  <span class="co"># create a function that can called recursively</span></span>
+<span id="cb369-3"><a href="crab-combat.html#cb369-3"></a>  play &lt;-<span class="st"> </span><span class="cf">function</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>, <span class="dt">subgame =</span> <span class="ot">FALSE</span>) {</span>
+<span id="cb369-4"><a href="crab-combat.html#cb369-4"></a>    prior_player_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb369-5"><a href="crab-combat.html#cb369-5"></a>    prior_player_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb369-6"><a href="crab-combat.html#cb369-6"></a>    </span>
+<span id="cb369-7"><a href="crab-combat.html#cb369-7"></a>    <span class="co"># optimisation from u/daggerdragon on reddit</span></span>
+<span id="cb369-8"><a href="crab-combat.html#cb369-8"></a>    <span class="co"># https://www.reddit.com/r/adventofcode/comments/khyjgv/2020_day_22_solutions/ggpcsnd/</span></span>
+<span id="cb369-9"><a href="crab-combat.html#cb369-9"></a>    max_p1 &lt;-<span class="st"> </span><span class="kw">max</span>(player_<span class="dv">1</span>)</span>
+<span id="cb369-10"><a href="crab-combat.html#cb369-10"></a>    max_p2 &lt;-<span class="st"> </span><span class="kw">max</span>(player_<span class="dv">2</span>)</span>
+<span id="cb369-11"><a href="crab-combat.html#cb369-11"></a>    <span class="cf">if</span> (subgame <span class="op">&amp;&amp;</span></span>
+<span id="cb369-12"><a href="crab-combat.html#cb369-12"></a><span class="st">        </span>max_p1 <span class="op">&gt;</span><span class="st"> </span>max_p2 <span class="op">&amp;&amp;</span></span>
+<span id="cb369-13"><a href="crab-combat.html#cb369-13"></a><span class="st">        </span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>)) <span class="op">&lt;</span><span class="st"> </span>max_p1) {</span>
+<span id="cb369-14"><a href="crab-combat.html#cb369-14"></a>      <span class="kw">return</span> (<span class="kw">list</span>(</span>
+<span id="cb369-15"><a href="crab-combat.html#cb369-15"></a>          <span class="dt">winner =</span> <span class="dv">1</span>,</span>
+<span id="cb369-16"><a href="crab-combat.html#cb369-16"></a>          <span class="dt">players =</span> <span class="kw">list</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>)</span>
+<span id="cb369-17"><a href="crab-combat.html#cb369-17"></a>        ))</span>
+<span id="cb369-18"><a href="crab-combat.html#cb369-18"></a>    }</span>
+<span id="cb369-19"><a href="crab-combat.html#cb369-19"></a>    </span>
+<span id="cb369-20"><a href="crab-combat.html#cb369-20"></a>    <span class="co"># repeat while both players have cards</span></span>
+<span id="cb369-21"><a href="crab-combat.html#cb369-21"></a>    <span class="cf">while</span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb369-22"><a href="crab-combat.html#cb369-22"></a>      <span class="co"># create key&#39;s to use in the hash of the prior hands seen hashtables</span></span>
+<span id="cb369-23"><a href="crab-combat.html#cb369-23"></a>      player_<span class="dv">1</span>_str &lt;-<span class="st"> </span><span class="kw">paste</span>(player_<span class="dv">1</span>, <span class="dt">collapse =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb369-24"><a href="crab-combat.html#cb369-24"></a>      player_<span class="dv">2</span>_str &lt;-<span class="st"> </span><span class="kw">paste</span>(player_<span class="dv">2</span>, <span class="dt">collapse =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb369-25"><a href="crab-combat.html#cb369-25"></a>      </span>
+<span id="cb369-26"><a href="crab-combat.html#cb369-26"></a>      <span class="co"># check, if we haven&#39;t seen this hand we will get NULL on lookups</span></span>
+<span id="cb369-27"><a href="crab-combat.html#cb369-27"></a>      <span class="co"># looking up like this is orders of magnitude quicker than using %in%</span></span>
+<span id="cb369-28"><a href="crab-combat.html#cb369-28"></a>      <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.null</span>(prior_player_<span class="dv">1</span>[[player_<span class="dv">1</span>_str]]) <span class="op">&amp;</span></span>
+<span id="cb369-29"><a href="crab-combat.html#cb369-29"></a><span class="st">          </span><span class="op">!</span><span class="kw">is.null</span>(prior_player_<span class="dv">2</span>[[player_<span class="dv">2</span>_str]])) {</span>
+<span id="cb369-30"><a href="crab-combat.html#cb369-30"></a>        <span class="kw">return</span> (<span class="kw">list</span>(</span>
+<span id="cb369-31"><a href="crab-combat.html#cb369-31"></a>          <span class="dt">winner =</span> <span class="dv">1</span>,</span>
+<span id="cb369-32"><a href="crab-combat.html#cb369-32"></a>          <span class="dt">players =</span> <span class="kw">list</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>)</span>
+<span id="cb369-33"><a href="crab-combat.html#cb369-33"></a>        ))</span>
+<span id="cb369-34"><a href="crab-combat.html#cb369-34"></a>      }</span>
+<span id="cb369-35"><a href="crab-combat.html#cb369-35"></a>      </span>
+<span id="cb369-36"><a href="crab-combat.html#cb369-36"></a>      <span class="co"># update the prior seen hashtables</span></span>
+<span id="cb369-37"><a href="crab-combat.html#cb369-37"></a>      prior_player_<span class="dv">1</span>[[player_<span class="dv">1</span>_str]] &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb369-38"><a href="crab-combat.html#cb369-38"></a>      prior_player_<span class="dv">2</span>[[player_<span class="dv">2</span>_str]] &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb369-39"><a href="crab-combat.html#cb369-39"></a>      </span>
+<span id="cb369-40"><a href="crab-combat.html#cb369-40"></a>      <span class="co"># get the first cards for player 1 and player 2</span></span>
+<span id="cb369-41"><a href="crab-combat.html#cb369-41"></a>      a &lt;-<span class="st"> </span>player_<span class="dv">1</span>[[<span class="dv">1</span>]]</span>
+<span id="cb369-42"><a href="crab-combat.html#cb369-42"></a>      b &lt;-<span class="st"> </span>player_<span class="dv">2</span>[[<span class="dv">1</span>]]</span>
+<span id="cb369-43"><a href="crab-combat.html#cb369-43"></a>      </span>
+<span id="cb369-44"><a href="crab-combat.html#cb369-44"></a>      <span class="co"># and remove the first cards</span></span>
+<span id="cb369-45"><a href="crab-combat.html#cb369-45"></a>      player_<span class="dv">1</span> &lt;-<span class="st"> </span>player_<span class="dv">1</span>[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb369-46"><a href="crab-combat.html#cb369-46"></a>      player_<span class="dv">2</span> &lt;-<span class="st"> </span>player_<span class="dv">2</span>[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb369-47"><a href="crab-combat.html#cb369-47"></a>      </span>
+<span id="cb369-48"><a href="crab-combat.html#cb369-48"></a>      <span class="co"># check to see if we can play a subgame or not</span></span>
+<span id="cb369-49"><a href="crab-combat.html#cb369-49"></a>      r &lt;-<span class="st"> </span><span class="cf">if</span> (<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;=</span><span class="st"> </span>a <span class="op">&amp;</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>) <span class="op">&gt;=</span><span class="st"> </span>b) {</span>
+<span id="cb369-50"><a href="crab-combat.html#cb369-50"></a>        <span class="co"># return the winner of the subgame</span></span>
+<span id="cb369-51"><a href="crab-combat.html#cb369-51"></a>        <span class="kw">play</span>(player_<span class="dv">1</span>[<span class="dv">1</span><span class="op">:</span>a], player_<span class="dv">2</span>[<span class="dv">1</span><span class="op">:</span>b], <span class="ot">TRUE</span>)<span class="op">$</span>winner</span>
+<span id="cb369-52"><a href="crab-combat.html#cb369-52"></a>      } <span class="cf">else</span> <span class="cf">if</span> (a <span class="op">&gt;</span><span class="st"> </span>b) {</span>
+<span id="cb369-53"><a href="crab-combat.html#cb369-53"></a>        <span class="co"># player 1 wins</span></span>
+<span id="cb369-54"><a href="crab-combat.html#cb369-54"></a>        <span class="dv">1</span></span>
+<span id="cb369-55"><a href="crab-combat.html#cb369-55"></a>      } <span class="cf">else</span> {</span>
+<span id="cb369-56"><a href="crab-combat.html#cb369-56"></a>        <span class="co"># player 2 wins</span></span>
+<span id="cb369-57"><a href="crab-combat.html#cb369-57"></a>        <span class="dv">2</span></span>
+<span id="cb369-58"><a href="crab-combat.html#cb369-58"></a>      }</span>
+<span id="cb369-59"><a href="crab-combat.html#cb369-59"></a>      </span>
+<span id="cb369-60"><a href="crab-combat.html#cb369-60"></a>      <span class="co"># update the player&#39;s hands if they have won</span></span>
+<span id="cb369-61"><a href="crab-combat.html#cb369-61"></a>      <span class="cf">if</span> (r <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {</span>
+<span id="cb369-62"><a href="crab-combat.html#cb369-62"></a>        player_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">1</span>, a, b)</span>
+<span id="cb369-63"><a href="crab-combat.html#cb369-63"></a>      } <span class="cf">else</span> {</span>
+<span id="cb369-64"><a href="crab-combat.html#cb369-64"></a>        player_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">2</span>, b, a)</span>
+<span id="cb369-65"><a href="crab-combat.html#cb369-65"></a>      }</span>
+<span id="cb369-66"><a href="crab-combat.html#cb369-66"></a>    }</span>
+<span id="cb369-67"><a href="crab-combat.html#cb369-67"></a>    </span>
+<span id="cb369-68"><a href="crab-combat.html#cb369-68"></a>    <span class="co"># we have run out of cards for one player, return the results</span></span>
+<span id="cb369-69"><a href="crab-combat.html#cb369-69"></a>    <span class="kw">list</span>(</span>
+<span id="cb369-70"><a href="crab-combat.html#cb369-70"></a>      <span class="dt">winner =</span> <span class="kw">ifelse</span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb369-71"><a href="crab-combat.html#cb369-71"></a>      <span class="dt">players =</span> <span class="kw">list</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>)</span>
+<span id="cb369-72"><a href="crab-combat.html#cb369-72"></a>    )</span>
+<span id="cb369-73"><a href="crab-combat.html#cb369-73"></a>  }</span>
+<span id="cb369-74"><a href="crab-combat.html#cb369-74"></a>  </span>
+<span id="cb369-75"><a href="crab-combat.html#cb369-75"></a>  <span class="co"># start to play the game</span></span>
+<span id="cb369-76"><a href="crab-combat.html#cb369-76"></a>  p &lt;-<span class="st"> </span><span class="kw">play</span>(input[[<span class="dv">1</span>]], input[[<span class="dv">2</span>]])</span>
+<span id="cb369-77"><a href="crab-combat.html#cb369-77"></a>  <span class="co"># get the results for the winner</span></span>
+<span id="cb369-78"><a href="crab-combat.html#cb369-78"></a>  w &lt;-<span class="st"> </span>p<span class="op">$</span>players[[p<span class="op">$</span>winner]]</span>
+<span id="cb369-79"><a href="crab-combat.html#cb369-79"></a>  <span class="co"># return the results as required for the puzzle</span></span>
+<span id="cb369-80"><a href="crab-combat.html#cb369-80"></a>  <span class="kw">sum</span>(w <span class="op">*</span><span class="st"> </span><span class="kw">rev</span>(<span class="kw">seq_along</span>(w)))</span>
+<span id="cb369-81"><a href="crab-combat.html#cb369-81"></a>}</span></code></pre></div>
+<p>We can test this function on the sample data:</p>
+<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb370-1"><a href="crab-combat.html#cb370-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">291</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>And we can run this function on the actual data:</p>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="crab-combat.html#cb372-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 34771</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="allergen-assessment.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

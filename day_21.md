@@ -2,7 +2,7 @@
 
 
 
-This is my attempt to solve [Day 21](https://adventofcode.com/2021/day/21).
+This is my attempt to solve [Day 21](https://adventofcode.com/2020/day/21).
 
 
 ```r

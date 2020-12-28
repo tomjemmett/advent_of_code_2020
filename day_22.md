@@ -1,0 +1,195 @@
+# Crab Combat
+
+
+
+This is my attempt to solve [Day 22](https://adventofcode.com/2020/day/22).
+
+
+```r
+process_file <- function(file) {
+  read_file(file) %>%
+    str_trim() %>%
+    str_remove_all("\r") %>%
+    str_split("\n\n") %>%
+    pluck(1) %>%
+    map(~as.numeric(str_split(.x, "\n")[[1]][-1]))
+}
+
+sample <- process_file("samples/day_22_sample.txt")
+actual <- process_file("inputs/day_22_input.txt")
+```
+
+## Part 1
+
+We can create a function that applies the rules of the game.
+
+
+```r
+part_1 <- function(input) {
+  player_1 <- input[[1]]
+  player_2 <- input[[2]]
+  
+  # repeat while both players have cards
+  while(length(player_1) > 0 & length(player_2) > 0) {
+    # get the first cards for player 1 and player 2
+    a <- player_1[[1]]
+    b <- player_2[[1]]
+    
+    # and remove the first cards
+    player_1 <- player_1[-1]
+    player_2 <- player_2[-1]
+    
+    if (a > b) {
+      player_1 <- c(player_1, a, b)
+    } else {
+      player_2 <- c(player_2, b, a)
+    }
+  }
+  
+  # get the winners cards
+  r <- if (length(player_1) > 0) {
+    player_1
+  } else {
+    player_2
+  }
+  
+  # return the results as required for the puzzle
+  sum(r * rev(seq_along(r)))
+}
+```
+
+We can verify that this function returns the correct results against the sample data:
+
+
+```r
+part_1(sample) == 306
+```
+
+```
+## [1] TRUE
+```
+
+And we can run the function against our actual data:
+
+
+```r
+part_1(actual)
+```
+
+```
+## [1] 35818
+```
+
+## Part 2
+
+Part 2 is a more complex problem. The naive implementation takes a number of minutes to run, but there is a useful
+optimisation that
+[u/daggerdraggon](https://www.reddit.com/r/adventofcode/comments/khyjgv/2020_day_22_solutions/ggpcsnd/) posted on
+Reddit.
+
+
+```r
+part_2 <- function(input) {
+  # create a function that can called recursively
+  play <- function(player_1, player_2, subgame = FALSE) {
+    prior_player_1 <- list()
+    prior_player_2 <- list()
+    
+    # optimisation from u/daggerdragon on reddit
+    # https://www.reddit.com/r/adventofcode/comments/khyjgv/2020_day_22_solutions/ggpcsnd/
+    max_p1 <- max(player_1)
+    max_p2 <- max(player_2)
+    if (subgame &&
+        max_p1 > max_p2 &&
+        (length(player_1) + length(player_2)) < max_p1) {
+      return (list(
+          winner = 1,
+          players = list(player_1, player_2)
+        ))
+    }
+    
+    # repeat while both players have cards
+    while(length(player_1) > 0 & length(player_2) > 0) {
+      # create key's to use in the hash of the prior hands seen hashtables
+      player_1_str <- paste(player_1, collapse = ",")
+      player_2_str <- paste(player_2, collapse = ",")
+      
+      # check, if we haven't seen this hand we will get NULL on lookups
+      # looking up like this is orders of magnitude quicker than using %in%
+      if (!is.null(prior_player_1[[player_1_str]]) &
+          !is.null(prior_player_2[[player_2_str]])) {
+        return (list(
+          winner = 1,
+          players = list(player_1, player_2)
+        ))
+      }
+      
+      # update the prior seen hashtables
+      prior_player_1[[player_1_str]] <- TRUE
+      prior_player_2[[player_2_str]] <- TRUE
+      
+      # get the first cards for player 1 and player 2
+      a <- player_1[[1]]
+      b <- player_2[[1]]
+      
+      # and remove the first cards
+      player_1 <- player_1[-1]
+      player_2 <- player_2[-1]
+      
+      # check to see if we can play a subgame or not
+      r <- if (length(player_1) >= a & length(player_2) >= b) {
+        # return the winner of the subgame
+        play(player_1[1:a], player_2[1:b], TRUE)$winner
+      } else if (a > b) {
+        # player 1 wins
+        1
+      } else {
+        # player 2 wins
+        2
+      }
+      
+      # update the player's hands if they have won
+      if (r == 1) {
+        player_1 <- c(player_1, a, b)
+      } else {
+        player_2 <- c(player_2, b, a)
+      }
+    }
+    
+    # we have run out of cards for one player, return the results
+    list(
+      winner = ifelse(length(player_1) > 0, 1, 2),
+      players = list(player_1, player_2)
+    )
+  }
+  
+  # start to play the game
+  p <- play(input[[1]], input[[2]])
+  # get the results for the winner
+  w <- p$players[[p$winner]]
+  # return the results as required for the puzzle
+  sum(w * rev(seq_along(w)))
+}
+```
+
+We can test this function on the sample data:
+
+
+```r
+part_2(sample) == 291
+```
+
+```
+## [1] TRUE
+```
+
+And we can run this function on the actual data:
+
+
+```r
+part_2(actual)
+```
+
+```
+## [1] 34771
+```
