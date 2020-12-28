@@ -5,7 +5,6 @@ knitr::opts_chunk$set(echo = TRUE)
 options(crayon.enabled = NULL, # for when rendering on github actions
         scipen = 999)          # make sure we never print in scientific notation
 library(tidyverse)
-library(hash)
 ```
 
 This is my attempt to solve [Day 22](https://adventofcode.com/2020/day/22).
