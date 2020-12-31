@@ -1,0 +1,179 @@
+# Lobby Layout
+
+
+
+This is my attempt to solve [Day 24](https://adventofcode.com/2020/day/24).
+
+
+```r
+sample <- read_lines("samples/day_24_sample.txt")
+actual <- read_lines("inputs/day_24_input.txt")
+```
+
+## Part 1
+
+First let's create a function that will iterate over the input and update a list of tiles. We can store the positions
+of the tiles as complex numbers indicating the horizontal and vertical position of a tile.
+
+If we move East or West we are moving exactly 1 unit right or left. If we move in one of the four North/South directions
+we will instead move a half step right or left and a half step up or down.
+
+
+```r
+get_tiles <- function(input) {
+  # each tile will be stored as 0 for white, 1 for black
+  tiles <- list()
+  # set the directions that we move
+  directions <- c(
+    e  =  1,
+    se =  0.5 - 0.5i,
+    sw = -0.5 - 0.5i,
+    w  = -1,
+    nw = -0.5 + 0.5i,
+    ne =  0.5 + 0.5i
+  )
+  # iterate over the input, splitting each line into individual characters
+  for (line in str_extract_all(input, ".")) {
+    # we always start from (0, 0)
+    p <- 0 + 0i
+    # create an index into the current input line and iterate over it
+    i <- 1
+    while (i <= length(line)) {
+      # get the current item in the line
+      d <- line[[i]]
+      # add in the next character if d is "s" or "n"
+      if (d == "s" | d == "n") {
+        i <- i + 1
+        d <- paste0(d, line[[i]])
+      }
+      # update the current position
+      p <- p + directions[[d]]
+      i <- i + 1
+    }
+    # convert the position to a character so we can use as a name in the list
+    p <- as.character(p)
+    # if we haven't seen this tile yet, insert it as white
+    if (is.null(tiles[[p]])) {
+      tiles[[p]] <- 0
+    }
+    # flip the tile
+    tiles[[p]] <- 1 - tiles[[p]]
+  }
+  # return the tiles
+  tiles
+}
+```
+
+We can use this function to solve part 1, we simply need to sum the results. But, because we return a list we first
+need to flatten it to a double vector.
+
+
+```r
+part_1 <- function(input) {
+  input %>%
+    get_tiles() %>%
+    flatten_dbl() %>%
+    sum()
+}
+```
+
+We can test that this function works against the provided sample:
+
+
+```r
+part_1(sample) == 10
+```
+
+```
+## [1] TRUE
+```
+
+And we can run this function against our actual data:
+
+
+```r
+part_1(actual)
+```
+
+```
+## [1] 394
+```
+
+## Part 2
+
+
+```r
+part_2 <- function(input, n) {
+  directions <- c(
+    e  =  1,
+    se =  0.5 - 0.5i,
+    sw = -0.5 - 0.5i,
+    w  = -1,
+    nw = -0.5 + 0.5i,
+    ne =  0.5 + 0.5i
+  )
+  
+  tiles <- get_tiles(input)
+  
+  for (i in 1:n) {
+    # add in neighbours of black tiles
+    missing_neighbours <- tiles %>%
+      keep(~.x == 1) %>%
+      names() %>%
+      as.complex() %>%
+      map(~ as.character(.x + directions)) %>%
+      flatten_chr() %>%
+      unique() %>%
+      discard(~ .x %in% names(tiles))
+    
+    for (i in missing_neighbours) {
+      tiles[[i]] <- 0
+    }
+    
+    tiles <- imap(tiles, function(colour, position) {
+      position <- as.complex(position)
+      
+      neighbours <- reduce(position + directions, .init = 0, function(s, n) {
+        p <- as.character(n)
+        s + ifelse(is.null(tiles[[p]]), 0, tiles[[p]])
+      })
+      
+      if (colour == 0 && neighbours == 2) {
+        1
+      } else if (colour == 1 && (neighbours == 0 || neighbours > 2)) {
+        0
+      } else {
+        colour
+      }
+    })
+  }
+  
+  tiles %>%
+    flatten_dbl() %>%
+    sum()
+}
+```
+
+We can test this function on the sample data:
+
+
+```r
+part_2(sample, 100) == 2208
+```
+
+```
+## [1] TRUE
+```
+
+And we can run this function on the actual data:
+
+
+```r
+part_2(actual, 100)
+```
+
+```
+## [1] 4036
+```
+
+Unfortunately this is terribly slow, taking nearly 9 minutes on my machine...

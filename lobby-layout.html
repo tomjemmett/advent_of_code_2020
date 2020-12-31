@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Day 13 Shuttle Search | Advent of Code 2020</title>
+  <title>Day 24 Lobby Layout | Advent of Code 2020</title>
   <meta name="description" content="My attempt to complete AOC 2020 in R" />
   <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Day 13 Shuttle Search | Advent of Code 2020" />
+  <meta property="og:title" content="Day 24 Lobby Layout | Advent of Code 2020" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="tomjemmett/advent-of-code-2020" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Day 13 Shuttle Search | Advent of Code 2020" />
+  <meta name="twitter:title" content="Day 24 Lobby Layout | Advent of Code 2020" />
   
   <meta name="twitter:description" content="My attempt to complete AOC 2020 in R" />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="rain-risk.html"/>
-<link rel="next" href="docking-data.html"/>
+<link rel="prev" href="crab-cups.html"/>
+<link rel="next" href="combo-breaker.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -263,78 +263,132 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="shuttle-search" class="section level1">
-<h1><span class="header-section-number">Day 13</span> Shuttle Search</h1>
-<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/13">Day 13</a>.</p>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="shuttle-search.html#cb231-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_13_sample.txt&quot;</span>)</span>
-<span id="cb231-2"><a href="shuttle-search.html#cb231-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_13_input.txt&quot;</span>)</span></code></pre></div>
-<div id="part-1-12" class="section level2">
-<h2><span class="header-section-number">13.1</span> Part 1</h2>
-<p>We can solve part 1 by finding the first time each of the buses arrives after we arrive, then finding which bus has the
-minimum time.</p>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="shuttle-search.html#cb232-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb232-2"><a href="shuttle-search.html#cb232-2"></a>  earliest_time &lt;-<span class="st"> </span><span class="kw">as.integer</span>(input[[<span class="dv">1</span>]])</span>
-<span id="cb232-3"><a href="shuttle-search.html#cb232-3"></a>  buses &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]] <span class="op">%&gt;%</span></span>
-<span id="cb232-4"><a href="shuttle-search.html#cb232-4"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;,&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb232-5"><a href="shuttle-search.html#cb232-5"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb232-6"><a href="shuttle-search.html#cb232-6"></a><span class="st">    </span><span class="kw">str_subset</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">d&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb232-7"><a href="shuttle-search.html#cb232-7"></a><span class="st">    </span><span class="kw">as.integer</span>()</span>
-<span id="cb232-8"><a href="shuttle-search.html#cb232-8"></a>  </span>
-<span id="cb232-9"><a href="shuttle-search.html#cb232-9"></a>  first_available &lt;-<span class="st"> </span><span class="kw">ceiling</span>(earliest_time <span class="op">/</span><span class="st"> </span>buses) <span class="op">*</span><span class="st"> </span>buses</span>
-<span id="cb232-10"><a href="shuttle-search.html#cb232-10"></a>  which_bus &lt;-<span class="st"> </span><span class="kw">which.min</span>(first_available)</span>
-<span id="cb232-11"><a href="shuttle-search.html#cb232-11"></a>  (first_available[[which_bus]] <span class="op">-</span><span class="st"> </span>earliest_time) <span class="op">*</span><span class="st"> </span>buses[[which_bus]]</span>
-<span id="cb232-12"><a href="shuttle-search.html#cb232-12"></a>}</span></code></pre></div>
-<p>We can check that this function works on the sample data:</p>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="shuttle-search.html#cb233-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">295</span></span></code></pre></div>
+<div id="lobby-layout" class="section level1">
+<h1><span class="header-section-number">Day 24</span> Lobby Layout</h1>
+<p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/24">Day 24</a>.</p>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="lobby-layout.html#cb388-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_24_sample.txt&quot;</span>)</span>
+<span id="cb388-2"><a href="lobby-layout.html#cb388-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_24_input.txt&quot;</span>)</span></code></pre></div>
+<div id="part-1-23" class="section level2">
+<h2><span class="header-section-number">24.1</span> Part 1</h2>
+<p>First let’s create a function that will iterate over the input and update a list of tiles. We can store the positions
+of the tiles as complex numbers indicating the horizontal and vertical position of a tile.</p>
+<p>If we move East or West we are moving exactly 1 unit right or left. If we move in one of the four North/South directions
+we will instead move a half step right or left and a half step up or down.</p>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="lobby-layout.html#cb389-1"></a>get_tiles &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb389-2"><a href="lobby-layout.html#cb389-2"></a>  <span class="co"># each tile will be stored as 0 for white, 1 for black</span></span>
+<span id="cb389-3"><a href="lobby-layout.html#cb389-3"></a>  tiles &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb389-4"><a href="lobby-layout.html#cb389-4"></a>  <span class="co"># set the directions that we move</span></span>
+<span id="cb389-5"><a href="lobby-layout.html#cb389-5"></a>  directions &lt;-<span class="st"> </span><span class="kw">c</span>(</span>
+<span id="cb389-6"><a href="lobby-layout.html#cb389-6"></a>    <span class="dt">e  =</span>  <span class="dv">1</span>,</span>
+<span id="cb389-7"><a href="lobby-layout.html#cb389-7"></a>    <span class="dt">se =</span>  <span class="fl">0.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
+<span id="cb389-8"><a href="lobby-layout.html#cb389-8"></a>    <span class="dt">sw =</span> <span class="fl">-0.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
+<span id="cb389-9"><a href="lobby-layout.html#cb389-9"></a>    <span class="dt">w  =</span> <span class="dv">-1</span>,</span>
+<span id="cb389-10"><a href="lobby-layout.html#cb389-10"></a>    <span class="dt">nw =</span> <span class="fl">-0.5</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
+<span id="cb389-11"><a href="lobby-layout.html#cb389-11"></a>    <span class="dt">ne =</span>  <span class="fl">0.5</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.5</span>i</span>
+<span id="cb389-12"><a href="lobby-layout.html#cb389-12"></a>  )</span>
+<span id="cb389-13"><a href="lobby-layout.html#cb389-13"></a>  <span class="co"># iterate over the input, splitting each line into individual characters</span></span>
+<span id="cb389-14"><a href="lobby-layout.html#cb389-14"></a>  <span class="cf">for</span> (line <span class="cf">in</span> <span class="kw">str_extract_all</span>(input, <span class="st">&quot;.&quot;</span>)) {</span>
+<span id="cb389-15"><a href="lobby-layout.html#cb389-15"></a>    <span class="co"># we always start from (0, 0)</span></span>
+<span id="cb389-16"><a href="lobby-layout.html#cb389-16"></a>    p &lt;-<span class="st"> </span><span class="dv">0</span> <span class="op">+</span><span class="st"> </span>0i</span>
+<span id="cb389-17"><a href="lobby-layout.html#cb389-17"></a>    <span class="co"># create an index into the current input line and iterate over it</span></span>
+<span id="cb389-18"><a href="lobby-layout.html#cb389-18"></a>    i &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb389-19"><a href="lobby-layout.html#cb389-19"></a>    <span class="cf">while</span> (i <span class="op">&lt;=</span><span class="st"> </span><span class="kw">length</span>(line)) {</span>
+<span id="cb389-20"><a href="lobby-layout.html#cb389-20"></a>      <span class="co"># get the current item in the line</span></span>
+<span id="cb389-21"><a href="lobby-layout.html#cb389-21"></a>      d &lt;-<span class="st"> </span>line[[i]]</span>
+<span id="cb389-22"><a href="lobby-layout.html#cb389-22"></a>      <span class="co"># add in the next character if d is &quot;s&quot; or &quot;n&quot;</span></span>
+<span id="cb389-23"><a href="lobby-layout.html#cb389-23"></a>      <span class="cf">if</span> (d <span class="op">==</span><span class="st"> &quot;s&quot;</span> <span class="op">|</span><span class="st"> </span>d <span class="op">==</span><span class="st"> &quot;n&quot;</span>) {</span>
+<span id="cb389-24"><a href="lobby-layout.html#cb389-24"></a>        i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb389-25"><a href="lobby-layout.html#cb389-25"></a>        d &lt;-<span class="st"> </span><span class="kw">paste0</span>(d, line[[i]])</span>
+<span id="cb389-26"><a href="lobby-layout.html#cb389-26"></a>      }</span>
+<span id="cb389-27"><a href="lobby-layout.html#cb389-27"></a>      <span class="co"># update the current position</span></span>
+<span id="cb389-28"><a href="lobby-layout.html#cb389-28"></a>      p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span>directions[[d]]</span>
+<span id="cb389-29"><a href="lobby-layout.html#cb389-29"></a>      i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb389-30"><a href="lobby-layout.html#cb389-30"></a>    }</span>
+<span id="cb389-31"><a href="lobby-layout.html#cb389-31"></a>    <span class="co"># convert the position to a character so we can use as a name in the list</span></span>
+<span id="cb389-32"><a href="lobby-layout.html#cb389-32"></a>    p &lt;-<span class="st"> </span><span class="kw">as.character</span>(p)</span>
+<span id="cb389-33"><a href="lobby-layout.html#cb389-33"></a>    <span class="co"># if we haven&#39;t seen this tile yet, insert it as white</span></span>
+<span id="cb389-34"><a href="lobby-layout.html#cb389-34"></a>    <span class="cf">if</span> (<span class="kw">is.null</span>(tiles[[p]])) {</span>
+<span id="cb389-35"><a href="lobby-layout.html#cb389-35"></a>      tiles[[p]] &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb389-36"><a href="lobby-layout.html#cb389-36"></a>    }</span>
+<span id="cb389-37"><a href="lobby-layout.html#cb389-37"></a>    <span class="co"># flip the tile</span></span>
+<span id="cb389-38"><a href="lobby-layout.html#cb389-38"></a>    tiles[[p]] &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>tiles[[p]]</span>
+<span id="cb389-39"><a href="lobby-layout.html#cb389-39"></a>  }</span>
+<span id="cb389-40"><a href="lobby-layout.html#cb389-40"></a>  <span class="co"># return the tiles</span></span>
+<span id="cb389-41"><a href="lobby-layout.html#cb389-41"></a>  tiles</span>
+<span id="cb389-42"><a href="lobby-layout.html#cb389-42"></a>}</span></code></pre></div>
+<p>We can use this function to solve part 1, we simply need to sum the results. But, because we return a list we first
+need to flatten it to a double vector.</p>
+<div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="lobby-layout.html#cb390-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb390-2"><a href="lobby-layout.html#cb390-2"></a>  input <span class="op">%&gt;%</span></span>
+<span id="cb390-3"><a href="lobby-layout.html#cb390-3"></a><span class="st">    </span><span class="kw">get_tiles</span>() <span class="op">%&gt;%</span></span>
+<span id="cb390-4"><a href="lobby-layout.html#cb390-4"></a><span class="st">    </span><span class="kw">flatten_dbl</span>() <span class="op">%&gt;%</span></span>
+<span id="cb390-5"><a href="lobby-layout.html#cb390-5"></a><span class="st">    </span><span class="kw">sum</span>()</span>
+<span id="cb390-6"><a href="lobby-layout.html#cb390-6"></a>}</span></code></pre></div>
+<p>We can test that this function works against the provided sample:</p>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="lobby-layout.html#cb391-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">10</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>And we can run with the actual data</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="shuttle-search.html#cb235-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
-<pre><code>## [1] 3269</code></pre>
+<p>And we can run this function against our actual data:</p>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="lobby-layout.html#cb393-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 394</code></pre>
 </div>
-<div id="part-2-12" class="section level2">
-<h2><span class="header-section-number">13.2</span> Part 2</h2>
-<p>Part 2 could be solved with the <a href="https://en.wikipedia.org/wiki/Chinese_remainder_theorem">Chinese Remainder Theorem</a>,
-but we could solve it more simply by iterating over the input items and keeping track of the current time and the
-current “jump” size. The jump size is equal to the cumulative product of the busses.</p>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="shuttle-search.html#cb237-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb237-2"><a href="shuttle-search.html#cb237-2"></a>  <span class="co"># take the 2nd row of the input, convert x&#39;s to 0&#39;s</span></span>
-<span id="cb237-3"><a href="shuttle-search.html#cb237-3"></a>  x &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]] <span class="op">%&gt;%</span></span>
-<span id="cb237-4"><a href="shuttle-search.html#cb237-4"></a><span class="st">    </span><span class="kw">str_replace_all</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;0&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb237-5"><a href="shuttle-search.html#cb237-5"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;,&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb237-6"><a href="shuttle-search.html#cb237-6"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb237-7"><a href="shuttle-search.html#cb237-7"></a><span class="st">    </span><span class="kw">as.numeric</span>()</span>
-<span id="cb237-8"><a href="shuttle-search.html#cb237-8"></a>  </span>
-<span id="cb237-9"><a href="shuttle-search.html#cb237-9"></a>  <span class="co"># get the sequence of values that are non zero, index from 0</span></span>
-<span id="cb237-10"><a href="shuttle-search.html#cb237-10"></a>  y &lt;-<span class="st"> </span><span class="kw">seq_along</span>(x)[x <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>] <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb237-11"><a href="shuttle-search.html#cb237-11"></a>  <span class="co"># get rid of the 0&#39;s (x&#39;s)</span></span>
-<span id="cb237-12"><a href="shuttle-search.html#cb237-12"></a>  x &lt;-<span class="st"> </span>x[x <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>]</span>
-<span id="cb237-13"><a href="shuttle-search.html#cb237-13"></a>  </span>
-<span id="cb237-14"><a href="shuttle-search.html#cb237-14"></a>  <span class="co"># start with a jump equal to the first value in the input</span></span>
-<span id="cb237-15"><a href="shuttle-search.html#cb237-15"></a>  j &lt;-<span class="st"> </span>x[<span class="dv">1</span>]</span>
-<span id="cb237-16"><a href="shuttle-search.html#cb237-16"></a>  <span class="co"># start at time 0</span></span>
-<span id="cb237-17"><a href="shuttle-search.html#cb237-17"></a>  t &lt;-<span class="st"> </span><span class="dv">0</span></span>
-<span id="cb237-18"><a href="shuttle-search.html#cb237-18"></a>  </span>
-<span id="cb237-19"><a href="shuttle-search.html#cb237-19"></a>  <span class="co"># iterate over the input, skipping the first item</span></span>
-<span id="cb237-20"><a href="shuttle-search.html#cb237-20"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="kw">length</span>(x)) {</span>
-<span id="cb237-21"><a href="shuttle-search.html#cb237-21"></a>    <span class="co"># increase our time by the size of the jump while the time + step size is</span></span>
-<span id="cb237-22"><a href="shuttle-search.html#cb237-22"></a>    <span class="co"># not a divisor of the current input item</span></span>
-<span id="cb237-23"><a href="shuttle-search.html#cb237-23"></a>    <span class="cf">while</span> ((t <span class="op">+</span><span class="st"> </span>y[[i]]) <span class="op">%%</span><span class="st"> </span>x[[i]]) {</span>
-<span id="cb237-24"><a href="shuttle-search.html#cb237-24"></a>      t &lt;-<span class="st"> </span>t <span class="op">+</span><span class="st"> </span>j</span>
-<span id="cb237-25"><a href="shuttle-search.html#cb237-25"></a>    }</span>
-<span id="cb237-26"><a href="shuttle-search.html#cb237-26"></a>    <span class="co"># increase the size of our jump by the current input item (bus)</span></span>
-<span id="cb237-27"><a href="shuttle-search.html#cb237-27"></a>    j &lt;-<span class="st"> </span>j <span class="op">*</span><span class="st"> </span>x[[i]]</span>
-<span id="cb237-28"><a href="shuttle-search.html#cb237-28"></a>  }</span>
-<span id="cb237-29"><a href="shuttle-search.html#cb237-29"></a>  <span class="co"># return the time</span></span>
-<span id="cb237-30"><a href="shuttle-search.html#cb237-30"></a>  t</span>
-<span id="cb237-31"><a href="shuttle-search.html#cb237-31"></a>}</span></code></pre></div>
-<p>We can run this function on the sample data.</p>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="shuttle-search.html#cb238-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">1068781</span></span></code></pre></div>
+<div id="part-2-23" class="section level2">
+<h2><span class="header-section-number">24.2</span> Part 2</h2>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="lobby-layout.html#cb395-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
+<span id="cb395-2"><a href="lobby-layout.html#cb395-2"></a>  directions &lt;-<span class="st"> </span><span class="kw">c</span>(</span>
+<span id="cb395-3"><a href="lobby-layout.html#cb395-3"></a>    <span class="dt">e  =</span>  <span class="dv">1</span>,</span>
+<span id="cb395-4"><a href="lobby-layout.html#cb395-4"></a>    <span class="dt">se =</span>  <span class="fl">0.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
+<span id="cb395-5"><a href="lobby-layout.html#cb395-5"></a>    <span class="dt">sw =</span> <span class="fl">-0.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
+<span id="cb395-6"><a href="lobby-layout.html#cb395-6"></a>    <span class="dt">w  =</span> <span class="dv">-1</span>,</span>
+<span id="cb395-7"><a href="lobby-layout.html#cb395-7"></a>    <span class="dt">nw =</span> <span class="fl">-0.5</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
+<span id="cb395-8"><a href="lobby-layout.html#cb395-8"></a>    <span class="dt">ne =</span>  <span class="fl">0.5</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.5</span>i</span>
+<span id="cb395-9"><a href="lobby-layout.html#cb395-9"></a>  )</span>
+<span id="cb395-10"><a href="lobby-layout.html#cb395-10"></a>  </span>
+<span id="cb395-11"><a href="lobby-layout.html#cb395-11"></a>  tiles &lt;-<span class="st"> </span><span class="kw">get_tiles</span>(input)</span>
+<span id="cb395-12"><a href="lobby-layout.html#cb395-12"></a>  </span>
+<span id="cb395-13"><a href="lobby-layout.html#cb395-13"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</span>
+<span id="cb395-14"><a href="lobby-layout.html#cb395-14"></a>    <span class="co"># add in neighbours of black tiles</span></span>
+<span id="cb395-15"><a href="lobby-layout.html#cb395-15"></a>    missing_neighbours &lt;-<span class="st"> </span>tiles <span class="op">%&gt;%</span></span>
+<span id="cb395-16"><a href="lobby-layout.html#cb395-16"></a><span class="st">      </span><span class="kw">keep</span>(<span class="op">~</span>.x <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb395-17"><a href="lobby-layout.html#cb395-17"></a><span class="st">      </span><span class="kw">names</span>() <span class="op">%&gt;%</span></span>
+<span id="cb395-18"><a href="lobby-layout.html#cb395-18"></a><span class="st">      </span><span class="kw">as.complex</span>() <span class="op">%&gt;%</span></span>
+<span id="cb395-19"><a href="lobby-layout.html#cb395-19"></a><span class="st">      </span><span class="kw">map</span>(<span class="op">~</span><span class="st"> </span><span class="kw">as.character</span>(.x <span class="op">+</span><span class="st"> </span>directions)) <span class="op">%&gt;%</span></span>
+<span id="cb395-20"><a href="lobby-layout.html#cb395-20"></a><span class="st">      </span><span class="kw">flatten_chr</span>() <span class="op">%&gt;%</span></span>
+<span id="cb395-21"><a href="lobby-layout.html#cb395-21"></a><span class="st">      </span><span class="kw">unique</span>() <span class="op">%&gt;%</span></span>
+<span id="cb395-22"><a href="lobby-layout.html#cb395-22"></a><span class="st">      </span><span class="kw">discard</span>(<span class="op">~</span><span class="st"> </span>.x <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(tiles))</span>
+<span id="cb395-23"><a href="lobby-layout.html#cb395-23"></a>    </span>
+<span id="cb395-24"><a href="lobby-layout.html#cb395-24"></a>    <span class="cf">for</span> (i <span class="cf">in</span> missing_neighbours) {</span>
+<span id="cb395-25"><a href="lobby-layout.html#cb395-25"></a>      tiles[[i]] &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb395-26"><a href="lobby-layout.html#cb395-26"></a>    }</span>
+<span id="cb395-27"><a href="lobby-layout.html#cb395-27"></a>    </span>
+<span id="cb395-28"><a href="lobby-layout.html#cb395-28"></a>    tiles &lt;-<span class="st"> </span><span class="kw">imap</span>(tiles, <span class="cf">function</span>(colour, position) {</span>
+<span id="cb395-29"><a href="lobby-layout.html#cb395-29"></a>      position &lt;-<span class="st"> </span><span class="kw">as.complex</span>(position)</span>
+<span id="cb395-30"><a href="lobby-layout.html#cb395-30"></a>      </span>
+<span id="cb395-31"><a href="lobby-layout.html#cb395-31"></a>      neighbours &lt;-<span class="st"> </span><span class="kw">reduce</span>(position <span class="op">+</span><span class="st"> </span>directions, <span class="dt">.init =</span> <span class="dv">0</span>, <span class="cf">function</span>(s, n) {</span>
+<span id="cb395-32"><a href="lobby-layout.html#cb395-32"></a>        p &lt;-<span class="st"> </span><span class="kw">as.character</span>(n)</span>
+<span id="cb395-33"><a href="lobby-layout.html#cb395-33"></a>        s <span class="op">+</span><span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">is.null</span>(tiles[[p]]), <span class="dv">0</span>, tiles[[p]])</span>
+<span id="cb395-34"><a href="lobby-layout.html#cb395-34"></a>      })</span>
+<span id="cb395-35"><a href="lobby-layout.html#cb395-35"></a>      </span>
+<span id="cb395-36"><a href="lobby-layout.html#cb395-36"></a>      <span class="cf">if</span> (colour <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;&amp;</span><span class="st"> </span>neighbours <span class="op">==</span><span class="st"> </span><span class="dv">2</span>) {</span>
+<span id="cb395-37"><a href="lobby-layout.html#cb395-37"></a>        <span class="dv">1</span></span>
+<span id="cb395-38"><a href="lobby-layout.html#cb395-38"></a>      } <span class="cf">else</span> <span class="cf">if</span> (colour <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;&amp;</span><span class="st"> </span>(neighbours <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">||</span><span class="st"> </span>neighbours <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>)) {</span>
+<span id="cb395-39"><a href="lobby-layout.html#cb395-39"></a>        <span class="dv">0</span></span>
+<span id="cb395-40"><a href="lobby-layout.html#cb395-40"></a>      } <span class="cf">else</span> {</span>
+<span id="cb395-41"><a href="lobby-layout.html#cb395-41"></a>        colour</span>
+<span id="cb395-42"><a href="lobby-layout.html#cb395-42"></a>      }</span>
+<span id="cb395-43"><a href="lobby-layout.html#cb395-43"></a>    })</span>
+<span id="cb395-44"><a href="lobby-layout.html#cb395-44"></a>  }</span>
+<span id="cb395-45"><a href="lobby-layout.html#cb395-45"></a>  </span>
+<span id="cb395-46"><a href="lobby-layout.html#cb395-46"></a>  tiles <span class="op">%&gt;%</span></span>
+<span id="cb395-47"><a href="lobby-layout.html#cb395-47"></a><span class="st">    </span><span class="kw">flatten_dbl</span>() <span class="op">%&gt;%</span></span>
+<span id="cb395-48"><a href="lobby-layout.html#cb395-48"></a><span class="st">    </span><span class="kw">sum</span>()</span>
+<span id="cb395-49"><a href="lobby-layout.html#cb395-49"></a>}</span></code></pre></div>
+<p>We can test this function on the sample data:</p>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="lobby-layout.html#cb396-1"></a><span class="kw">part_2</span>(sample, <span class="dv">100</span>) <span class="op">==</span><span class="st"> </span><span class="dv">2208</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<p>And we can run on the actual data. We need to make sure that we alter the “scientific notation penalty” option to view
-the answer as an integer.</p>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="shuttle-search.html#cb240-1"></a><span class="kw">options</span>(<span class="dt">scipen =</span> <span class="dv">999</span>)</span>
-<span id="cb240-2"><a href="shuttle-search.html#cb240-2"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
-<pre><code>## [1] 672754131923874</code></pre>
+<p>And we can run this function on the actual data:</p>
+<div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="lobby-layout.html#cb398-1"></a><span class="kw">part_2</span>(actual, <span class="dv">100</span>)</span></code></pre></div>
+<pre><code>## [1] 4036</code></pre>
+<p>Unfortunately this is terribly slow, taking nearly 9 minutes on my machine…</p>
 
 </div>
 </div>
@@ -343,8 +397,8 @@ the answer as an integer.</p>
           </div>
         </div>
       </div>
-<a href="rain-risk.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="docking-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="crab-cups.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="combo-breaker.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
