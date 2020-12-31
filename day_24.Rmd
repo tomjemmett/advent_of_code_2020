@@ -43,7 +43,7 @@ get_tiles <- function(input) {
     i <- 1
     while (i <= length(line)) {
       # get the current item in the line
-      d <- line[[j]]
+      d <- line[[i]]
       # add in the next character if d is "s" or "n"
       if (d == "s" | d == "n") {
         i <- i + 1
