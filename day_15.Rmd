@@ -68,6 +68,6 @@ solve(actual, 2020)
 
 We don't need to change anything for part 2, other than the number of turns.
 
-```{r}
+```{r part 2}
 solve(actual, 30000000)
 ```
