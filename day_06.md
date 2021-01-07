@@ -144,3 +144,7 @@ extra(actual, intersect) == part_2(actual)
 ```
 ## [1] TRUE
 ```
+
+---
+
+*Elapsed Time: 0.516s*

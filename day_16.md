@@ -219,3 +219,7 @@ prod(pactual$my_ticket[ps])
 ```
 ## [1] 1053686852011
 ```
+
+---
+
+*Elapsed Time: 8.078s*

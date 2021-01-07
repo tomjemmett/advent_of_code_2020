@@ -392,3 +392,7 @@ part_2(actual)
 
 This felt rather tedious and procedural, perhaps there is a neater solution. Improvements could be made to my code by
 extracting some of the repeated logic into functions.
+
+---
+
+*Elapsed Time: 2.296s*

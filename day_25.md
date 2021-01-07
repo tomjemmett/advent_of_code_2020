@@ -121,3 +121,7 @@ find_key(actual[[3 - i]], actual_loops[[i]])
 ## Part 2
 
 We are done for 2020! Hopefully this has been a useful resource for you!
+
+---
+
+*Elapsed Time: 6.382s*

@@ -24,7 +24,7 @@
 <meta name="author" content="Tom Jemmett" />
 
 
-<meta name="date" content="2020-12-31" />
+<meta name="date" content="2021-01-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -270,60 +270,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb388-2"><a href="lobby-layout.html#cb388-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_24_input.txt&quot;</span>)</span></code></pre></div>
 <div id="part-1-23" class="section level2">
 <h2><span class="header-section-number">24.1</span> Part 1</h2>
-<p>First let’s create a function that will iterate over the input and update a list of tiles. We can store the positions
-of the tiles as complex numbers indicating the horizontal and vertical position of a tile.</p>
-<p>If we move East or West we are moving exactly 1 unit right or left. If we move in one of the four North/South directions
-we will instead move a half step right or left and a half step up or down.</p>
-<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="lobby-layout.html#cb389-1"></a>get_tiles &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb389-2"><a href="lobby-layout.html#cb389-2"></a>  <span class="co"># each tile will be stored as 0 for white, 1 for black</span></span>
-<span id="cb389-3"><a href="lobby-layout.html#cb389-3"></a>  tiles &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
-<span id="cb389-4"><a href="lobby-layout.html#cb389-4"></a>  <span class="co"># set the directions that we move</span></span>
-<span id="cb389-5"><a href="lobby-layout.html#cb389-5"></a>  directions &lt;-<span class="st"> </span><span class="kw">c</span>(</span>
-<span id="cb389-6"><a href="lobby-layout.html#cb389-6"></a>    <span class="dt">e  =</span>  <span class="dv">1</span>,</span>
-<span id="cb389-7"><a href="lobby-layout.html#cb389-7"></a>    <span class="dt">se =</span>  <span class="fl">0.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
-<span id="cb389-8"><a href="lobby-layout.html#cb389-8"></a>    <span class="dt">sw =</span> <span class="fl">-0.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
-<span id="cb389-9"><a href="lobby-layout.html#cb389-9"></a>    <span class="dt">w  =</span> <span class="dv">-1</span>,</span>
-<span id="cb389-10"><a href="lobby-layout.html#cb389-10"></a>    <span class="dt">nw =</span> <span class="fl">-0.5</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
-<span id="cb389-11"><a href="lobby-layout.html#cb389-11"></a>    <span class="dt">ne =</span>  <span class="fl">0.5</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.5</span>i</span>
-<span id="cb389-12"><a href="lobby-layout.html#cb389-12"></a>  )</span>
-<span id="cb389-13"><a href="lobby-layout.html#cb389-13"></a>  <span class="co"># iterate over the input, splitting each line into individual characters</span></span>
-<span id="cb389-14"><a href="lobby-layout.html#cb389-14"></a>  <span class="cf">for</span> (line <span class="cf">in</span> <span class="kw">str_extract_all</span>(input, <span class="st">&quot;.&quot;</span>)) {</span>
-<span id="cb389-15"><a href="lobby-layout.html#cb389-15"></a>    <span class="co"># we always start from (0, 0)</span></span>
-<span id="cb389-16"><a href="lobby-layout.html#cb389-16"></a>    p &lt;-<span class="st"> </span><span class="dv">0</span> <span class="op">+</span><span class="st"> </span>0i</span>
-<span id="cb389-17"><a href="lobby-layout.html#cb389-17"></a>    <span class="co"># create an index into the current input line and iterate over it</span></span>
-<span id="cb389-18"><a href="lobby-layout.html#cb389-18"></a>    i &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb389-19"><a href="lobby-layout.html#cb389-19"></a>    <span class="cf">while</span> (i <span class="op">&lt;=</span><span class="st"> </span><span class="kw">length</span>(line)) {</span>
-<span id="cb389-20"><a href="lobby-layout.html#cb389-20"></a>      <span class="co"># get the current item in the line</span></span>
-<span id="cb389-21"><a href="lobby-layout.html#cb389-21"></a>      d &lt;-<span class="st"> </span>line[[i]]</span>
-<span id="cb389-22"><a href="lobby-layout.html#cb389-22"></a>      <span class="co"># add in the next character if d is &quot;s&quot; or &quot;n&quot;</span></span>
-<span id="cb389-23"><a href="lobby-layout.html#cb389-23"></a>      <span class="cf">if</span> (d <span class="op">==</span><span class="st"> &quot;s&quot;</span> <span class="op">|</span><span class="st"> </span>d <span class="op">==</span><span class="st"> &quot;n&quot;</span>) {</span>
-<span id="cb389-24"><a href="lobby-layout.html#cb389-24"></a>        i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb389-25"><a href="lobby-layout.html#cb389-25"></a>        d &lt;-<span class="st"> </span><span class="kw">paste0</span>(d, line[[i]])</span>
-<span id="cb389-26"><a href="lobby-layout.html#cb389-26"></a>      }</span>
-<span id="cb389-27"><a href="lobby-layout.html#cb389-27"></a>      <span class="co"># update the current position</span></span>
-<span id="cb389-28"><a href="lobby-layout.html#cb389-28"></a>      p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span>directions[[d]]</span>
-<span id="cb389-29"><a href="lobby-layout.html#cb389-29"></a>      i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb389-30"><a href="lobby-layout.html#cb389-30"></a>    }</span>
-<span id="cb389-31"><a href="lobby-layout.html#cb389-31"></a>    <span class="co"># convert the position to a character so we can use as a name in the list</span></span>
-<span id="cb389-32"><a href="lobby-layout.html#cb389-32"></a>    p &lt;-<span class="st"> </span><span class="kw">as.character</span>(p)</span>
-<span id="cb389-33"><a href="lobby-layout.html#cb389-33"></a>    <span class="co"># if we haven&#39;t seen this tile yet, insert it as white</span></span>
-<span id="cb389-34"><a href="lobby-layout.html#cb389-34"></a>    <span class="cf">if</span> (<span class="kw">is.null</span>(tiles[[p]])) {</span>
-<span id="cb389-35"><a href="lobby-layout.html#cb389-35"></a>      tiles[[p]] &lt;-<span class="st"> </span><span class="dv">0</span></span>
-<span id="cb389-36"><a href="lobby-layout.html#cb389-36"></a>    }</span>
-<span id="cb389-37"><a href="lobby-layout.html#cb389-37"></a>    <span class="co"># flip the tile</span></span>
-<span id="cb389-38"><a href="lobby-layout.html#cb389-38"></a>    tiles[[p]] &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>tiles[[p]]</span>
-<span id="cb389-39"><a href="lobby-layout.html#cb389-39"></a>  }</span>
-<span id="cb389-40"><a href="lobby-layout.html#cb389-40"></a>  <span class="co"># return the tiles</span></span>
-<span id="cb389-41"><a href="lobby-layout.html#cb389-41"></a>  tiles</span>
-<span id="cb389-42"><a href="lobby-layout.html#cb389-42"></a>}</span></code></pre></div>
+<p>First let’s create a function that will iterate over the input and update a list of tiles. We use a coordinate system
+based on a <a href="https://www.redblobgames.com/grids/hexagons/">cube</a> and an array to store the values. We assume that a grid
+size of -100 to +100 in all directions will be sufficient.</p>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="lobby-layout.html#cb389-1"></a><span class="co"># set the directions that we move, using hex cube coordinates</span></span>
+<span id="cb389-2"><a href="lobby-layout.html#cb389-2"></a>directions &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb389-3"><a href="lobby-layout.html#cb389-3"></a>  <span class="dt">e  =</span> <span class="kw">c</span>( <span class="dv">1</span>, <span class="dv">-1</span>,  <span class="dv">0</span>),</span>
+<span id="cb389-4"><a href="lobby-layout.html#cb389-4"></a>  <span class="dt">se =</span> <span class="kw">c</span>( <span class="dv">0</span>, <span class="dv">-1</span>,  <span class="dv">1</span>),</span>
+<span id="cb389-5"><a href="lobby-layout.html#cb389-5"></a>  <span class="dt">sw =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,  <span class="dv">0</span>,  <span class="dv">1</span>),</span>
+<span id="cb389-6"><a href="lobby-layout.html#cb389-6"></a>  <span class="dt">w  =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>,  <span class="dv">1</span>,  <span class="dv">0</span>),</span>
+<span id="cb389-7"><a href="lobby-layout.html#cb389-7"></a>  <span class="dt">nw =</span> <span class="kw">c</span>( <span class="dv">0</span>,  <span class="dv">1</span>, <span class="dv">-1</span>),</span>
+<span id="cb389-8"><a href="lobby-layout.html#cb389-8"></a>  <span class="dt">ne =</span> <span class="kw">c</span>( <span class="dv">1</span>,  <span class="dv">0</span>, <span class="dv">-1</span>)</span>
+<span id="cb389-9"><a href="lobby-layout.html#cb389-9"></a>)</span>
+<span id="cb389-10"><a href="lobby-layout.html#cb389-10"></a></span>
+<span id="cb389-11"><a href="lobby-layout.html#cb389-11"></a>get_tiles &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb389-12"><a href="lobby-layout.html#cb389-12"></a>  <span class="co"># each tile will be stored as 0 for white, 1 for black</span></span>
+<span id="cb389-13"><a href="lobby-layout.html#cb389-13"></a>  tiles &lt;-<span class="st"> </span><span class="kw">array</span>(<span class="dv">0</span>, <span class="dt">dim =</span> <span class="kw">c</span>(<span class="dv">200</span>, <span class="dv">200</span>, <span class="dv">200</span>))</span>
+<span id="cb389-14"><a href="lobby-layout.html#cb389-14"></a>  <span class="co"># iterate over the input, splitting each line into individual characters</span></span>
+<span id="cb389-15"><a href="lobby-layout.html#cb389-15"></a>  <span class="cf">for</span> (line <span class="cf">in</span> <span class="kw">str_extract_all</span>(input, <span class="st">&quot;.&quot;</span>)) {</span>
+<span id="cb389-16"><a href="lobby-layout.html#cb389-16"></a>    <span class="co"># we always start from (100, 100, 100) - the centre of our array</span></span>
+<span id="cb389-17"><a href="lobby-layout.html#cb389-17"></a>    p &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">100</span>, <span class="dt">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb389-18"><a href="lobby-layout.html#cb389-18"></a>    <span class="co"># create an index into the current input line and iterate over it</span></span>
+<span id="cb389-19"><a href="lobby-layout.html#cb389-19"></a>    i &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb389-20"><a href="lobby-layout.html#cb389-20"></a>    <span class="cf">while</span> (i <span class="op">&lt;=</span><span class="st"> </span><span class="kw">length</span>(line)) {</span>
+<span id="cb389-21"><a href="lobby-layout.html#cb389-21"></a>      <span class="co"># get the current item in the line</span></span>
+<span id="cb389-22"><a href="lobby-layout.html#cb389-22"></a>      d &lt;-<span class="st"> </span>line[[i]]</span>
+<span id="cb389-23"><a href="lobby-layout.html#cb389-23"></a>      <span class="co"># add in the next character if d is &quot;s&quot; or &quot;n&quot;</span></span>
+<span id="cb389-24"><a href="lobby-layout.html#cb389-24"></a>      <span class="cf">if</span> (d <span class="op">==</span><span class="st"> &quot;s&quot;</span> <span class="op">|</span><span class="st"> </span>d <span class="op">==</span><span class="st"> &quot;n&quot;</span>) {</span>
+<span id="cb389-25"><a href="lobby-layout.html#cb389-25"></a>        i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb389-26"><a href="lobby-layout.html#cb389-26"></a>        d &lt;-<span class="st"> </span><span class="kw">paste0</span>(d, line[[i]])</span>
+<span id="cb389-27"><a href="lobby-layout.html#cb389-27"></a>      }</span>
+<span id="cb389-28"><a href="lobby-layout.html#cb389-28"></a>      <span class="co"># update the current position</span></span>
+<span id="cb389-29"><a href="lobby-layout.html#cb389-29"></a>      p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span>directions[[d]]</span>
+<span id="cb389-30"><a href="lobby-layout.html#cb389-30"></a>      i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb389-31"><a href="lobby-layout.html#cb389-31"></a>    }</span>
+<span id="cb389-32"><a href="lobby-layout.html#cb389-32"></a>    <span class="co"># flip the tile</span></span>
+<span id="cb389-33"><a href="lobby-layout.html#cb389-33"></a>    tiles[p] &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>tiles[p]</span>
+<span id="cb389-34"><a href="lobby-layout.html#cb389-34"></a>  }</span>
+<span id="cb389-35"><a href="lobby-layout.html#cb389-35"></a>  <span class="co"># return the tiles</span></span>
+<span id="cb389-36"><a href="lobby-layout.html#cb389-36"></a>  tiles</span>
+<span id="cb389-37"><a href="lobby-layout.html#cb389-37"></a>}</span></code></pre></div>
 <p>We can use this function to solve part 1, we simply need to sum the results. But, because we return a list we first
 need to flatten it to a double vector.</p>
 <div class="sourceCode" id="cb390"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb390-1"><a href="lobby-layout.html#cb390-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
 <span id="cb390-2"><a href="lobby-layout.html#cb390-2"></a>  input <span class="op">%&gt;%</span></span>
 <span id="cb390-3"><a href="lobby-layout.html#cb390-3"></a><span class="st">    </span><span class="kw">get_tiles</span>() <span class="op">%&gt;%</span></span>
-<span id="cb390-4"><a href="lobby-layout.html#cb390-4"></a><span class="st">    </span><span class="kw">flatten_dbl</span>() <span class="op">%&gt;%</span></span>
-<span id="cb390-5"><a href="lobby-layout.html#cb390-5"></a><span class="st">    </span><span class="kw">sum</span>()</span>
-<span id="cb390-6"><a href="lobby-layout.html#cb390-6"></a>}</span></code></pre></div>
+<span id="cb390-4"><a href="lobby-layout.html#cb390-4"></a><span class="st">    </span><span class="kw">sum</span>()</span>
+<span id="cb390-5"><a href="lobby-layout.html#cb390-5"></a>}</span></code></pre></div>
 <p>We can test that this function works against the provided sample:</p>
 <div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="lobby-layout.html#cb391-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">10</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
@@ -333,62 +326,58 @@ need to flatten it to a double vector.</p>
 </div>
 <div id="part-2-23" class="section level2">
 <h2><span class="header-section-number">24.2</span> Part 2</h2>
+<p>We can solve part 2 by first using our <code>get_tiles()</code> function to get our initial state, then looping <code>n</code> times to
+calculate the next state.</p>
+<p>First, we find which tiles are currently black, and then we find the neighbours of the black tiles. We consider what the
+next state of these tiles should be and save these values till later.</p>
+<p>Next, we take the list of neighbours and see how many times these neighbours appear. If they appear exactly twice then
+this tile will become black.</p>
+<p>With these two pieces of information we update the array and repeat.</p>
 <div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="lobby-layout.html#cb395-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
-<span id="cb395-2"><a href="lobby-layout.html#cb395-2"></a>  directions &lt;-<span class="st"> </span><span class="kw">c</span>(</span>
-<span id="cb395-3"><a href="lobby-layout.html#cb395-3"></a>    <span class="dt">e  =</span>  <span class="dv">1</span>,</span>
-<span id="cb395-4"><a href="lobby-layout.html#cb395-4"></a>    <span class="dt">se =</span>  <span class="fl">0.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
-<span id="cb395-5"><a href="lobby-layout.html#cb395-5"></a>    <span class="dt">sw =</span> <span class="fl">-0.5</span> <span class="op">-</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
-<span id="cb395-6"><a href="lobby-layout.html#cb395-6"></a>    <span class="dt">w  =</span> <span class="dv">-1</span>,</span>
-<span id="cb395-7"><a href="lobby-layout.html#cb395-7"></a>    <span class="dt">nw =</span> <span class="fl">-0.5</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.5</span>i,</span>
-<span id="cb395-8"><a href="lobby-layout.html#cb395-8"></a>    <span class="dt">ne =</span>  <span class="fl">0.5</span> <span class="op">+</span><span class="st"> </span><span class="fl">0.5</span>i</span>
-<span id="cb395-9"><a href="lobby-layout.html#cb395-9"></a>  )</span>
-<span id="cb395-10"><a href="lobby-layout.html#cb395-10"></a>  </span>
-<span id="cb395-11"><a href="lobby-layout.html#cb395-11"></a>  tiles &lt;-<span class="st"> </span><span class="kw">get_tiles</span>(input)</span>
-<span id="cb395-12"><a href="lobby-layout.html#cb395-12"></a>  </span>
-<span id="cb395-13"><a href="lobby-layout.html#cb395-13"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</span>
-<span id="cb395-14"><a href="lobby-layout.html#cb395-14"></a>    <span class="co"># add in neighbours of black tiles</span></span>
-<span id="cb395-15"><a href="lobby-layout.html#cb395-15"></a>    missing_neighbours &lt;-<span class="st"> </span>tiles <span class="op">%&gt;%</span></span>
-<span id="cb395-16"><a href="lobby-layout.html#cb395-16"></a><span class="st">      </span><span class="kw">keep</span>(<span class="op">~</span>.x <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb395-17"><a href="lobby-layout.html#cb395-17"></a><span class="st">      </span><span class="kw">names</span>() <span class="op">%&gt;%</span></span>
-<span id="cb395-18"><a href="lobby-layout.html#cb395-18"></a><span class="st">      </span><span class="kw">as.complex</span>() <span class="op">%&gt;%</span></span>
-<span id="cb395-19"><a href="lobby-layout.html#cb395-19"></a><span class="st">      </span><span class="kw">map</span>(<span class="op">~</span><span class="st"> </span><span class="kw">as.character</span>(.x <span class="op">+</span><span class="st"> </span>directions)) <span class="op">%&gt;%</span></span>
-<span id="cb395-20"><a href="lobby-layout.html#cb395-20"></a><span class="st">      </span><span class="kw">flatten_chr</span>() <span class="op">%&gt;%</span></span>
-<span id="cb395-21"><a href="lobby-layout.html#cb395-21"></a><span class="st">      </span><span class="kw">unique</span>() <span class="op">%&gt;%</span></span>
-<span id="cb395-22"><a href="lobby-layout.html#cb395-22"></a><span class="st">      </span><span class="kw">discard</span>(<span class="op">~</span><span class="st"> </span>.x <span class="op">%in%</span><span class="st"> </span><span class="kw">names</span>(tiles))</span>
-<span id="cb395-23"><a href="lobby-layout.html#cb395-23"></a>    </span>
-<span id="cb395-24"><a href="lobby-layout.html#cb395-24"></a>    <span class="cf">for</span> (i <span class="cf">in</span> missing_neighbours) {</span>
-<span id="cb395-25"><a href="lobby-layout.html#cb395-25"></a>      tiles[[i]] &lt;-<span class="st"> </span><span class="dv">0</span></span>
-<span id="cb395-26"><a href="lobby-layout.html#cb395-26"></a>    }</span>
-<span id="cb395-27"><a href="lobby-layout.html#cb395-27"></a>    </span>
-<span id="cb395-28"><a href="lobby-layout.html#cb395-28"></a>    tiles &lt;-<span class="st"> </span><span class="kw">imap</span>(tiles, <span class="cf">function</span>(colour, position) {</span>
-<span id="cb395-29"><a href="lobby-layout.html#cb395-29"></a>      position &lt;-<span class="st"> </span><span class="kw">as.complex</span>(position)</span>
-<span id="cb395-30"><a href="lobby-layout.html#cb395-30"></a>      </span>
-<span id="cb395-31"><a href="lobby-layout.html#cb395-31"></a>      neighbours &lt;-<span class="st"> </span><span class="kw">reduce</span>(position <span class="op">+</span><span class="st"> </span>directions, <span class="dt">.init =</span> <span class="dv">0</span>, <span class="cf">function</span>(s, n) {</span>
-<span id="cb395-32"><a href="lobby-layout.html#cb395-32"></a>        p &lt;-<span class="st"> </span><span class="kw">as.character</span>(n)</span>
-<span id="cb395-33"><a href="lobby-layout.html#cb395-33"></a>        s <span class="op">+</span><span class="st"> </span><span class="kw">ifelse</span>(<span class="kw">is.null</span>(tiles[[p]]), <span class="dv">0</span>, tiles[[p]])</span>
-<span id="cb395-34"><a href="lobby-layout.html#cb395-34"></a>      })</span>
-<span id="cb395-35"><a href="lobby-layout.html#cb395-35"></a>      </span>
-<span id="cb395-36"><a href="lobby-layout.html#cb395-36"></a>      <span class="cf">if</span> (colour <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;&amp;</span><span class="st"> </span>neighbours <span class="op">==</span><span class="st"> </span><span class="dv">2</span>) {</span>
-<span id="cb395-37"><a href="lobby-layout.html#cb395-37"></a>        <span class="dv">1</span></span>
-<span id="cb395-38"><a href="lobby-layout.html#cb395-38"></a>      } <span class="cf">else</span> <span class="cf">if</span> (colour <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;&amp;</span><span class="st"> </span>(neighbours <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">||</span><span class="st"> </span>neighbours <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>)) {</span>
-<span id="cb395-39"><a href="lobby-layout.html#cb395-39"></a>        <span class="dv">0</span></span>
-<span id="cb395-40"><a href="lobby-layout.html#cb395-40"></a>      } <span class="cf">else</span> {</span>
-<span id="cb395-41"><a href="lobby-layout.html#cb395-41"></a>        colour</span>
-<span id="cb395-42"><a href="lobby-layout.html#cb395-42"></a>      }</span>
-<span id="cb395-43"><a href="lobby-layout.html#cb395-43"></a>    })</span>
-<span id="cb395-44"><a href="lobby-layout.html#cb395-44"></a>  }</span>
-<span id="cb395-45"><a href="lobby-layout.html#cb395-45"></a>  </span>
-<span id="cb395-46"><a href="lobby-layout.html#cb395-46"></a>  tiles <span class="op">%&gt;%</span></span>
-<span id="cb395-47"><a href="lobby-layout.html#cb395-47"></a><span class="st">    </span><span class="kw">flatten_dbl</span>() <span class="op">%&gt;%</span></span>
-<span id="cb395-48"><a href="lobby-layout.html#cb395-48"></a><span class="st">    </span><span class="kw">sum</span>()</span>
-<span id="cb395-49"><a href="lobby-layout.html#cb395-49"></a>}</span></code></pre></div>
+<span id="cb395-2"><a href="lobby-layout.html#cb395-2"></a>  tiles &lt;-<span class="st"> </span><span class="kw">get_tiles</span>(input)</span>
+<span id="cb395-3"><a href="lobby-layout.html#cb395-3"></a>  </span>
+<span id="cb395-4"><a href="lobby-layout.html#cb395-4"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</span>
+<span id="cb395-5"><a href="lobby-layout.html#cb395-5"></a>    <span class="co"># find the tiles which are currently black</span></span>
+<span id="cb395-6"><a href="lobby-layout.html#cb395-6"></a>    is_black &lt;-<span class="st"> </span><span class="kw">which</span>(tiles <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="ot">TRUE</span>)</span>
+<span id="cb395-7"><a href="lobby-layout.html#cb395-7"></a>    <span class="co"># find the neighbours of these black tiles</span></span>
+<span id="cb395-8"><a href="lobby-layout.html#cb395-8"></a>    neighbours &lt;-<span class="st"> </span><span class="kw">map</span>(<span class="kw">array_tree</span>(is_black), <span class="cf">function</span>(v) {</span>
+<span id="cb395-9"><a href="lobby-layout.html#cb395-9"></a>      <span class="kw">t</span>(<span class="kw">map_dfr</span>(directions, <span class="op">~</span><span class="kw">flatten_dbl</span>(v) <span class="op">+</span><span class="st"> </span>.x))</span>
+<span id="cb395-10"><a href="lobby-layout.html#cb395-10"></a>    })</span>
+<span id="cb395-11"><a href="lobby-layout.html#cb395-11"></a>    <span class="co"># for each of the black tiles, work out if it stays black or turns white</span></span>
+<span id="cb395-12"><a href="lobby-layout.html#cb395-12"></a>    <span class="co"># we make a simplification here, if the sum is 2 we will also handle this</span></span>
+<span id="cb395-13"><a href="lobby-layout.html#cb395-13"></a>    <span class="co"># in the white to black step. Multiplying by 1 will convert TRUE to 1 and</span></span>
+<span id="cb395-14"><a href="lobby-layout.html#cb395-14"></a>    <span class="co"># FALSE to 0</span></span>
+<span id="cb395-15"><a href="lobby-layout.html#cb395-15"></a>    new_v &lt;-<span class="st"> </span><span class="kw">map_dbl</span>(neighbours, <span class="op">~</span><span class="kw">sum</span>(tiles[.x])) <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">*</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb395-16"><a href="lobby-layout.html#cb395-16"></a>    </span>
+<span id="cb395-17"><a href="lobby-layout.html#cb395-17"></a>    <span class="co"># the only white tiles which can become black are those which are neighbours</span></span>
+<span id="cb395-18"><a href="lobby-layout.html#cb395-18"></a>    <span class="co"># of black tiles. If a neighbour tile appears exactly twice then it will</span></span>
+<span id="cb395-19"><a href="lobby-layout.html#cb395-19"></a>    <span class="co"># turn to black, so we can simply turn our neighbours to a single dataframe</span></span>
+<span id="cb395-20"><a href="lobby-layout.html#cb395-20"></a>    <span class="co"># and count how many times each set of coordinates appear. Keep only the</span></span>
+<span id="cb395-21"><a href="lobby-layout.html#cb395-21"></a>    <span class="co"># rows that appear twice, then turn the coordinates back to a matrix so we</span></span>
+<span id="cb395-22"><a href="lobby-layout.html#cb395-22"></a>    <span class="co"># can use as an index back into tiles</span></span>
+<span id="cb395-23"><a href="lobby-layout.html#cb395-23"></a>    white_to_black &lt;-<span class="st"> </span>neighbours <span class="op">%&gt;%</span></span>
+<span id="cb395-24"><a href="lobby-layout.html#cb395-24"></a><span class="st">      </span><span class="kw">map_dfr</span>(as.data.frame) <span class="op">%&gt;%</span></span>
+<span id="cb395-25"><a href="lobby-layout.html#cb395-25"></a><span class="st">      </span><span class="kw">count</span>(V1, V2, V3) <span class="op">%&gt;%</span></span>
+<span id="cb395-26"><a href="lobby-layout.html#cb395-26"></a><span class="st">      </span><span class="kw">filter</span>(n <span class="op">==</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></span>
+<span id="cb395-27"><a href="lobby-layout.html#cb395-27"></a><span class="st">      </span><span class="kw">select</span>(<span class="op">-</span>n) <span class="op">%&gt;%</span></span>
+<span id="cb395-28"><a href="lobby-layout.html#cb395-28"></a><span class="st">      </span><span class="kw">as.matrix</span>()</span>
+<span id="cb395-29"><a href="lobby-layout.html#cb395-29"></a>    </span>
+<span id="cb395-30"><a href="lobby-layout.html#cb395-30"></a>    <span class="co"># update the tiles matrix</span></span>
+<span id="cb395-31"><a href="lobby-layout.html#cb395-31"></a>    tiles[is_black] &lt;-<span class="st"> </span>new_v</span>
+<span id="cb395-32"><a href="lobby-layout.html#cb395-32"></a>    tiles[white_to_black] &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb395-33"><a href="lobby-layout.html#cb395-33"></a>  }</span>
+<span id="cb395-34"><a href="lobby-layout.html#cb395-34"></a>  </span>
+<span id="cb395-35"><a href="lobby-layout.html#cb395-35"></a>  <span class="co"># return the results</span></span>
+<span id="cb395-36"><a href="lobby-layout.html#cb395-36"></a>  <span class="kw">sum</span>(tiles)</span>
+<span id="cb395-37"><a href="lobby-layout.html#cb395-37"></a>}</span></code></pre></div>
 <p>We can test this function on the sample data:</p>
 <div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="lobby-layout.html#cb396-1"></a><span class="kw">part_2</span>(sample, <span class="dv">100</span>) <span class="op">==</span><span class="st"> </span><span class="dv">2208</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>And we can run this function on the actual data:</p>
 <div class="sourceCode" id="cb398"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb398-1"><a href="lobby-layout.html#cb398-1"></a><span class="kw">part_2</span>(actual, <span class="dv">100</span>)</span></code></pre></div>
 <pre><code>## [1] 4036</code></pre>
-<p>Unfortunately this is terribly slow, taking nearly 9 minutes on my machine…</p>
+<hr />
+<p><em>Elapsed Time: 3.005s</em></p>
 
 </div>
 </div>

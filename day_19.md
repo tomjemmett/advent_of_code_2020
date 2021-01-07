@@ -198,3 +198,7 @@ part_2(actual)
 ```
 ## [1] 221
 ```
+
+---
+
+*Elapsed Time: 14.837s*

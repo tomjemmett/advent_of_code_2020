@@ -71,9 +71,9 @@ sample_g
 ```
 
 ```
-## IGRAPH 0bd8855 DN-- 10 15 -- 
+## IGRAPH 5829265 DN-- 10 15 -- 
 ## + attr: name (v/c), n (e/n)
-## + edges from 0bd8855 (vertex names):
+## + edges from 5829265 (vertex names):
 ##  [1] light red   ->bright white light red   ->muted yellow
 ##  [3] dark orange ->bright white dark orange ->muted yellow
 ##  [5] bright white->shiny gold   muted yellow->shiny gold  
@@ -225,3 +225,7 @@ part_2_alt(actual_g, "shiny gold", 1) - 1 == part_2(actual_g)
 ```
 ## [1] TRUE
 ```
+
+---
+
+*Elapsed Time: 2.319s*

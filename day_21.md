@@ -135,3 +135,7 @@ part_2(actual)
 ```
 ## [1] "cljf,frtfg,vvfjj,qmrps,hvnkk,qnvx,cpxmpc,qsjszn"
 ```
+
+---
+
+*Elapsed Time: 0.638s*

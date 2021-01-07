@@ -256,3 +256,7 @@ solve(iactual)
 ```
 ## [1] 156735
 ```
+
+---
+
+*Elapsed Time: 0.278s*

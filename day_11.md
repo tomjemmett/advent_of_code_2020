@@ -529,3 +529,7 @@ solve(pactual, part_two, 5)
 ```
 ## [1] 2285
 ```
+
+---
+
+*Elapsed Time: 5.485s*

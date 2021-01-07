@@ -393,3 +393,7 @@ Computer <- R6Class(
   )
 )
 ```
+
+---
+
+*Elapsed Time: 35.045s*
