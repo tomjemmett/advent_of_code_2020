@@ -85,7 +85,18 @@ part_1(actual)
 
 ## Part 2
 
-```{r}
+We can solve part 2 by first using our `get_tiles()` function to get our initial state, then looping `n` times to
+calculate the next state.
+
+First, we find which tiles are currently black, and then we find the neighbours of the black tiles. We consider what the
+next state of these tiles should be and save these values till later.
+
+Next, we take the list of neighbours and see how many times these neighbours appear. If they appear exactly twice then
+this tile will become black.
+
+With these two pieces of information we update the array and repeat.
+
+```{r part 2 function}
 part_2 <- function(input, n) {
   tiles <- get_tiles(input)
   
@@ -97,7 +108,10 @@ part_2 <- function(input, n) {
       t(map_dfr(directions, ~flatten_dbl(v) + .x))
     })
     # for each of the black tiles, work out if it stays black or turns white
-    new_v <- map_dbl(neighbours, ~sum(tiles[.x])) %in% c(1, 2) * 1
+    # we make a simplification here, if the sum is 2 we will also handle this
+    # in the white to black step. Multiplying by 1 will convert TRUE to 1 and
+    # FALSE to 0
+    new_v <- map_dbl(neighbours, ~sum(tiles[.x])) == 1 * 1
     
     # the only white tiles which can become black are those which are neighbours
     # of black tiles. If a neighbour tile appears exactly twice then it will
