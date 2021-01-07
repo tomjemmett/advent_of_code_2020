@@ -7,6 +7,8 @@ library(tidyverse)
 library(igraph)
 library(ggraph)
 library(unglue)
+
+START_TIME <- Sys.time()
 ```
 
 This is my attempt to solve [Day 7](https://adventofcode.com/2020/day/7).
@@ -154,3 +156,7 @@ part_2_alt(sample_g, "shiny gold", 1) - 1 == part_2(sample_g)
 ```{r extra part 2 alt actual test}
 part_2_alt(actual_g, "shiny gold", 1) - 1 == part_2(actual_g)
 ```
+
+---
+
+*Elapsed Time: `r round(Sys.time() - START_TIME, 3)`s*

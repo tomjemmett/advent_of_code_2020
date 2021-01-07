@@ -6,6 +6,8 @@ options(crayon.enabled = NULL)
 library(tidyverse)
 library(R6)
 library(unglue)
+
+START_TIME <- Sys.time()
 ```
 
 This is my attempt to solve [Day 8](https://adventofcode.com/2020/day/8).
@@ -321,3 +323,7 @@ Computer <- R6Class(
   )
 )
 ```
+
+---
+
+*Elapsed Time: `r round(Sys.time() - START_TIME, 3)`s*

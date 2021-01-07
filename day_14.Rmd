@@ -6,6 +6,8 @@ options(crayon.enabled = NULL, # for when rendering on github actions
         scipen = 999)          # make sure we never print in scientific notation
 library(tidyverse)
 library(unglue)
+
+START_TIME <- Sys.time()
 ```
 
 This is my attempt to solve [Day 14](https://adventofcode.com/2020/day/14).
@@ -174,4 +176,6 @@ part_2(sample_2) == 208
 part_2(actual)
 ```
 
+---
 
+*Elapsed Time: `r round(Sys.time() - START_TIME, 3)`s*

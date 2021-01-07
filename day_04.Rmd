@@ -4,6 +4,8 @@
 knitr::opts_chunk$set(echo = TRUE)
 options(crayon.enabled = NULL)
 library(tidyverse)
+
+START_TIME <- Sys.time()
 ```
 
 This is my attempt to solve [Day 4](https://adventofcode.com/2020/day/4).
@@ -191,3 +193,7 @@ actual %>%
   map_lgl(compose(all, flatten_lgl)) %>%
   sum()
 ```
+
+---
+
+*Elapsed Time: `r round(Sys.time() - START_TIME, 3)`s*

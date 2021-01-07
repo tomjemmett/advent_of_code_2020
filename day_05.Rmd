@@ -4,6 +4,8 @@
 knitr::opts_chunk$set(echo = TRUE)
 options(crayon.enabled = NULL)
 library(tidyverse)
+
+START_TIME <- Sys.time()
 ```
 
 This is my attempt to solve [Day 5](https://adventofcode.com/2020/day/5).
@@ -110,3 +112,7 @@ triangle_number <- function(n) 0.5 * n * (n + 1)
 
 triangle_number(max(seats)) - triangle_number(min(seats) - 1) - sum(seats)
 ```
+
+---
+
+*Elapsed Time: `r round(Sys.time() - START_TIME, 3)`s*

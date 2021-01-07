@@ -5,6 +5,8 @@ knitr::opts_chunk$set(echo = TRUE)
 options(crayon.enabled = NULL, # for when rendering on github actions
         scipen = 999)          # make sure we never print in scientific notation
 library(tidyverse)
+
+START_TIME <- Sys.time()
 ```
 
 This is my attempt to solve [Day 22](https://adventofcode.com/2020/day/22).
@@ -175,3 +177,7 @@ And we can run this function on the actual data:
 ```{r part 2 actual}
 part_2(actual)
 ```
+
+---
+
+*Elapsed Time: `r round(Sys.time() - START_TIME, 3)`s*

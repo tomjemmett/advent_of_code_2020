@@ -4,6 +4,8 @@
 knitr::opts_chunk$set(echo = TRUE)
 options(crayon.enabled = NULL)
 library(tidyverse)
+
+START_TIME <- Sys.time()
 ```
 
 This is my attempt to solve [Day 11](https://adventofcode.com/2020/day/11).
@@ -386,3 +388,7 @@ solve(pactual, part_one, 4)
 solve(psample, part_two, 5)
 solve(pactual, part_two, 5)
 ```
+
+---
+
+*Elapsed Time: `r round(Sys.time() - START_TIME, 3)`s*
