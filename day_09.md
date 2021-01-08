@@ -111,4 +111,4 @@ part_2(actual, pa1)
 
 ---
 
-*Elapsed Time: 0.144s*
+*Elapsed Time: 0.178s*

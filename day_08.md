@@ -239,7 +239,7 @@ flip_instructions(sample)
 
 We have 4 set's of instructions to test. This isn't the most efficient way of solving this... we could flip each of the
 instructions in turn, and run the computer on that. This would allow us to exit early. But I don't think that this will
-cause us much issues as our actual input isn't huge (`length(actual)` instructions).
+cause us much issues as our actual input isn't huge (626 instructions).
 
 Now we just need to build a function to iterate over the flipped instructions and run until we find a solution, and
 return the results of that computer.
@@ -396,4 +396,4 @@ Computer <- R6Class(
 
 ---
 
-*Elapsed Time: 35.045s*
+*Elapsed Time: 36.479s*

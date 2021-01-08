@@ -222,4 +222,4 @@ prod(pactual$my_ticket[ps])
 
 ---
 
-*Elapsed Time: 8.078s*
+*Elapsed Time: 7.919s*

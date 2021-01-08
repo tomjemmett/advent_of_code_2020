@@ -124,4 +124,4 @@ We are done for 2020! Hopefully this has been a useful resource for you!
 
 ---
 
-*Elapsed Time: 6.382s*
+*Elapsed Time: 6.314s*

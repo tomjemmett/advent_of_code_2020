@@ -24,7 +24,7 @@
 <meta name="author" content="Tom Jemmett" />
 
 
-<meta name="date" content="2021-01-07" />
+<meta name="date" content="2021-01-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -440,7 +440,7 @@ have found our solution.</p>
 ## [8] &quot;nop -4&quot;  &quot;acc +6&quot;</code></pre>
 <p>We have 4 set’s of instructions to test. This isn’t the most efficient way of solving this… we could flip each of the
 instructions in turn, and run the computer on that. This would allow us to exit early. But I don’t think that this will
-cause us much issues as our actual input isn’t huge (<code>length(actual)</code> instructions).</p>
+cause us much issues as our actual input isn’t huge (626 instructions).</p>
 <p>Now we just need to build a function to iterate over the flipped instructions and run until we find a solution, and
 return the results of that computer.</p>
 <div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="handheld-halting.html#cb146-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
@@ -571,7 +571,7 @@ return the results of that computer.</p>
 <span id="cb151-95"><a href="handheld-halting.html#cb151-95"></a>  )</span>
 <span id="cb151-96"><a href="handheld-halting.html#cb151-96"></a>)</span></code></pre></div>
 <hr />
-<p><em>Elapsed Time: 35.045s</em></p>
+<p><em>Elapsed Time: 36.479s</em></p>
 
 </div>
 </div>

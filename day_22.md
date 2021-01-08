@@ -196,4 +196,4 @@ part_2(actual)
 
 ---
 
-*Elapsed Time: 1.715s*
+*Elapsed Time: 1.664s*

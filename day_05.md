@@ -137,4 +137,4 @@ triangle_number(max(seats)) - triangle_number(min(seats) - 1) - sum(seats)
 
 ---
 
-*Elapsed Time: 0.357s*
+*Elapsed Time: 0.382s*
