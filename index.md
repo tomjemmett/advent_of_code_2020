@@ -1,7 +1,7 @@
 --- 
 title: "Advent of Code 2020"
 author: "[Tom Jemmett](mailto:thomas.jemmett@nhs.net)"
-date: "2021-01-08"
+date: "2021-01-10"
 site: bookdown::bookdown_site
 output:
   bookdown::gitbook:

@@ -4,8 +4,6 @@
 
 This is my attempt to solve [Day 19](https://adventofcode.com/2020/day/19).
 
-This is a work in progress: part 1 works, part 2 gives an incorrect result.
-
 
 ```r
 process_file <- function(file) {
@@ -23,29 +21,54 @@ actual <- process_file("inputs/day_19_input.txt")
 
 ## Part 1
 
-First let's create a function to process a rule against the current message. `r` is the rule we are currently processing
-and defaults to "0", `m` is the character index in message that we are currently processing.
-
-If we do not match the message we return `NA`, othwerwise we return the postion that we have reached in the message.
+First let's build a function that will take the set of rules and convert it to a named list.
 
 
 ```r
-fn <- function(rules, message, r = "0", m = 1) {
-  if (m > length(message)) return (as.numeric(NA))
-  
-  if (str_detect(rules[[r]], "^\\w$")) {
-    return (if (rules[[r]] == message[[m]]) m + 1 else as.numeric(NA))
-  }
-  
-  for (i in str_split(rules[[r]], " \\| ")[[1]]) {
-    mx <- m
-    for (j in str_split(i, " ")[[1]]) {
-      mx <- fn(rules, message, j, mx)
-      if (is.na(mx)) break()
+process_rules <- function(rules) {
+  x <- str_split(rules, ": ")
+  x <- set_names(map(x, 2), map(x, 1))
+
+  map(x, function(.x) {
+    if (str_detect(.x, "[a-z]")) {
+      str_extract(.x, "[a-z]")
+    } else {
+      str_split(.x, " \\| ")[[1]] %>%
+        map(str_split, " ") %>%
+        map(1)
     }
-    if (!is.na(mx)) return (mx)
+  })
+}
+```
+
+We can now build a function that will take a list of rules and a list of messages and filter the messages against the
+rules.
+
+We have a recursive internal function which starts from rule "0" and iteratively works through seeing if we can build
+the current message from that rule.
+
+
+```r
+check <- function(rules, messages) {
+  fn <- function(s, seq) {
+    if (length(s) == 0 | length(seq) == 0) {
+      return (length(s) == 0 & length(seq) == 0)
+    }
+    
+    r <- rules[[seq[[1]]]]
+    
+    if (r[[1]][[1]] %in% letters) {
+      if (s[[1]] == r[[1]][[1]]) {
+        fn(s[-1], seq[-1])
+      } else {
+        FALSE
+      }
+    } else {
+      any(map_lgl(r, ~fn(s, c(.x, seq[-1]))))
+    }
   }
-  return (as.numeric(NA))
+  
+  keep(messages, fn, "0")
 }
 ```
 
@@ -54,20 +77,10 @@ Now we just need to process our input to split into rules and messages, and then
 
 ```r
 part_1 <- function(input) {
-  rules <- local({
-    a <- input[[1]] %>%
-      str_replace_all("\"", "") %>%
-      str_split(": ") %>%
-      transpose()
-    set_names(a[[2]], a[[1]])
-  })
+  rules <- process_rules(input[[1]])
+  messages <- str_extract_all(input[[2]], ".")
   
-  messages <- input[[2]] %>%
-    str_extract_all(".")
-  
-  m <- map_dbl(messages, fn, rules = rules)
-  
-  sum(map_dbl(messages, length) == m - 1, na.rm = TRUE)
+  length(check(rules, messages))
 }
 ```
 
@@ -95,30 +108,22 @@ part_1(actual)
 
 ## Part 2
 
-This is a work in progress, it's not giving the correct result.
+All we need to do for part 2 is modify rule 8 and 11, the `check()` function remains the same.
 
 
 ```r
 part_2 <- function(input) {
-  rules <- local({
-    a <- input[[1]] %>%
-      str_replace_all("\"", "") %>%
-      str_split(": ") %>%
-      transpose()
-    set_names(a[[2]], a[[1]])
-  })
+  rules <- process_rules(input[[1]])
+  messages <- str_extract_all(input[[2]], ".")
   
-  rules[["8"]] <- "42 | 42 8"
-  rules[["11"]] <- "42 31 | 42 11 31"
+  rules[["8"]] <- list(c("42"), c("42", "8"))
+  rules[["11"]] <- list(c("42", "31"), c("42", "11", "31"))
   
-  messages <- input[[2]] %>%
-    str_extract_all(".")
-  
-  m <- map_dbl(messages, fn, rules = rules)
-  
-  sum(map_dbl(messages, length) == m - 1, na.rm = TRUE)
+  length(check(rules, messages))
 }
 ```
+
+We are given a different sample for part 2
 
 
 ```r
@@ -173,6 +178,8 @@ part_2_sample <- list(c(
 ))
 ```
 
+We can test our function works against the provided sample:
+
 
 ```r
 part_1(part_2_sample) == 3
@@ -187,8 +194,10 @@ part_2(part_2_sample)
 ```
 
 ```
-## [1] 6
+## [1] 12
 ```
+
+And we can run our function with the actual data:
 
 
 ```r
@@ -196,9 +205,9 @@ part_2(actual)
 ```
 
 ```
-## [1] 221
+## [1] 367
 ```
 
 ---
 
-*Elapsed Time: 14.324s*
+*Elapsed Time: 41.497s*

@@ -135,4 +135,4 @@ solve(actual, 30000000)
 
 ---
 
-*Elapsed Time: 1.392s*
+*Elapsed Time: 1.267s*

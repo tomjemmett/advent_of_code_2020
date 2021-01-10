@@ -532,4 +532,4 @@ solve(pactual, part_two, 5)
 
 ---
 
-*Elapsed Time: 5.848s*
+*Elapsed Time: 5.57s*

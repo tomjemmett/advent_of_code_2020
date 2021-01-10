@@ -24,7 +24,7 @@
 <meta name="author" content="Tom Jemmett" />
 
 
-<meta name="date" content="2021-01-08" />
+<meta name="date" content="2021-01-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -266,7 +266,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="monster-messages" class="section level1">
 <h1><span class="header-section-number">Day 19</span> Monster Messages</h1>
 <p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/19">Day 19</a>.</p>
-<p>This is a work in progress: part 1 works, part 2 gives an incorrect result.</p>
 <div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="monster-messages.html#cb321-1"></a>process_file &lt;-<span class="st"> </span><span class="cf">function</span>(file) {</span>
 <span id="cb321-2"><a href="monster-messages.html#cb321-2"></a>  <span class="kw">read_file</span>(file) <span class="op">%&gt;%</span></span>
 <span id="cb321-3"><a href="monster-messages.html#cb321-3"></a><span class="st">    </span><span class="kw">str_trim</span>() <span class="op">%&gt;%</span></span>
@@ -280,129 +279,132 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb321-11"><a href="monster-messages.html#cb321-11"></a>actual &lt;-<span class="st"> </span><span class="kw">process_file</span>(<span class="st">&quot;inputs/day_19_input.txt&quot;</span>)</span></code></pre></div>
 <div id="part-1-18" class="section level2">
 <h2><span class="header-section-number">19.1</span> Part 1</h2>
-<p>First let’s create a function to process a rule against the current message. <code>r</code> is the rule we are currently processing
-and defaults to “0”, <code>m</code> is the character index in message that we are currently processing.</p>
-<p>If we do not match the message we return <code>NA</code>, othwerwise we return the postion that we have reached in the message.</p>
-<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="monster-messages.html#cb322-1"></a>fn &lt;-<span class="st"> </span><span class="cf">function</span>(rules, message, <span class="dt">r =</span> <span class="st">&quot;0&quot;</span>, <span class="dt">m =</span> <span class="dv">1</span>) {</span>
-<span id="cb322-2"><a href="monster-messages.html#cb322-2"></a>  <span class="cf">if</span> (m <span class="op">&gt;</span><span class="st"> </span><span class="kw">length</span>(message)) <span class="kw">return</span> (<span class="kw">as.numeric</span>(<span class="ot">NA</span>))</span>
-<span id="cb322-3"><a href="monster-messages.html#cb322-3"></a>  </span>
-<span id="cb322-4"><a href="monster-messages.html#cb322-4"></a>  <span class="cf">if</span> (<span class="kw">str_detect</span>(rules[[r]], <span class="st">&quot;^</span><span class="ch">\\</span><span class="st">w$&quot;</span>)) {</span>
-<span id="cb322-5"><a href="monster-messages.html#cb322-5"></a>    <span class="kw">return</span> (<span class="cf">if</span> (rules[[r]] <span class="op">==</span><span class="st"> </span>message[[m]]) m <span class="op">+</span><span class="st"> </span><span class="dv">1</span> <span class="cf">else</span> <span class="kw">as.numeric</span>(<span class="ot">NA</span>))</span>
-<span id="cb322-6"><a href="monster-messages.html#cb322-6"></a>  }</span>
-<span id="cb322-7"><a href="monster-messages.html#cb322-7"></a>  </span>
-<span id="cb322-8"><a href="monster-messages.html#cb322-8"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">str_split</span>(rules[[r]], <span class="st">&quot; </span><span class="ch">\\</span><span class="st">| &quot;</span>)[[<span class="dv">1</span>]]) {</span>
-<span id="cb322-9"><a href="monster-messages.html#cb322-9"></a>    mx &lt;-<span class="st"> </span>m</span>
-<span id="cb322-10"><a href="monster-messages.html#cb322-10"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="kw">str_split</span>(i, <span class="st">&quot; &quot;</span>)[[<span class="dv">1</span>]]) {</span>
-<span id="cb322-11"><a href="monster-messages.html#cb322-11"></a>      mx &lt;-<span class="st"> </span><span class="kw">fn</span>(rules, message, j, mx)</span>
-<span id="cb322-12"><a href="monster-messages.html#cb322-12"></a>      <span class="cf">if</span> (<span class="kw">is.na</span>(mx)) <span class="cf">break</span>()</span>
-<span id="cb322-13"><a href="monster-messages.html#cb322-13"></a>    }</span>
-<span id="cb322-14"><a href="monster-messages.html#cb322-14"></a>    <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.na</span>(mx)) <span class="kw">return</span> (mx)</span>
-<span id="cb322-15"><a href="monster-messages.html#cb322-15"></a>  }</span>
-<span id="cb322-16"><a href="monster-messages.html#cb322-16"></a>  <span class="kw">return</span> (<span class="kw">as.numeric</span>(<span class="ot">NA</span>))</span>
-<span id="cb322-17"><a href="monster-messages.html#cb322-17"></a>}</span></code></pre></div>
+<p>First let’s build a function that will take the set of rules and convert it to a named list.</p>
+<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="monster-messages.html#cb322-1"></a>process_rules &lt;-<span class="st"> </span><span class="cf">function</span>(rules) {</span>
+<span id="cb322-2"><a href="monster-messages.html#cb322-2"></a>  x &lt;-<span class="st"> </span><span class="kw">str_split</span>(rules, <span class="st">&quot;: &quot;</span>)</span>
+<span id="cb322-3"><a href="monster-messages.html#cb322-3"></a>  x &lt;-<span class="st"> </span><span class="kw">set_names</span>(<span class="kw">map</span>(x, <span class="dv">2</span>), <span class="kw">map</span>(x, <span class="dv">1</span>))</span>
+<span id="cb322-4"><a href="monster-messages.html#cb322-4"></a></span>
+<span id="cb322-5"><a href="monster-messages.html#cb322-5"></a>  <span class="kw">map</span>(x, <span class="cf">function</span>(.x) {</span>
+<span id="cb322-6"><a href="monster-messages.html#cb322-6"></a>    <span class="cf">if</span> (<span class="kw">str_detect</span>(.x, <span class="st">&quot;[a-z]&quot;</span>)) {</span>
+<span id="cb322-7"><a href="monster-messages.html#cb322-7"></a>      <span class="kw">str_extract</span>(.x, <span class="st">&quot;[a-z]&quot;</span>)</span>
+<span id="cb322-8"><a href="monster-messages.html#cb322-8"></a>    } <span class="cf">else</span> {</span>
+<span id="cb322-9"><a href="monster-messages.html#cb322-9"></a>      <span class="kw">str_split</span>(.x, <span class="st">&quot; </span><span class="ch">\\</span><span class="st">| &quot;</span>)[[<span class="dv">1</span>]] <span class="op">%&gt;%</span></span>
+<span id="cb322-10"><a href="monster-messages.html#cb322-10"></a><span class="st">        </span><span class="kw">map</span>(str_split, <span class="st">&quot; &quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb322-11"><a href="monster-messages.html#cb322-11"></a><span class="st">        </span><span class="kw">map</span>(<span class="dv">1</span>)</span>
+<span id="cb322-12"><a href="monster-messages.html#cb322-12"></a>    }</span>
+<span id="cb322-13"><a href="monster-messages.html#cb322-13"></a>  })</span>
+<span id="cb322-14"><a href="monster-messages.html#cb322-14"></a>}</span></code></pre></div>
+<p>We can now build a function that will take a list of rules and a list of messages and filter the messages against the
+rules.</p>
+<p>We have a recursive internal function which starts from rule “0” and iteratively works through seeing if we can build
+the current message from that rule.</p>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="monster-messages.html#cb323-1"></a>check &lt;-<span class="st"> </span><span class="cf">function</span>(rules, messages) {</span>
+<span id="cb323-2"><a href="monster-messages.html#cb323-2"></a>  fn &lt;-<span class="st"> </span><span class="cf">function</span>(s, seq) {</span>
+<span id="cb323-3"><a href="monster-messages.html#cb323-3"></a>    <span class="cf">if</span> (<span class="kw">length</span>(s) <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">|</span><span class="st"> </span><span class="kw">length</span>(seq) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb323-4"><a href="monster-messages.html#cb323-4"></a>      <span class="kw">return</span> (<span class="kw">length</span>(s) <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">length</span>(seq) <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb323-5"><a href="monster-messages.html#cb323-5"></a>    }</span>
+<span id="cb323-6"><a href="monster-messages.html#cb323-6"></a>    </span>
+<span id="cb323-7"><a href="monster-messages.html#cb323-7"></a>    r &lt;-<span class="st"> </span>rules[[seq[[<span class="dv">1</span>]]]]</span>
+<span id="cb323-8"><a href="monster-messages.html#cb323-8"></a>    </span>
+<span id="cb323-9"><a href="monster-messages.html#cb323-9"></a>    <span class="cf">if</span> (r[[<span class="dv">1</span>]][[<span class="dv">1</span>]] <span class="op">%in%</span><span class="st"> </span>letters) {</span>
+<span id="cb323-10"><a href="monster-messages.html#cb323-10"></a>      <span class="cf">if</span> (s[[<span class="dv">1</span>]] <span class="op">==</span><span class="st"> </span>r[[<span class="dv">1</span>]][[<span class="dv">1</span>]]) {</span>
+<span id="cb323-11"><a href="monster-messages.html#cb323-11"></a>        <span class="kw">fn</span>(s[<span class="op">-</span><span class="dv">1</span>], seq[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb323-12"><a href="monster-messages.html#cb323-12"></a>      } <span class="cf">else</span> {</span>
+<span id="cb323-13"><a href="monster-messages.html#cb323-13"></a>        <span class="ot">FALSE</span></span>
+<span id="cb323-14"><a href="monster-messages.html#cb323-14"></a>      }</span>
+<span id="cb323-15"><a href="monster-messages.html#cb323-15"></a>    } <span class="cf">else</span> {</span>
+<span id="cb323-16"><a href="monster-messages.html#cb323-16"></a>      <span class="kw">any</span>(<span class="kw">map_lgl</span>(r, <span class="op">~</span><span class="kw">fn</span>(s, <span class="kw">c</span>(.x, seq[<span class="op">-</span><span class="dv">1</span>]))))</span>
+<span id="cb323-17"><a href="monster-messages.html#cb323-17"></a>    }</span>
+<span id="cb323-18"><a href="monster-messages.html#cb323-18"></a>  }</span>
+<span id="cb323-19"><a href="monster-messages.html#cb323-19"></a>  </span>
+<span id="cb323-20"><a href="monster-messages.html#cb323-20"></a>  <span class="kw">keep</span>(messages, fn, <span class="st">&quot;0&quot;</span>)</span>
+<span id="cb323-21"><a href="monster-messages.html#cb323-21"></a>}</span></code></pre></div>
 <p>Now we just need to process our input to split into rules and messages, and then call our function.</p>
-<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="monster-messages.html#cb323-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb323-2"><a href="monster-messages.html#cb323-2"></a>  rules &lt;-<span class="st"> </span><span class="kw">local</span>({</span>
-<span id="cb323-3"><a href="monster-messages.html#cb323-3"></a>    a &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]] <span class="op">%&gt;%</span></span>
-<span id="cb323-4"><a href="monster-messages.html#cb323-4"></a><span class="st">      </span><span class="kw">str_replace_all</span>(<span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, <span class="st">&quot;&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb323-5"><a href="monster-messages.html#cb323-5"></a><span class="st">      </span><span class="kw">str_split</span>(<span class="st">&quot;: &quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb323-6"><a href="monster-messages.html#cb323-6"></a><span class="st">      </span><span class="kw">transpose</span>()</span>
-<span id="cb323-7"><a href="monster-messages.html#cb323-7"></a>    <span class="kw">set_names</span>(a[[<span class="dv">2</span>]], a[[<span class="dv">1</span>]])</span>
-<span id="cb323-8"><a href="monster-messages.html#cb323-8"></a>  })</span>
-<span id="cb323-9"><a href="monster-messages.html#cb323-9"></a>  </span>
-<span id="cb323-10"><a href="monster-messages.html#cb323-10"></a>  messages &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]] <span class="op">%&gt;%</span></span>
-<span id="cb323-11"><a href="monster-messages.html#cb323-11"></a><span class="st">    </span><span class="kw">str_extract_all</span>(<span class="st">&quot;.&quot;</span>)</span>
-<span id="cb323-12"><a href="monster-messages.html#cb323-12"></a>  </span>
-<span id="cb323-13"><a href="monster-messages.html#cb323-13"></a>  m &lt;-<span class="st"> </span><span class="kw">map_dbl</span>(messages, fn, <span class="dt">rules =</span> rules)</span>
-<span id="cb323-14"><a href="monster-messages.html#cb323-14"></a>  </span>
-<span id="cb323-15"><a href="monster-messages.html#cb323-15"></a>  <span class="kw">sum</span>(<span class="kw">map_dbl</span>(messages, length) <span class="op">==</span><span class="st"> </span>m <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb323-16"><a href="monster-messages.html#cb323-16"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="monster-messages.html#cb324-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb324-2"><a href="monster-messages.html#cb324-2"></a>  rules &lt;-<span class="st"> </span><span class="kw">process_rules</span>(input[[<span class="dv">1</span>]])</span>
+<span id="cb324-3"><a href="monster-messages.html#cb324-3"></a>  messages &lt;-<span class="st"> </span><span class="kw">str_extract_all</span>(input[[<span class="dv">2</span>]], <span class="st">&quot;.&quot;</span>)</span>
+<span id="cb324-4"><a href="monster-messages.html#cb324-4"></a>  </span>
+<span id="cb324-5"><a href="monster-messages.html#cb324-5"></a>  <span class="kw">length</span>(<span class="kw">check</span>(rules, messages))</span>
+<span id="cb324-6"><a href="monster-messages.html#cb324-6"></a>}</span></code></pre></div>
 <p>We can test our function matches the sample:</p>
-<div class="sourceCode" id="cb324"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb324-1"><a href="monster-messages.html#cb324-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="monster-messages.html#cb325-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">2</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>And we can run with our actual data:</p>
-<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="monster-messages.html#cb326-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="monster-messages.html#cb327-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
 <pre><code>## [1] 173</code></pre>
 </div>
 <div id="part-2-18" class="section level2">
 <h2><span class="header-section-number">19.2</span> Part 2</h2>
-<p>This is a work in progress, it’s not giving the correct result.</p>
-<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="monster-messages.html#cb328-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb328-2"><a href="monster-messages.html#cb328-2"></a>  rules &lt;-<span class="st"> </span><span class="kw">local</span>({</span>
-<span id="cb328-3"><a href="monster-messages.html#cb328-3"></a>    a &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]] <span class="op">%&gt;%</span></span>
-<span id="cb328-4"><a href="monster-messages.html#cb328-4"></a><span class="st">      </span><span class="kw">str_replace_all</span>(<span class="st">&quot;</span><span class="ch">\&quot;</span><span class="st">&quot;</span>, <span class="st">&quot;&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb328-5"><a href="monster-messages.html#cb328-5"></a><span class="st">      </span><span class="kw">str_split</span>(<span class="st">&quot;: &quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb328-6"><a href="monster-messages.html#cb328-6"></a><span class="st">      </span><span class="kw">transpose</span>()</span>
-<span id="cb328-7"><a href="monster-messages.html#cb328-7"></a>    <span class="kw">set_names</span>(a[[<span class="dv">2</span>]], a[[<span class="dv">1</span>]])</span>
-<span id="cb328-8"><a href="monster-messages.html#cb328-8"></a>  })</span>
-<span id="cb328-9"><a href="monster-messages.html#cb328-9"></a>  </span>
-<span id="cb328-10"><a href="monster-messages.html#cb328-10"></a>  rules[[<span class="st">&quot;8&quot;</span>]] &lt;-<span class="st"> &quot;42 | 42 8&quot;</span></span>
-<span id="cb328-11"><a href="monster-messages.html#cb328-11"></a>  rules[[<span class="st">&quot;11&quot;</span>]] &lt;-<span class="st"> &quot;42 31 | 42 11 31&quot;</span></span>
-<span id="cb328-12"><a href="monster-messages.html#cb328-12"></a>  </span>
-<span id="cb328-13"><a href="monster-messages.html#cb328-13"></a>  messages &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]] <span class="op">%&gt;%</span></span>
-<span id="cb328-14"><a href="monster-messages.html#cb328-14"></a><span class="st">    </span><span class="kw">str_extract_all</span>(<span class="st">&quot;.&quot;</span>)</span>
-<span id="cb328-15"><a href="monster-messages.html#cb328-15"></a>  </span>
-<span id="cb328-16"><a href="monster-messages.html#cb328-16"></a>  m &lt;-<span class="st"> </span><span class="kw">map_dbl</span>(messages, fn, <span class="dt">rules =</span> rules)</span>
-<span id="cb328-17"><a href="monster-messages.html#cb328-17"></a>  </span>
-<span id="cb328-18"><a href="monster-messages.html#cb328-18"></a>  <span class="kw">sum</span>(<span class="kw">map_dbl</span>(messages, length) <span class="op">==</span><span class="st"> </span>m <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb328-19"><a href="monster-messages.html#cb328-19"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="monster-messages.html#cb329-1"></a>part_<span class="dv">2</span>_sample &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(</span>
-<span id="cb329-2"><a href="monster-messages.html#cb329-2"></a>  <span class="st">&quot;42: 9 14 | 10 1&quot;</span>,</span>
-<span id="cb329-3"><a href="monster-messages.html#cb329-3"></a>  <span class="st">&quot;9: 14 27 | 1 26&quot;</span>,</span>
-<span id="cb329-4"><a href="monster-messages.html#cb329-4"></a>  <span class="st">&quot;10: 23 14 | 28 1&quot;</span>,</span>
-<span id="cb329-5"><a href="monster-messages.html#cb329-5"></a>  <span class="st">&quot;1: </span><span class="ch">\&quot;</span><span class="st">a</span><span class="ch">\&quot;</span><span class="st">&quot;</span>,</span>
-<span id="cb329-6"><a href="monster-messages.html#cb329-6"></a>  <span class="st">&quot;11: 42 31&quot;</span>,</span>
-<span id="cb329-7"><a href="monster-messages.html#cb329-7"></a>  <span class="st">&quot;5: 1 14 | 15 1&quot;</span>,</span>
-<span id="cb329-8"><a href="monster-messages.html#cb329-8"></a>  <span class="st">&quot;19: 14 1 | 14 14&quot;</span>,</span>
-<span id="cb329-9"><a href="monster-messages.html#cb329-9"></a>  <span class="st">&quot;12: 24 14 | 19 1&quot;</span>,</span>
-<span id="cb329-10"><a href="monster-messages.html#cb329-10"></a>  <span class="st">&quot;16: 15 1 | 14 14&quot;</span>,</span>
-<span id="cb329-11"><a href="monster-messages.html#cb329-11"></a>  <span class="st">&quot;31: 14 17 | 1 13&quot;</span>,</span>
-<span id="cb329-12"><a href="monster-messages.html#cb329-12"></a>  <span class="st">&quot;6: 14 14 | 1 14&quot;</span>,</span>
-<span id="cb329-13"><a href="monster-messages.html#cb329-13"></a>  <span class="st">&quot;2: 1 24 | 14 4&quot;</span>,</span>
-<span id="cb329-14"><a href="monster-messages.html#cb329-14"></a>  <span class="st">&quot;0: 8 11&quot;</span>,</span>
-<span id="cb329-15"><a href="monster-messages.html#cb329-15"></a>  <span class="st">&quot;13: 14 3 | 1 12&quot;</span>,</span>
-<span id="cb329-16"><a href="monster-messages.html#cb329-16"></a>  <span class="st">&quot;15: 1 | 14&quot;</span>,</span>
-<span id="cb329-17"><a href="monster-messages.html#cb329-17"></a>  <span class="st">&quot;17: 14 2 | 1 7&quot;</span>,</span>
-<span id="cb329-18"><a href="monster-messages.html#cb329-18"></a>  <span class="st">&quot;23: 25 1 | 22 14&quot;</span>,</span>
-<span id="cb329-19"><a href="monster-messages.html#cb329-19"></a>  <span class="st">&quot;28: 16 1&quot;</span>,</span>
-<span id="cb329-20"><a href="monster-messages.html#cb329-20"></a>  <span class="st">&quot;4: 1 1&quot;</span>,</span>
-<span id="cb329-21"><a href="monster-messages.html#cb329-21"></a>  <span class="st">&quot;20: 14 14 | 1 15&quot;</span>,</span>
-<span id="cb329-22"><a href="monster-messages.html#cb329-22"></a>  <span class="st">&quot;3: 5 14 | 16 1&quot;</span>,</span>
-<span id="cb329-23"><a href="monster-messages.html#cb329-23"></a>  <span class="st">&quot;27: 1 6 | 14 18&quot;</span>,</span>
-<span id="cb329-24"><a href="monster-messages.html#cb329-24"></a>  <span class="st">&quot;14: </span><span class="ch">\&quot;</span><span class="st">b</span><span class="ch">\&quot;</span><span class="st">&quot;</span>,</span>
-<span id="cb329-25"><a href="monster-messages.html#cb329-25"></a>  <span class="st">&quot;21: 14 1 | 1 14&quot;</span>,</span>
-<span id="cb329-26"><a href="monster-messages.html#cb329-26"></a>  <span class="st">&quot;25: 1 1 | 1 14&quot;</span>,</span>
-<span id="cb329-27"><a href="monster-messages.html#cb329-27"></a>  <span class="st">&quot;22: 14 14&quot;</span>,</span>
-<span id="cb329-28"><a href="monster-messages.html#cb329-28"></a>  <span class="st">&quot;8: 42&quot;</span>,</span>
-<span id="cb329-29"><a href="monster-messages.html#cb329-29"></a>  <span class="st">&quot;26: 14 22 | 1 20&quot;</span>,</span>
-<span id="cb329-30"><a href="monster-messages.html#cb329-30"></a>  <span class="st">&quot;18: 15 15&quot;</span>,</span>
-<span id="cb329-31"><a href="monster-messages.html#cb329-31"></a>  <span class="st">&quot;7: 14 5 | 1 21&quot;</span>,</span>
-<span id="cb329-32"><a href="monster-messages.html#cb329-32"></a>  <span class="st">&quot;24: 14 1&quot;</span></span>
-<span id="cb329-33"><a href="monster-messages.html#cb329-33"></a>), <span class="kw">c</span>(</span>
-<span id="cb329-34"><a href="monster-messages.html#cb329-34"></a>  <span class="st">&quot;abbbbbabbbaaaababbaabbbbabababbbabbbbbbabaaaa&quot;</span>,</span>
-<span id="cb329-35"><a href="monster-messages.html#cb329-35"></a>  <span class="st">&quot;bbabbbbaabaabba&quot;</span>,</span>
-<span id="cb329-36"><a href="monster-messages.html#cb329-36"></a>  <span class="st">&quot;babbbbaabbbbbabbbbbbaabaaabaaa&quot;</span>,</span>
-<span id="cb329-37"><a href="monster-messages.html#cb329-37"></a>  <span class="st">&quot;aaabbbbbbaaaabaababaabababbabaaabbababababaaa&quot;</span>,</span>
-<span id="cb329-38"><a href="monster-messages.html#cb329-38"></a>  <span class="st">&quot;bbbbbbbaaaabbbbaaabbabaaa&quot;</span>,</span>
-<span id="cb329-39"><a href="monster-messages.html#cb329-39"></a>  <span class="st">&quot;bbbababbbbaaaaaaaabbababaaababaabab&quot;</span>,</span>
-<span id="cb329-40"><a href="monster-messages.html#cb329-40"></a>  <span class="st">&quot;ababaaaaaabaaab&quot;</span>,</span>
-<span id="cb329-41"><a href="monster-messages.html#cb329-41"></a>  <span class="st">&quot;ababaaaaabbbaba&quot;</span>,</span>
-<span id="cb329-42"><a href="monster-messages.html#cb329-42"></a>  <span class="st">&quot;baabbaaaabbaaaababbaababb&quot;</span>,</span>
-<span id="cb329-43"><a href="monster-messages.html#cb329-43"></a>  <span class="st">&quot;abbbbabbbbaaaababbbbbbaaaababb&quot;</span>,</span>
-<span id="cb329-44"><a href="monster-messages.html#cb329-44"></a>  <span class="st">&quot;aaaaabbaabaaaaababaa&quot;</span>,</span>
-<span id="cb329-45"><a href="monster-messages.html#cb329-45"></a>  <span class="st">&quot;aaaabbaaaabbaaa&quot;</span>,</span>
-<span id="cb329-46"><a href="monster-messages.html#cb329-46"></a>  <span class="st">&quot;aaaabbaabbaaaaaaabbbabbbaaabbaabaaa&quot;</span>,</span>
-<span id="cb329-47"><a href="monster-messages.html#cb329-47"></a>  <span class="st">&quot;babaaabbbaaabaababbaabababaaab&quot;</span>,</span>
-<span id="cb329-48"><a href="monster-messages.html#cb329-48"></a>  <span class="st">&quot;aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba&quot;</span></span>
-<span id="cb329-49"><a href="monster-messages.html#cb329-49"></a>))</span></code></pre></div>
-<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="monster-messages.html#cb330-1"></a><span class="kw">part_1</span>(part_<span class="dv">2</span>_sample) <span class="op">==</span><span class="st"> </span><span class="dv">3</span></span></code></pre></div>
+<p>All we need to do for part 2 is modify rule 8 and 11, the <code>check()</code> function remains the same.</p>
+<div class="sourceCode" id="cb329"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb329-1"><a href="monster-messages.html#cb329-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb329-2"><a href="monster-messages.html#cb329-2"></a>  rules &lt;-<span class="st"> </span><span class="kw">process_rules</span>(input[[<span class="dv">1</span>]])</span>
+<span id="cb329-3"><a href="monster-messages.html#cb329-3"></a>  messages &lt;-<span class="st"> </span><span class="kw">str_extract_all</span>(input[[<span class="dv">2</span>]], <span class="st">&quot;.&quot;</span>)</span>
+<span id="cb329-4"><a href="monster-messages.html#cb329-4"></a>  </span>
+<span id="cb329-5"><a href="monster-messages.html#cb329-5"></a>  rules[[<span class="st">&quot;8&quot;</span>]] &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;42&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;42&quot;</span>, <span class="st">&quot;8&quot;</span>))</span>
+<span id="cb329-6"><a href="monster-messages.html#cb329-6"></a>  rules[[<span class="st">&quot;11&quot;</span>]] &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;42&quot;</span>, <span class="st">&quot;31&quot;</span>), <span class="kw">c</span>(<span class="st">&quot;42&quot;</span>, <span class="st">&quot;11&quot;</span>, <span class="st">&quot;31&quot;</span>))</span>
+<span id="cb329-7"><a href="monster-messages.html#cb329-7"></a>  </span>
+<span id="cb329-8"><a href="monster-messages.html#cb329-8"></a>  <span class="kw">length</span>(<span class="kw">check</span>(rules, messages))</span>
+<span id="cb329-9"><a href="monster-messages.html#cb329-9"></a>}</span></code></pre></div>
+<p>We are given a different sample for part 2</p>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="monster-messages.html#cb330-1"></a>part_<span class="dv">2</span>_sample &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(</span>
+<span id="cb330-2"><a href="monster-messages.html#cb330-2"></a>  <span class="st">&quot;42: 9 14 | 10 1&quot;</span>,</span>
+<span id="cb330-3"><a href="monster-messages.html#cb330-3"></a>  <span class="st">&quot;9: 14 27 | 1 26&quot;</span>,</span>
+<span id="cb330-4"><a href="monster-messages.html#cb330-4"></a>  <span class="st">&quot;10: 23 14 | 28 1&quot;</span>,</span>
+<span id="cb330-5"><a href="monster-messages.html#cb330-5"></a>  <span class="st">&quot;1: </span><span class="ch">\&quot;</span><span class="st">a</span><span class="ch">\&quot;</span><span class="st">&quot;</span>,</span>
+<span id="cb330-6"><a href="monster-messages.html#cb330-6"></a>  <span class="st">&quot;11: 42 31&quot;</span>,</span>
+<span id="cb330-7"><a href="monster-messages.html#cb330-7"></a>  <span class="st">&quot;5: 1 14 | 15 1&quot;</span>,</span>
+<span id="cb330-8"><a href="monster-messages.html#cb330-8"></a>  <span class="st">&quot;19: 14 1 | 14 14&quot;</span>,</span>
+<span id="cb330-9"><a href="monster-messages.html#cb330-9"></a>  <span class="st">&quot;12: 24 14 | 19 1&quot;</span>,</span>
+<span id="cb330-10"><a href="monster-messages.html#cb330-10"></a>  <span class="st">&quot;16: 15 1 | 14 14&quot;</span>,</span>
+<span id="cb330-11"><a href="monster-messages.html#cb330-11"></a>  <span class="st">&quot;31: 14 17 | 1 13&quot;</span>,</span>
+<span id="cb330-12"><a href="monster-messages.html#cb330-12"></a>  <span class="st">&quot;6: 14 14 | 1 14&quot;</span>,</span>
+<span id="cb330-13"><a href="monster-messages.html#cb330-13"></a>  <span class="st">&quot;2: 1 24 | 14 4&quot;</span>,</span>
+<span id="cb330-14"><a href="monster-messages.html#cb330-14"></a>  <span class="st">&quot;0: 8 11&quot;</span>,</span>
+<span id="cb330-15"><a href="monster-messages.html#cb330-15"></a>  <span class="st">&quot;13: 14 3 | 1 12&quot;</span>,</span>
+<span id="cb330-16"><a href="monster-messages.html#cb330-16"></a>  <span class="st">&quot;15: 1 | 14&quot;</span>,</span>
+<span id="cb330-17"><a href="monster-messages.html#cb330-17"></a>  <span class="st">&quot;17: 14 2 | 1 7&quot;</span>,</span>
+<span id="cb330-18"><a href="monster-messages.html#cb330-18"></a>  <span class="st">&quot;23: 25 1 | 22 14&quot;</span>,</span>
+<span id="cb330-19"><a href="monster-messages.html#cb330-19"></a>  <span class="st">&quot;28: 16 1&quot;</span>,</span>
+<span id="cb330-20"><a href="monster-messages.html#cb330-20"></a>  <span class="st">&quot;4: 1 1&quot;</span>,</span>
+<span id="cb330-21"><a href="monster-messages.html#cb330-21"></a>  <span class="st">&quot;20: 14 14 | 1 15&quot;</span>,</span>
+<span id="cb330-22"><a href="monster-messages.html#cb330-22"></a>  <span class="st">&quot;3: 5 14 | 16 1&quot;</span>,</span>
+<span id="cb330-23"><a href="monster-messages.html#cb330-23"></a>  <span class="st">&quot;27: 1 6 | 14 18&quot;</span>,</span>
+<span id="cb330-24"><a href="monster-messages.html#cb330-24"></a>  <span class="st">&quot;14: </span><span class="ch">\&quot;</span><span class="st">b</span><span class="ch">\&quot;</span><span class="st">&quot;</span>,</span>
+<span id="cb330-25"><a href="monster-messages.html#cb330-25"></a>  <span class="st">&quot;21: 14 1 | 1 14&quot;</span>,</span>
+<span id="cb330-26"><a href="monster-messages.html#cb330-26"></a>  <span class="st">&quot;25: 1 1 | 1 14&quot;</span>,</span>
+<span id="cb330-27"><a href="monster-messages.html#cb330-27"></a>  <span class="st">&quot;22: 14 14&quot;</span>,</span>
+<span id="cb330-28"><a href="monster-messages.html#cb330-28"></a>  <span class="st">&quot;8: 42&quot;</span>,</span>
+<span id="cb330-29"><a href="monster-messages.html#cb330-29"></a>  <span class="st">&quot;26: 14 22 | 1 20&quot;</span>,</span>
+<span id="cb330-30"><a href="monster-messages.html#cb330-30"></a>  <span class="st">&quot;18: 15 15&quot;</span>,</span>
+<span id="cb330-31"><a href="monster-messages.html#cb330-31"></a>  <span class="st">&quot;7: 14 5 | 1 21&quot;</span>,</span>
+<span id="cb330-32"><a href="monster-messages.html#cb330-32"></a>  <span class="st">&quot;24: 14 1&quot;</span></span>
+<span id="cb330-33"><a href="monster-messages.html#cb330-33"></a>), <span class="kw">c</span>(</span>
+<span id="cb330-34"><a href="monster-messages.html#cb330-34"></a>  <span class="st">&quot;abbbbbabbbaaaababbaabbbbabababbbabbbbbbabaaaa&quot;</span>,</span>
+<span id="cb330-35"><a href="monster-messages.html#cb330-35"></a>  <span class="st">&quot;bbabbbbaabaabba&quot;</span>,</span>
+<span id="cb330-36"><a href="monster-messages.html#cb330-36"></a>  <span class="st">&quot;babbbbaabbbbbabbbbbbaabaaabaaa&quot;</span>,</span>
+<span id="cb330-37"><a href="monster-messages.html#cb330-37"></a>  <span class="st">&quot;aaabbbbbbaaaabaababaabababbabaaabbababababaaa&quot;</span>,</span>
+<span id="cb330-38"><a href="monster-messages.html#cb330-38"></a>  <span class="st">&quot;bbbbbbbaaaabbbbaaabbabaaa&quot;</span>,</span>
+<span id="cb330-39"><a href="monster-messages.html#cb330-39"></a>  <span class="st">&quot;bbbababbbbaaaaaaaabbababaaababaabab&quot;</span>,</span>
+<span id="cb330-40"><a href="monster-messages.html#cb330-40"></a>  <span class="st">&quot;ababaaaaaabaaab&quot;</span>,</span>
+<span id="cb330-41"><a href="monster-messages.html#cb330-41"></a>  <span class="st">&quot;ababaaaaabbbaba&quot;</span>,</span>
+<span id="cb330-42"><a href="monster-messages.html#cb330-42"></a>  <span class="st">&quot;baabbaaaabbaaaababbaababb&quot;</span>,</span>
+<span id="cb330-43"><a href="monster-messages.html#cb330-43"></a>  <span class="st">&quot;abbbbabbbbaaaababbbbbbaaaababb&quot;</span>,</span>
+<span id="cb330-44"><a href="monster-messages.html#cb330-44"></a>  <span class="st">&quot;aaaaabbaabaaaaababaa&quot;</span>,</span>
+<span id="cb330-45"><a href="monster-messages.html#cb330-45"></a>  <span class="st">&quot;aaaabbaaaabbaaa&quot;</span>,</span>
+<span id="cb330-46"><a href="monster-messages.html#cb330-46"></a>  <span class="st">&quot;aaaabbaabbaaaaaaabbbabbbaaabbaabaaa&quot;</span>,</span>
+<span id="cb330-47"><a href="monster-messages.html#cb330-47"></a>  <span class="st">&quot;babaaabbbaaabaababbaabababaaab&quot;</span>,</span>
+<span id="cb330-48"><a href="monster-messages.html#cb330-48"></a>  <span class="st">&quot;aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba&quot;</span></span>
+<span id="cb330-49"><a href="monster-messages.html#cb330-49"></a>))</span></code></pre></div>
+<p>We can test our function works against the provided sample:</p>
+<div class="sourceCode" id="cb331"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb331-1"><a href="monster-messages.html#cb331-1"></a><span class="kw">part_1</span>(part_<span class="dv">2</span>_sample) <span class="op">==</span><span class="st"> </span><span class="dv">3</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="monster-messages.html#cb332-1"></a><span class="kw">part_2</span>(part_<span class="dv">2</span>_sample)</span></code></pre></div>
-<pre><code>## [1] 6</code></pre>
-<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="monster-messages.html#cb334-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
-<pre><code>## [1] 221</code></pre>
+<div class="sourceCode" id="cb333"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb333-1"><a href="monster-messages.html#cb333-1"></a><span class="kw">part_2</span>(part_<span class="dv">2</span>_sample)</span></code></pre></div>
+<pre><code>## [1] 12</code></pre>
+<p>And we can run our function with the actual data:</p>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb335-1"><a href="monster-messages.html#cb335-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<pre><code>## [1] 367</code></pre>
 <hr />
-<p><em>Elapsed Time: 14.324s</em></p>
+<p><em>Elapsed Time: 41.497s</em></p>
 
 </div>
 </div>

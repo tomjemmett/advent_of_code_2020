@@ -159,4 +159,4 @@ length(part_2_valid_passwords(actual))
 
 ---
 
-*Elapsed Time: 1.801s*
+*Elapsed Time: 1.868s*

@@ -24,7 +24,7 @@
 <meta name="author" content="Tom Jemmett" />
 
 
-<meta name="date" content="2021-01-08" />
+<meta name="date" content="2021-01-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -266,56 +266,56 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="crab-combat" class="section level1">
 <h1><span class="header-section-number">Day 22</span> Crab Combat</h1>
 <p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/22">Day 22</a>.</p>
-<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="crab-combat.html#cb363-1"></a>process_file &lt;-<span class="st"> </span><span class="cf">function</span>(file) {</span>
-<span id="cb363-2"><a href="crab-combat.html#cb363-2"></a>  <span class="kw">read_file</span>(file) <span class="op">%&gt;%</span></span>
-<span id="cb363-3"><a href="crab-combat.html#cb363-3"></a><span class="st">    </span><span class="kw">str_trim</span>() <span class="op">%&gt;%</span></span>
-<span id="cb363-4"><a href="crab-combat.html#cb363-4"></a><span class="st">    </span><span class="kw">str_remove_all</span>(<span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb363-5"><a href="crab-combat.html#cb363-5"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb363-6"><a href="crab-combat.html#cb363-6"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb363-7"><a href="crab-combat.html#cb363-7"></a><span class="st">    </span><span class="kw">map</span>(<span class="op">~</span><span class="kw">as.numeric</span>(<span class="kw">str_split</span>(.x, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)[[<span class="dv">1</span>]][<span class="op">-</span><span class="dv">1</span>]))</span>
-<span id="cb363-8"><a href="crab-combat.html#cb363-8"></a>}</span>
-<span id="cb363-9"><a href="crab-combat.html#cb363-9"></a></span>
-<span id="cb363-10"><a href="crab-combat.html#cb363-10"></a>sample &lt;-<span class="st"> </span><span class="kw">process_file</span>(<span class="st">&quot;samples/day_22_sample.txt&quot;</span>)</span>
-<span id="cb363-11"><a href="crab-combat.html#cb363-11"></a>actual &lt;-<span class="st"> </span><span class="kw">process_file</span>(<span class="st">&quot;inputs/day_22_input.txt&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="crab-combat.html#cb364-1"></a>process_file &lt;-<span class="st"> </span><span class="cf">function</span>(file) {</span>
+<span id="cb364-2"><a href="crab-combat.html#cb364-2"></a>  <span class="kw">read_file</span>(file) <span class="op">%&gt;%</span></span>
+<span id="cb364-3"><a href="crab-combat.html#cb364-3"></a><span class="st">    </span><span class="kw">str_trim</span>() <span class="op">%&gt;%</span></span>
+<span id="cb364-4"><a href="crab-combat.html#cb364-4"></a><span class="st">    </span><span class="kw">str_remove_all</span>(<span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb364-5"><a href="crab-combat.html#cb364-5"></a><span class="st">    </span><span class="kw">str_split</span>(<span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb364-6"><a href="crab-combat.html#cb364-6"></a><span class="st">    </span><span class="kw">pluck</span>(<span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb364-7"><a href="crab-combat.html#cb364-7"></a><span class="st">    </span><span class="kw">map</span>(<span class="op">~</span><span class="kw">as.numeric</span>(<span class="kw">str_split</span>(.x, <span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>)[[<span class="dv">1</span>]][<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb364-8"><a href="crab-combat.html#cb364-8"></a>}</span>
+<span id="cb364-9"><a href="crab-combat.html#cb364-9"></a></span>
+<span id="cb364-10"><a href="crab-combat.html#cb364-10"></a>sample &lt;-<span class="st"> </span><span class="kw">process_file</span>(<span class="st">&quot;samples/day_22_sample.txt&quot;</span>)</span>
+<span id="cb364-11"><a href="crab-combat.html#cb364-11"></a>actual &lt;-<span class="st"> </span><span class="kw">process_file</span>(<span class="st">&quot;inputs/day_22_input.txt&quot;</span>)</span></code></pre></div>
 <div id="part-1-21" class="section level2">
 <h2><span class="header-section-number">22.1</span> Part 1</h2>
 <p>We can create a function that applies the rules of the game.</p>
-<div class="sourceCode" id="cb364"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb364-1"><a href="crab-combat.html#cb364-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb364-2"><a href="crab-combat.html#cb364-2"></a>  player_<span class="dv">1</span> &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]]</span>
-<span id="cb364-3"><a href="crab-combat.html#cb364-3"></a>  player_<span class="dv">2</span> &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]]</span>
-<span id="cb364-4"><a href="crab-combat.html#cb364-4"></a>  </span>
-<span id="cb364-5"><a href="crab-combat.html#cb364-5"></a>  <span class="co"># repeat while both players have cards</span></span>
-<span id="cb364-6"><a href="crab-combat.html#cb364-6"></a>  <span class="cf">while</span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
-<span id="cb364-7"><a href="crab-combat.html#cb364-7"></a>    <span class="co"># get the first cards for player 1 and player 2</span></span>
-<span id="cb364-8"><a href="crab-combat.html#cb364-8"></a>    a &lt;-<span class="st"> </span>player_<span class="dv">1</span>[[<span class="dv">1</span>]]</span>
-<span id="cb364-9"><a href="crab-combat.html#cb364-9"></a>    b &lt;-<span class="st"> </span>player_<span class="dv">2</span>[[<span class="dv">1</span>]]</span>
-<span id="cb364-10"><a href="crab-combat.html#cb364-10"></a>    </span>
-<span id="cb364-11"><a href="crab-combat.html#cb364-11"></a>    <span class="co"># and remove the first cards</span></span>
-<span id="cb364-12"><a href="crab-combat.html#cb364-12"></a>    player_<span class="dv">1</span> &lt;-<span class="st"> </span>player_<span class="dv">1</span>[<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb364-13"><a href="crab-combat.html#cb364-13"></a>    player_<span class="dv">2</span> &lt;-<span class="st"> </span>player_<span class="dv">2</span>[<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb364-14"><a href="crab-combat.html#cb364-14"></a>    </span>
-<span id="cb364-15"><a href="crab-combat.html#cb364-15"></a>    <span class="cf">if</span> (a <span class="op">&gt;</span><span class="st"> </span>b) {</span>
-<span id="cb364-16"><a href="crab-combat.html#cb364-16"></a>      player_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">1</span>, a, b)</span>
-<span id="cb364-17"><a href="crab-combat.html#cb364-17"></a>    } <span class="cf">else</span> {</span>
-<span id="cb364-18"><a href="crab-combat.html#cb364-18"></a>      player_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">2</span>, b, a)</span>
-<span id="cb364-19"><a href="crab-combat.html#cb364-19"></a>    }</span>
-<span id="cb364-20"><a href="crab-combat.html#cb364-20"></a>  }</span>
-<span id="cb364-21"><a href="crab-combat.html#cb364-21"></a>  </span>
-<span id="cb364-22"><a href="crab-combat.html#cb364-22"></a>  <span class="co"># get the winners cards</span></span>
-<span id="cb364-23"><a href="crab-combat.html#cb364-23"></a>  r &lt;-<span class="st"> </span><span class="cf">if</span> (<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
-<span id="cb364-24"><a href="crab-combat.html#cb364-24"></a>    player_<span class="dv">1</span></span>
-<span id="cb364-25"><a href="crab-combat.html#cb364-25"></a>  } <span class="cf">else</span> {</span>
-<span id="cb364-26"><a href="crab-combat.html#cb364-26"></a>    player_<span class="dv">2</span></span>
-<span id="cb364-27"><a href="crab-combat.html#cb364-27"></a>  }</span>
-<span id="cb364-28"><a href="crab-combat.html#cb364-28"></a>  </span>
-<span id="cb364-29"><a href="crab-combat.html#cb364-29"></a>  <span class="co"># return the results as required for the puzzle</span></span>
-<span id="cb364-30"><a href="crab-combat.html#cb364-30"></a>  <span class="kw">sum</span>(r <span class="op">*</span><span class="st"> </span><span class="kw">rev</span>(<span class="kw">seq_along</span>(r)))</span>
-<span id="cb364-31"><a href="crab-combat.html#cb364-31"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="crab-combat.html#cb365-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb365-2"><a href="crab-combat.html#cb365-2"></a>  player_<span class="dv">1</span> &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]]</span>
+<span id="cb365-3"><a href="crab-combat.html#cb365-3"></a>  player_<span class="dv">2</span> &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]]</span>
+<span id="cb365-4"><a href="crab-combat.html#cb365-4"></a>  </span>
+<span id="cb365-5"><a href="crab-combat.html#cb365-5"></a>  <span class="co"># repeat while both players have cards</span></span>
+<span id="cb365-6"><a href="crab-combat.html#cb365-6"></a>  <span class="cf">while</span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb365-7"><a href="crab-combat.html#cb365-7"></a>    <span class="co"># get the first cards for player 1 and player 2</span></span>
+<span id="cb365-8"><a href="crab-combat.html#cb365-8"></a>    a &lt;-<span class="st"> </span>player_<span class="dv">1</span>[[<span class="dv">1</span>]]</span>
+<span id="cb365-9"><a href="crab-combat.html#cb365-9"></a>    b &lt;-<span class="st"> </span>player_<span class="dv">2</span>[[<span class="dv">1</span>]]</span>
+<span id="cb365-10"><a href="crab-combat.html#cb365-10"></a>    </span>
+<span id="cb365-11"><a href="crab-combat.html#cb365-11"></a>    <span class="co"># and remove the first cards</span></span>
+<span id="cb365-12"><a href="crab-combat.html#cb365-12"></a>    player_<span class="dv">1</span> &lt;-<span class="st"> </span>player_<span class="dv">1</span>[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb365-13"><a href="crab-combat.html#cb365-13"></a>    player_<span class="dv">2</span> &lt;-<span class="st"> </span>player_<span class="dv">2</span>[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb365-14"><a href="crab-combat.html#cb365-14"></a>    </span>
+<span id="cb365-15"><a href="crab-combat.html#cb365-15"></a>    <span class="cf">if</span> (a <span class="op">&gt;</span><span class="st"> </span>b) {</span>
+<span id="cb365-16"><a href="crab-combat.html#cb365-16"></a>      player_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">1</span>, a, b)</span>
+<span id="cb365-17"><a href="crab-combat.html#cb365-17"></a>    } <span class="cf">else</span> {</span>
+<span id="cb365-18"><a href="crab-combat.html#cb365-18"></a>      player_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">2</span>, b, a)</span>
+<span id="cb365-19"><a href="crab-combat.html#cb365-19"></a>    }</span>
+<span id="cb365-20"><a href="crab-combat.html#cb365-20"></a>  }</span>
+<span id="cb365-21"><a href="crab-combat.html#cb365-21"></a>  </span>
+<span id="cb365-22"><a href="crab-combat.html#cb365-22"></a>  <span class="co"># get the winners cards</span></span>
+<span id="cb365-23"><a href="crab-combat.html#cb365-23"></a>  r &lt;-<span class="st"> </span><span class="cf">if</span> (<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb365-24"><a href="crab-combat.html#cb365-24"></a>    player_<span class="dv">1</span></span>
+<span id="cb365-25"><a href="crab-combat.html#cb365-25"></a>  } <span class="cf">else</span> {</span>
+<span id="cb365-26"><a href="crab-combat.html#cb365-26"></a>    player_<span class="dv">2</span></span>
+<span id="cb365-27"><a href="crab-combat.html#cb365-27"></a>  }</span>
+<span id="cb365-28"><a href="crab-combat.html#cb365-28"></a>  </span>
+<span id="cb365-29"><a href="crab-combat.html#cb365-29"></a>  <span class="co"># return the results as required for the puzzle</span></span>
+<span id="cb365-30"><a href="crab-combat.html#cb365-30"></a>  <span class="kw">sum</span>(r <span class="op">*</span><span class="st"> </span><span class="kw">rev</span>(<span class="kw">seq_along</span>(r)))</span>
+<span id="cb365-31"><a href="crab-combat.html#cb365-31"></a>}</span></code></pre></div>
 <p>We can verify that this function returns the correct results against the sample data:</p>
-<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="crab-combat.html#cb365-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">306</span></span></code></pre></div>
+<div class="sourceCode" id="cb366"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb366-1"><a href="crab-combat.html#cb366-1"></a><span class="kw">part_1</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">306</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>And we can run the function against our actual data:</p>
-<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="crab-combat.html#cb367-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
+<div class="sourceCode" id="cb368"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb368-1"><a href="crab-combat.html#cb368-1"></a><span class="kw">part_1</span>(actual)</span></code></pre></div>
 <pre><code>## [1] 35818</code></pre>
 </div>
 <div id="part-2-21" class="section level2">
@@ -324,95 +324,95 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 optimisation that
 <a href="https://www.reddit.com/r/adventofcode/comments/khyjgv/2020_day_22_solutions/ggpcsnd/">u/daggerdraggon</a> posted on
 Reddit.</p>
-<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="crab-combat.html#cb369-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb369-2"><a href="crab-combat.html#cb369-2"></a>  <span class="co"># create a function that can called recursively</span></span>
-<span id="cb369-3"><a href="crab-combat.html#cb369-3"></a>  play &lt;-<span class="st"> </span><span class="cf">function</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>, <span class="dt">subgame =</span> <span class="ot">FALSE</span>) {</span>
-<span id="cb369-4"><a href="crab-combat.html#cb369-4"></a>    prior_player_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
-<span id="cb369-5"><a href="crab-combat.html#cb369-5"></a>    prior_player_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
-<span id="cb369-6"><a href="crab-combat.html#cb369-6"></a>    </span>
-<span id="cb369-7"><a href="crab-combat.html#cb369-7"></a>    <span class="co"># optimisation from u/daggerdragon on reddit</span></span>
-<span id="cb369-8"><a href="crab-combat.html#cb369-8"></a>    <span class="co"># https://www.reddit.com/r/adventofcode/comments/khyjgv/2020_day_22_solutions/ggpcsnd/</span></span>
-<span id="cb369-9"><a href="crab-combat.html#cb369-9"></a>    max_p1 &lt;-<span class="st"> </span><span class="kw">max</span>(player_<span class="dv">1</span>)</span>
-<span id="cb369-10"><a href="crab-combat.html#cb369-10"></a>    max_p2 &lt;-<span class="st"> </span><span class="kw">max</span>(player_<span class="dv">2</span>)</span>
-<span id="cb369-11"><a href="crab-combat.html#cb369-11"></a>    <span class="cf">if</span> (subgame <span class="op">&amp;&amp;</span></span>
-<span id="cb369-12"><a href="crab-combat.html#cb369-12"></a><span class="st">        </span>max_p1 <span class="op">&gt;</span><span class="st"> </span>max_p2 <span class="op">&amp;&amp;</span></span>
-<span id="cb369-13"><a href="crab-combat.html#cb369-13"></a><span class="st">        </span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>)) <span class="op">&lt;</span><span class="st"> </span>max_p1) {</span>
-<span id="cb369-14"><a href="crab-combat.html#cb369-14"></a>      <span class="kw">return</span> (<span class="kw">list</span>(</span>
-<span id="cb369-15"><a href="crab-combat.html#cb369-15"></a>          <span class="dt">winner =</span> <span class="dv">1</span>,</span>
-<span id="cb369-16"><a href="crab-combat.html#cb369-16"></a>          <span class="dt">players =</span> <span class="kw">list</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>)</span>
-<span id="cb369-17"><a href="crab-combat.html#cb369-17"></a>        ))</span>
-<span id="cb369-18"><a href="crab-combat.html#cb369-18"></a>    }</span>
-<span id="cb369-19"><a href="crab-combat.html#cb369-19"></a>    </span>
-<span id="cb369-20"><a href="crab-combat.html#cb369-20"></a>    <span class="co"># repeat while both players have cards</span></span>
-<span id="cb369-21"><a href="crab-combat.html#cb369-21"></a>    <span class="cf">while</span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
-<span id="cb369-22"><a href="crab-combat.html#cb369-22"></a>      <span class="co"># create key&#39;s to use in the hash of the prior hands seen hashtables</span></span>
-<span id="cb369-23"><a href="crab-combat.html#cb369-23"></a>      player_<span class="dv">1</span>_str &lt;-<span class="st"> </span><span class="kw">paste</span>(player_<span class="dv">1</span>, <span class="dt">collapse =</span> <span class="st">&quot;,&quot;</span>)</span>
-<span id="cb369-24"><a href="crab-combat.html#cb369-24"></a>      player_<span class="dv">2</span>_str &lt;-<span class="st"> </span><span class="kw">paste</span>(player_<span class="dv">2</span>, <span class="dt">collapse =</span> <span class="st">&quot;,&quot;</span>)</span>
-<span id="cb369-25"><a href="crab-combat.html#cb369-25"></a>      </span>
-<span id="cb369-26"><a href="crab-combat.html#cb369-26"></a>      <span class="co"># check, if we haven&#39;t seen this hand we will get NULL on lookups</span></span>
-<span id="cb369-27"><a href="crab-combat.html#cb369-27"></a>      <span class="co"># looking up like this is orders of magnitude quicker than using %in%</span></span>
-<span id="cb369-28"><a href="crab-combat.html#cb369-28"></a>      <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.null</span>(prior_player_<span class="dv">1</span>[[player_<span class="dv">1</span>_str]]) <span class="op">&amp;</span></span>
-<span id="cb369-29"><a href="crab-combat.html#cb369-29"></a><span class="st">          </span><span class="op">!</span><span class="kw">is.null</span>(prior_player_<span class="dv">2</span>[[player_<span class="dv">2</span>_str]])) {</span>
-<span id="cb369-30"><a href="crab-combat.html#cb369-30"></a>        <span class="kw">return</span> (<span class="kw">list</span>(</span>
-<span id="cb369-31"><a href="crab-combat.html#cb369-31"></a>          <span class="dt">winner =</span> <span class="dv">1</span>,</span>
-<span id="cb369-32"><a href="crab-combat.html#cb369-32"></a>          <span class="dt">players =</span> <span class="kw">list</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>)</span>
-<span id="cb369-33"><a href="crab-combat.html#cb369-33"></a>        ))</span>
-<span id="cb369-34"><a href="crab-combat.html#cb369-34"></a>      }</span>
-<span id="cb369-35"><a href="crab-combat.html#cb369-35"></a>      </span>
-<span id="cb369-36"><a href="crab-combat.html#cb369-36"></a>      <span class="co"># update the prior seen hashtables</span></span>
-<span id="cb369-37"><a href="crab-combat.html#cb369-37"></a>      prior_player_<span class="dv">1</span>[[player_<span class="dv">1</span>_str]] &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
-<span id="cb369-38"><a href="crab-combat.html#cb369-38"></a>      prior_player_<span class="dv">2</span>[[player_<span class="dv">2</span>_str]] &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
-<span id="cb369-39"><a href="crab-combat.html#cb369-39"></a>      </span>
-<span id="cb369-40"><a href="crab-combat.html#cb369-40"></a>      <span class="co"># get the first cards for player 1 and player 2</span></span>
-<span id="cb369-41"><a href="crab-combat.html#cb369-41"></a>      a &lt;-<span class="st"> </span>player_<span class="dv">1</span>[[<span class="dv">1</span>]]</span>
-<span id="cb369-42"><a href="crab-combat.html#cb369-42"></a>      b &lt;-<span class="st"> </span>player_<span class="dv">2</span>[[<span class="dv">1</span>]]</span>
-<span id="cb369-43"><a href="crab-combat.html#cb369-43"></a>      </span>
-<span id="cb369-44"><a href="crab-combat.html#cb369-44"></a>      <span class="co"># and remove the first cards</span></span>
-<span id="cb369-45"><a href="crab-combat.html#cb369-45"></a>      player_<span class="dv">1</span> &lt;-<span class="st"> </span>player_<span class="dv">1</span>[<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb369-46"><a href="crab-combat.html#cb369-46"></a>      player_<span class="dv">2</span> &lt;-<span class="st"> </span>player_<span class="dv">2</span>[<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb369-47"><a href="crab-combat.html#cb369-47"></a>      </span>
-<span id="cb369-48"><a href="crab-combat.html#cb369-48"></a>      <span class="co"># check to see if we can play a subgame or not</span></span>
-<span id="cb369-49"><a href="crab-combat.html#cb369-49"></a>      r &lt;-<span class="st"> </span><span class="cf">if</span> (<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;=</span><span class="st"> </span>a <span class="op">&amp;</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>) <span class="op">&gt;=</span><span class="st"> </span>b) {</span>
-<span id="cb369-50"><a href="crab-combat.html#cb369-50"></a>        <span class="co"># return the winner of the subgame</span></span>
-<span id="cb369-51"><a href="crab-combat.html#cb369-51"></a>        <span class="kw">play</span>(player_<span class="dv">1</span>[<span class="dv">1</span><span class="op">:</span>a], player_<span class="dv">2</span>[<span class="dv">1</span><span class="op">:</span>b], <span class="ot">TRUE</span>)<span class="op">$</span>winner</span>
-<span id="cb369-52"><a href="crab-combat.html#cb369-52"></a>      } <span class="cf">else</span> <span class="cf">if</span> (a <span class="op">&gt;</span><span class="st"> </span>b) {</span>
-<span id="cb369-53"><a href="crab-combat.html#cb369-53"></a>        <span class="co"># player 1 wins</span></span>
-<span id="cb369-54"><a href="crab-combat.html#cb369-54"></a>        <span class="dv">1</span></span>
-<span id="cb369-55"><a href="crab-combat.html#cb369-55"></a>      } <span class="cf">else</span> {</span>
-<span id="cb369-56"><a href="crab-combat.html#cb369-56"></a>        <span class="co"># player 2 wins</span></span>
-<span id="cb369-57"><a href="crab-combat.html#cb369-57"></a>        <span class="dv">2</span></span>
-<span id="cb369-58"><a href="crab-combat.html#cb369-58"></a>      }</span>
-<span id="cb369-59"><a href="crab-combat.html#cb369-59"></a>      </span>
-<span id="cb369-60"><a href="crab-combat.html#cb369-60"></a>      <span class="co"># update the player&#39;s hands if they have won</span></span>
-<span id="cb369-61"><a href="crab-combat.html#cb369-61"></a>      <span class="cf">if</span> (r <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {</span>
-<span id="cb369-62"><a href="crab-combat.html#cb369-62"></a>        player_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">1</span>, a, b)</span>
-<span id="cb369-63"><a href="crab-combat.html#cb369-63"></a>      } <span class="cf">else</span> {</span>
-<span id="cb369-64"><a href="crab-combat.html#cb369-64"></a>        player_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">2</span>, b, a)</span>
-<span id="cb369-65"><a href="crab-combat.html#cb369-65"></a>      }</span>
-<span id="cb369-66"><a href="crab-combat.html#cb369-66"></a>    }</span>
-<span id="cb369-67"><a href="crab-combat.html#cb369-67"></a>    </span>
-<span id="cb369-68"><a href="crab-combat.html#cb369-68"></a>    <span class="co"># we have run out of cards for one player, return the results</span></span>
-<span id="cb369-69"><a href="crab-combat.html#cb369-69"></a>    <span class="kw">list</span>(</span>
-<span id="cb369-70"><a href="crab-combat.html#cb369-70"></a>      <span class="dt">winner =</span> <span class="kw">ifelse</span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
-<span id="cb369-71"><a href="crab-combat.html#cb369-71"></a>      <span class="dt">players =</span> <span class="kw">list</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>)</span>
-<span id="cb369-72"><a href="crab-combat.html#cb369-72"></a>    )</span>
-<span id="cb369-73"><a href="crab-combat.html#cb369-73"></a>  }</span>
-<span id="cb369-74"><a href="crab-combat.html#cb369-74"></a>  </span>
-<span id="cb369-75"><a href="crab-combat.html#cb369-75"></a>  <span class="co"># start to play the game</span></span>
-<span id="cb369-76"><a href="crab-combat.html#cb369-76"></a>  p &lt;-<span class="st"> </span><span class="kw">play</span>(input[[<span class="dv">1</span>]], input[[<span class="dv">2</span>]])</span>
-<span id="cb369-77"><a href="crab-combat.html#cb369-77"></a>  <span class="co"># get the results for the winner</span></span>
-<span id="cb369-78"><a href="crab-combat.html#cb369-78"></a>  w &lt;-<span class="st"> </span>p<span class="op">$</span>players[[p<span class="op">$</span>winner]]</span>
-<span id="cb369-79"><a href="crab-combat.html#cb369-79"></a>  <span class="co"># return the results as required for the puzzle</span></span>
-<span id="cb369-80"><a href="crab-combat.html#cb369-80"></a>  <span class="kw">sum</span>(w <span class="op">*</span><span class="st"> </span><span class="kw">rev</span>(<span class="kw">seq_along</span>(w)))</span>
-<span id="cb369-81"><a href="crab-combat.html#cb369-81"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb370-1"><a href="crab-combat.html#cb370-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb370-2"><a href="crab-combat.html#cb370-2"></a>  <span class="co"># create a function that can called recursively</span></span>
+<span id="cb370-3"><a href="crab-combat.html#cb370-3"></a>  play &lt;-<span class="st"> </span><span class="cf">function</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>, <span class="dt">subgame =</span> <span class="ot">FALSE</span>) {</span>
+<span id="cb370-4"><a href="crab-combat.html#cb370-4"></a>    prior_player_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb370-5"><a href="crab-combat.html#cb370-5"></a>    prior_player_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">list</span>()</span>
+<span id="cb370-6"><a href="crab-combat.html#cb370-6"></a>    </span>
+<span id="cb370-7"><a href="crab-combat.html#cb370-7"></a>    <span class="co"># optimisation from u/daggerdragon on reddit</span></span>
+<span id="cb370-8"><a href="crab-combat.html#cb370-8"></a>    <span class="co"># https://www.reddit.com/r/adventofcode/comments/khyjgv/2020_day_22_solutions/ggpcsnd/</span></span>
+<span id="cb370-9"><a href="crab-combat.html#cb370-9"></a>    max_p1 &lt;-<span class="st"> </span><span class="kw">max</span>(player_<span class="dv">1</span>)</span>
+<span id="cb370-10"><a href="crab-combat.html#cb370-10"></a>    max_p2 &lt;-<span class="st"> </span><span class="kw">max</span>(player_<span class="dv">2</span>)</span>
+<span id="cb370-11"><a href="crab-combat.html#cb370-11"></a>    <span class="cf">if</span> (subgame <span class="op">&amp;&amp;</span></span>
+<span id="cb370-12"><a href="crab-combat.html#cb370-12"></a><span class="st">        </span>max_p1 <span class="op">&gt;</span><span class="st"> </span>max_p2 <span class="op">&amp;&amp;</span></span>
+<span id="cb370-13"><a href="crab-combat.html#cb370-13"></a><span class="st">        </span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>)) <span class="op">&lt;</span><span class="st"> </span>max_p1) {</span>
+<span id="cb370-14"><a href="crab-combat.html#cb370-14"></a>      <span class="kw">return</span> (<span class="kw">list</span>(</span>
+<span id="cb370-15"><a href="crab-combat.html#cb370-15"></a>          <span class="dt">winner =</span> <span class="dv">1</span>,</span>
+<span id="cb370-16"><a href="crab-combat.html#cb370-16"></a>          <span class="dt">players =</span> <span class="kw">list</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>)</span>
+<span id="cb370-17"><a href="crab-combat.html#cb370-17"></a>        ))</span>
+<span id="cb370-18"><a href="crab-combat.html#cb370-18"></a>    }</span>
+<span id="cb370-19"><a href="crab-combat.html#cb370-19"></a>    </span>
+<span id="cb370-20"><a href="crab-combat.html#cb370-20"></a>    <span class="co"># repeat while both players have cards</span></span>
+<span id="cb370-21"><a href="crab-combat.html#cb370-21"></a>    <span class="cf">while</span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb370-22"><a href="crab-combat.html#cb370-22"></a>      <span class="co"># create key&#39;s to use in the hash of the prior hands seen hashtables</span></span>
+<span id="cb370-23"><a href="crab-combat.html#cb370-23"></a>      player_<span class="dv">1</span>_str &lt;-<span class="st"> </span><span class="kw">paste</span>(player_<span class="dv">1</span>, <span class="dt">collapse =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb370-24"><a href="crab-combat.html#cb370-24"></a>      player_<span class="dv">2</span>_str &lt;-<span class="st"> </span><span class="kw">paste</span>(player_<span class="dv">2</span>, <span class="dt">collapse =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb370-25"><a href="crab-combat.html#cb370-25"></a>      </span>
+<span id="cb370-26"><a href="crab-combat.html#cb370-26"></a>      <span class="co"># check, if we haven&#39;t seen this hand we will get NULL on lookups</span></span>
+<span id="cb370-27"><a href="crab-combat.html#cb370-27"></a>      <span class="co"># looking up like this is orders of magnitude quicker than using %in%</span></span>
+<span id="cb370-28"><a href="crab-combat.html#cb370-28"></a>      <span class="cf">if</span> (<span class="op">!</span><span class="kw">is.null</span>(prior_player_<span class="dv">1</span>[[player_<span class="dv">1</span>_str]]) <span class="op">&amp;</span></span>
+<span id="cb370-29"><a href="crab-combat.html#cb370-29"></a><span class="st">          </span><span class="op">!</span><span class="kw">is.null</span>(prior_player_<span class="dv">2</span>[[player_<span class="dv">2</span>_str]])) {</span>
+<span id="cb370-30"><a href="crab-combat.html#cb370-30"></a>        <span class="kw">return</span> (<span class="kw">list</span>(</span>
+<span id="cb370-31"><a href="crab-combat.html#cb370-31"></a>          <span class="dt">winner =</span> <span class="dv">1</span>,</span>
+<span id="cb370-32"><a href="crab-combat.html#cb370-32"></a>          <span class="dt">players =</span> <span class="kw">list</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>)</span>
+<span id="cb370-33"><a href="crab-combat.html#cb370-33"></a>        ))</span>
+<span id="cb370-34"><a href="crab-combat.html#cb370-34"></a>      }</span>
+<span id="cb370-35"><a href="crab-combat.html#cb370-35"></a>      </span>
+<span id="cb370-36"><a href="crab-combat.html#cb370-36"></a>      <span class="co"># update the prior seen hashtables</span></span>
+<span id="cb370-37"><a href="crab-combat.html#cb370-37"></a>      prior_player_<span class="dv">1</span>[[player_<span class="dv">1</span>_str]] &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb370-38"><a href="crab-combat.html#cb370-38"></a>      prior_player_<span class="dv">2</span>[[player_<span class="dv">2</span>_str]] &lt;-<span class="st"> </span><span class="ot">TRUE</span></span>
+<span id="cb370-39"><a href="crab-combat.html#cb370-39"></a>      </span>
+<span id="cb370-40"><a href="crab-combat.html#cb370-40"></a>      <span class="co"># get the first cards for player 1 and player 2</span></span>
+<span id="cb370-41"><a href="crab-combat.html#cb370-41"></a>      a &lt;-<span class="st"> </span>player_<span class="dv">1</span>[[<span class="dv">1</span>]]</span>
+<span id="cb370-42"><a href="crab-combat.html#cb370-42"></a>      b &lt;-<span class="st"> </span>player_<span class="dv">2</span>[[<span class="dv">1</span>]]</span>
+<span id="cb370-43"><a href="crab-combat.html#cb370-43"></a>      </span>
+<span id="cb370-44"><a href="crab-combat.html#cb370-44"></a>      <span class="co"># and remove the first cards</span></span>
+<span id="cb370-45"><a href="crab-combat.html#cb370-45"></a>      player_<span class="dv">1</span> &lt;-<span class="st"> </span>player_<span class="dv">1</span>[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb370-46"><a href="crab-combat.html#cb370-46"></a>      player_<span class="dv">2</span> &lt;-<span class="st"> </span>player_<span class="dv">2</span>[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb370-47"><a href="crab-combat.html#cb370-47"></a>      </span>
+<span id="cb370-48"><a href="crab-combat.html#cb370-48"></a>      <span class="co"># check to see if we can play a subgame or not</span></span>
+<span id="cb370-49"><a href="crab-combat.html#cb370-49"></a>      r &lt;-<span class="st"> </span><span class="cf">if</span> (<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;=</span><span class="st"> </span>a <span class="op">&amp;</span><span class="st"> </span><span class="kw">length</span>(player_<span class="dv">2</span>) <span class="op">&gt;=</span><span class="st"> </span>b) {</span>
+<span id="cb370-50"><a href="crab-combat.html#cb370-50"></a>        <span class="co"># return the winner of the subgame</span></span>
+<span id="cb370-51"><a href="crab-combat.html#cb370-51"></a>        <span class="kw">play</span>(player_<span class="dv">1</span>[<span class="dv">1</span><span class="op">:</span>a], player_<span class="dv">2</span>[<span class="dv">1</span><span class="op">:</span>b], <span class="ot">TRUE</span>)<span class="op">$</span>winner</span>
+<span id="cb370-52"><a href="crab-combat.html#cb370-52"></a>      } <span class="cf">else</span> <span class="cf">if</span> (a <span class="op">&gt;</span><span class="st"> </span>b) {</span>
+<span id="cb370-53"><a href="crab-combat.html#cb370-53"></a>        <span class="co"># player 1 wins</span></span>
+<span id="cb370-54"><a href="crab-combat.html#cb370-54"></a>        <span class="dv">1</span></span>
+<span id="cb370-55"><a href="crab-combat.html#cb370-55"></a>      } <span class="cf">else</span> {</span>
+<span id="cb370-56"><a href="crab-combat.html#cb370-56"></a>        <span class="co"># player 2 wins</span></span>
+<span id="cb370-57"><a href="crab-combat.html#cb370-57"></a>        <span class="dv">2</span></span>
+<span id="cb370-58"><a href="crab-combat.html#cb370-58"></a>      }</span>
+<span id="cb370-59"><a href="crab-combat.html#cb370-59"></a>      </span>
+<span id="cb370-60"><a href="crab-combat.html#cb370-60"></a>      <span class="co"># update the player&#39;s hands if they have won</span></span>
+<span id="cb370-61"><a href="crab-combat.html#cb370-61"></a>      <span class="cf">if</span> (r <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {</span>
+<span id="cb370-62"><a href="crab-combat.html#cb370-62"></a>        player_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">1</span>, a, b)</span>
+<span id="cb370-63"><a href="crab-combat.html#cb370-63"></a>      } <span class="cf">else</span> {</span>
+<span id="cb370-64"><a href="crab-combat.html#cb370-64"></a>        player_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">c</span>(player_<span class="dv">2</span>, b, a)</span>
+<span id="cb370-65"><a href="crab-combat.html#cb370-65"></a>      }</span>
+<span id="cb370-66"><a href="crab-combat.html#cb370-66"></a>    }</span>
+<span id="cb370-67"><a href="crab-combat.html#cb370-67"></a>    </span>
+<span id="cb370-68"><a href="crab-combat.html#cb370-68"></a>    <span class="co"># we have run out of cards for one player, return the results</span></span>
+<span id="cb370-69"><a href="crab-combat.html#cb370-69"></a>    <span class="kw">list</span>(</span>
+<span id="cb370-70"><a href="crab-combat.html#cb370-70"></a>      <span class="dt">winner =</span> <span class="kw">ifelse</span>(<span class="kw">length</span>(player_<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb370-71"><a href="crab-combat.html#cb370-71"></a>      <span class="dt">players =</span> <span class="kw">list</span>(player_<span class="dv">1</span>, player_<span class="dv">2</span>)</span>
+<span id="cb370-72"><a href="crab-combat.html#cb370-72"></a>    )</span>
+<span id="cb370-73"><a href="crab-combat.html#cb370-73"></a>  }</span>
+<span id="cb370-74"><a href="crab-combat.html#cb370-74"></a>  </span>
+<span id="cb370-75"><a href="crab-combat.html#cb370-75"></a>  <span class="co"># start to play the game</span></span>
+<span id="cb370-76"><a href="crab-combat.html#cb370-76"></a>  p &lt;-<span class="st"> </span><span class="kw">play</span>(input[[<span class="dv">1</span>]], input[[<span class="dv">2</span>]])</span>
+<span id="cb370-77"><a href="crab-combat.html#cb370-77"></a>  <span class="co"># get the results for the winner</span></span>
+<span id="cb370-78"><a href="crab-combat.html#cb370-78"></a>  w &lt;-<span class="st"> </span>p<span class="op">$</span>players[[p<span class="op">$</span>winner]]</span>
+<span id="cb370-79"><a href="crab-combat.html#cb370-79"></a>  <span class="co"># return the results as required for the puzzle</span></span>
+<span id="cb370-80"><a href="crab-combat.html#cb370-80"></a>  <span class="kw">sum</span>(w <span class="op">*</span><span class="st"> </span><span class="kw">rev</span>(<span class="kw">seq_along</span>(w)))</span>
+<span id="cb370-81"><a href="crab-combat.html#cb370-81"></a>}</span></code></pre></div>
 <p>We can test this function on the sample data:</p>
-<div class="sourceCode" id="cb370"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb370-1"><a href="crab-combat.html#cb370-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">291</span></span></code></pre></div>
+<div class="sourceCode" id="cb371"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb371-1"><a href="crab-combat.html#cb371-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">291</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>And we can run this function on the actual data:</p>
-<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="crab-combat.html#cb372-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<div class="sourceCode" id="cb373"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb373-1"><a href="crab-combat.html#cb373-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
 <pre><code>## [1] 34771</code></pre>
 <hr />
-<p><em>Elapsed Time: 1.664s</em></p>
+<p><em>Elapsed Time: 1.668s</em></p>
 
 </div>
 </div>

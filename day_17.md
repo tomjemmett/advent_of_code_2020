@@ -231,4 +231,4 @@ actual %>%
 
 ---
 
-*Elapsed Time: 3.264s*
+*Elapsed Time: 3.306s*

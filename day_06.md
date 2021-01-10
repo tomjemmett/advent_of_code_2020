@@ -147,4 +147,4 @@ extra(actual, intersect) == part_2(actual)
 
 ---
 
-*Elapsed Time: 0.588s*
+*Elapsed Time: 0.551s*

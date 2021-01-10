@@ -24,7 +24,7 @@
 <meta name="author" content="Tom Jemmett" />
 
 
-<meta name="date" content="2021-01-08" />
+<meta name="date" content="2021-01-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -266,103 +266,103 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="crab-cups" class="section level1">
 <h1><span class="header-section-number">Day 23</span> Crab Cups</h1>
 <p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/23">Day 23</a>.</p>
-<div class="sourceCode" id="cb374"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb374-1"><a href="crab-cups.html#cb374-1"></a>sample &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">str_extract_all</span>(<span class="st">&quot;389125467&quot;</span>, <span class="st">&quot;.&quot;</span>)[[<span class="dv">1</span>]])</span>
-<span id="cb374-2"><a href="crab-cups.html#cb374-2"></a>actual &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">str_extract_all</span>(<span class="st">&quot;562893147&quot;</span>, <span class="st">&quot;.&quot;</span>)[[<span class="dv">1</span>]])</span></code></pre></div>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="crab-cups.html#cb375-1"></a>sample &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">str_extract_all</span>(<span class="st">&quot;389125467&quot;</span>, <span class="st">&quot;.&quot;</span>)[[<span class="dv">1</span>]])</span>
+<span id="cb375-2"><a href="crab-cups.html#cb375-2"></a>actual &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">str_extract_all</span>(<span class="st">&quot;562893147&quot;</span>, <span class="st">&quot;.&quot;</span>)[[<span class="dv">1</span>]])</span></code></pre></div>
 <div id="part-1-22" class="section level2">
 <h2><span class="header-section-number">23.1</span> Part 1</h2>
 <p>To solve today’s puzzle we can use a vector where each position’s value indicates the next index to select.</p>
 <p>First we create our <a href="en.wikipedia.org/wiki/Linked_list">“linked list”</a> of values, then create a “current” pointer (where
 we are going to start in the list). Then, we simply iterate <code>n</code> times.</p>
-<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="crab-cups.html#cb375-1"></a>play &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
-<span id="cb375-2"><a href="crab-cups.html#cb375-2"></a>  size &lt;-<span class="st"> </span><span class="kw">length</span>(input)</span>
-<span id="cb375-3"><a href="crab-cups.html#cb375-3"></a>  </span>
-<span id="cb375-4"><a href="crab-cups.html#cb375-4"></a>  <span class="co"># generate the linked list</span></span>
-<span id="cb375-5"><a href="crab-cups.html#cb375-5"></a>  ll &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span>size, <span class="dv">1</span>)</span>
-<span id="cb375-6"><a href="crab-cups.html#cb375-6"></a>  j &lt;-<span class="st"> </span>size</span>
-<span id="cb375-7"><a href="crab-cups.html#cb375-7"></a>  <span class="cf">for</span> (i <span class="cf">in</span> input) {</span>
-<span id="cb375-8"><a href="crab-cups.html#cb375-8"></a>    ll[[j]] &lt;-<span class="st"> </span>i</span>
-<span id="cb375-9"><a href="crab-cups.html#cb375-9"></a>    j &lt;-<span class="st"> </span>i</span>
-<span id="cb375-10"><a href="crab-cups.html#cb375-10"></a>  }</span>
-<span id="cb375-11"><a href="crab-cups.html#cb375-11"></a>  ll[[j]] &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]]</span>
-<span id="cb375-12"><a href="crab-cups.html#cb375-12"></a>  cur &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]]</span>
-<span id="cb375-13"><a href="crab-cups.html#cb375-13"></a>  </span>
-<span id="cb375-14"><a href="crab-cups.html#cb375-14"></a>  <span class="co"># run our iterations</span></span>
-<span id="cb375-15"><a href="crab-cups.html#cb375-15"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</span>
-<span id="cb375-16"><a href="crab-cups.html#cb375-16"></a>    <span class="co"># get the picked up values</span></span>
-<span id="cb375-17"><a href="crab-cups.html#cb375-17"></a>    picked_up_a &lt;-<span class="st"> </span>ll[[cur]]</span>
-<span id="cb375-18"><a href="crab-cups.html#cb375-18"></a>    picked_up_b &lt;-<span class="st"> </span>ll[[picked_up_a]]</span>
-<span id="cb375-19"><a href="crab-cups.html#cb375-19"></a>    picked_up_c &lt;-<span class="st"> </span>ll[[picked_up_b]]</span>
-<span id="cb375-20"><a href="crab-cups.html#cb375-20"></a>    <span class="co"># &quot;remove&quot; these values from the list by pointing the current index to be</span></span>
-<span id="cb375-21"><a href="crab-cups.html#cb375-21"></a>    <span class="co"># the value just after the 3rd picked up cup</span></span>
-<span id="cb375-22"><a href="crab-cups.html#cb375-22"></a>    ll[[cur]] &lt;-<span class="st"> </span>ll[[picked_up_c]]</span>
-<span id="cb375-23"><a href="crab-cups.html#cb375-23"></a>    <span class="co"># calculate the destination value</span></span>
-<span id="cb375-24"><a href="crab-cups.html#cb375-24"></a>    destination &lt;-<span class="st"> </span>cur <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb375-25"><a href="crab-cups.html#cb375-25"></a>    <span class="cf">if</span> (destination <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</span>
-<span id="cb375-26"><a href="crab-cups.html#cb375-26"></a>      destination &lt;-<span class="st"> </span>size</span>
-<span id="cb375-27"><a href="crab-cups.html#cb375-27"></a>    }</span>
-<span id="cb375-28"><a href="crab-cups.html#cb375-28"></a>    <span class="cf">while</span> (destination <span class="op">==</span><span class="st"> </span>picked_up_a <span class="op">||</span></span>
-<span id="cb375-29"><a href="crab-cups.html#cb375-29"></a><span class="st">           </span>destination <span class="op">==</span><span class="st"> </span>picked_up_b <span class="op">||</span></span>
-<span id="cb375-30"><a href="crab-cups.html#cb375-30"></a><span class="st">           </span>destination <span class="op">==</span><span class="st"> </span>picked_up_c) {</span>
-<span id="cb375-31"><a href="crab-cups.html#cb375-31"></a>      destination &lt;-<span class="st"> </span>destination <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb375-32"><a href="crab-cups.html#cb375-32"></a>      <span class="cf">if</span> (destination <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</span>
-<span id="cb375-33"><a href="crab-cups.html#cb375-33"></a>        destination &lt;-<span class="st"> </span>size</span>
-<span id="cb375-34"><a href="crab-cups.html#cb375-34"></a>      }</span>
-<span id="cb375-35"><a href="crab-cups.html#cb375-35"></a>    }</span>
-<span id="cb375-36"><a href="crab-cups.html#cb375-36"></a>    <span class="co"># insert the picked up cups just after the destination</span></span>
-<span id="cb375-37"><a href="crab-cups.html#cb375-37"></a>    t &lt;-<span class="st"> </span>ll[[destination]]</span>
-<span id="cb375-38"><a href="crab-cups.html#cb375-38"></a>    ll[[destination]] &lt;-<span class="st"> </span>picked_up_a</span>
-<span id="cb375-39"><a href="crab-cups.html#cb375-39"></a>    ll[[picked_up_c]] &lt;-<span class="st"> </span>t</span>
-<span id="cb375-40"><a href="crab-cups.html#cb375-40"></a>    <span class="co"># move to the next cups</span></span>
-<span id="cb375-41"><a href="crab-cups.html#cb375-41"></a>    cur &lt;-<span class="st"> </span>ll[[cur]]</span>
-<span id="cb375-42"><a href="crab-cups.html#cb375-42"></a>  }</span>
-<span id="cb375-43"><a href="crab-cups.html#cb375-43"></a>  <span class="co"># return the linked list</span></span>
-<span id="cb375-44"><a href="crab-cups.html#cb375-44"></a>  ll</span>
-<span id="cb375-45"><a href="crab-cups.html#cb375-45"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb376-1"><a href="crab-cups.html#cb376-1"></a>play &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
+<span id="cb376-2"><a href="crab-cups.html#cb376-2"></a>  size &lt;-<span class="st"> </span><span class="kw">length</span>(input)</span>
+<span id="cb376-3"><a href="crab-cups.html#cb376-3"></a>  </span>
+<span id="cb376-4"><a href="crab-cups.html#cb376-4"></a>  <span class="co"># generate the linked list</span></span>
+<span id="cb376-5"><a href="crab-cups.html#cb376-5"></a>  ll &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span>size, <span class="dv">1</span>)</span>
+<span id="cb376-6"><a href="crab-cups.html#cb376-6"></a>  j &lt;-<span class="st"> </span>size</span>
+<span id="cb376-7"><a href="crab-cups.html#cb376-7"></a>  <span class="cf">for</span> (i <span class="cf">in</span> input) {</span>
+<span id="cb376-8"><a href="crab-cups.html#cb376-8"></a>    ll[[j]] &lt;-<span class="st"> </span>i</span>
+<span id="cb376-9"><a href="crab-cups.html#cb376-9"></a>    j &lt;-<span class="st"> </span>i</span>
+<span id="cb376-10"><a href="crab-cups.html#cb376-10"></a>  }</span>
+<span id="cb376-11"><a href="crab-cups.html#cb376-11"></a>  ll[[j]] &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]]</span>
+<span id="cb376-12"><a href="crab-cups.html#cb376-12"></a>  cur &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]]</span>
+<span id="cb376-13"><a href="crab-cups.html#cb376-13"></a>  </span>
+<span id="cb376-14"><a href="crab-cups.html#cb376-14"></a>  <span class="co"># run our iterations</span></span>
+<span id="cb376-15"><a href="crab-cups.html#cb376-15"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n) {</span>
+<span id="cb376-16"><a href="crab-cups.html#cb376-16"></a>    <span class="co"># get the picked up values</span></span>
+<span id="cb376-17"><a href="crab-cups.html#cb376-17"></a>    picked_up_a &lt;-<span class="st"> </span>ll[[cur]]</span>
+<span id="cb376-18"><a href="crab-cups.html#cb376-18"></a>    picked_up_b &lt;-<span class="st"> </span>ll[[picked_up_a]]</span>
+<span id="cb376-19"><a href="crab-cups.html#cb376-19"></a>    picked_up_c &lt;-<span class="st"> </span>ll[[picked_up_b]]</span>
+<span id="cb376-20"><a href="crab-cups.html#cb376-20"></a>    <span class="co"># &quot;remove&quot; these values from the list by pointing the current index to be</span></span>
+<span id="cb376-21"><a href="crab-cups.html#cb376-21"></a>    <span class="co"># the value just after the 3rd picked up cup</span></span>
+<span id="cb376-22"><a href="crab-cups.html#cb376-22"></a>    ll[[cur]] &lt;-<span class="st"> </span>ll[[picked_up_c]]</span>
+<span id="cb376-23"><a href="crab-cups.html#cb376-23"></a>    <span class="co"># calculate the destination value</span></span>
+<span id="cb376-24"><a href="crab-cups.html#cb376-24"></a>    destination &lt;-<span class="st"> </span>cur <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb376-25"><a href="crab-cups.html#cb376-25"></a>    <span class="cf">if</span> (destination <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb376-26"><a href="crab-cups.html#cb376-26"></a>      destination &lt;-<span class="st"> </span>size</span>
+<span id="cb376-27"><a href="crab-cups.html#cb376-27"></a>    }</span>
+<span id="cb376-28"><a href="crab-cups.html#cb376-28"></a>    <span class="cf">while</span> (destination <span class="op">==</span><span class="st"> </span>picked_up_a <span class="op">||</span></span>
+<span id="cb376-29"><a href="crab-cups.html#cb376-29"></a><span class="st">           </span>destination <span class="op">==</span><span class="st"> </span>picked_up_b <span class="op">||</span></span>
+<span id="cb376-30"><a href="crab-cups.html#cb376-30"></a><span class="st">           </span>destination <span class="op">==</span><span class="st"> </span>picked_up_c) {</span>
+<span id="cb376-31"><a href="crab-cups.html#cb376-31"></a>      destination &lt;-<span class="st"> </span>destination <span class="op">-</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb376-32"><a href="crab-cups.html#cb376-32"></a>      <span class="cf">if</span> (destination <span class="op">==</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb376-33"><a href="crab-cups.html#cb376-33"></a>        destination &lt;-<span class="st"> </span>size</span>
+<span id="cb376-34"><a href="crab-cups.html#cb376-34"></a>      }</span>
+<span id="cb376-35"><a href="crab-cups.html#cb376-35"></a>    }</span>
+<span id="cb376-36"><a href="crab-cups.html#cb376-36"></a>    <span class="co"># insert the picked up cups just after the destination</span></span>
+<span id="cb376-37"><a href="crab-cups.html#cb376-37"></a>    t &lt;-<span class="st"> </span>ll[[destination]]</span>
+<span id="cb376-38"><a href="crab-cups.html#cb376-38"></a>    ll[[destination]] &lt;-<span class="st"> </span>picked_up_a</span>
+<span id="cb376-39"><a href="crab-cups.html#cb376-39"></a>    ll[[picked_up_c]] &lt;-<span class="st"> </span>t</span>
+<span id="cb376-40"><a href="crab-cups.html#cb376-40"></a>    <span class="co"># move to the next cups</span></span>
+<span id="cb376-41"><a href="crab-cups.html#cb376-41"></a>    cur &lt;-<span class="st"> </span>ll[[cur]]</span>
+<span id="cb376-42"><a href="crab-cups.html#cb376-42"></a>  }</span>
+<span id="cb376-43"><a href="crab-cups.html#cb376-43"></a>  <span class="co"># return the linked list</span></span>
+<span id="cb376-44"><a href="crab-cups.html#cb376-44"></a>  ll</span>
+<span id="cb376-45"><a href="crab-cups.html#cb376-45"></a>}</span></code></pre></div>
 <p>We can now use our <code>play()</code> function to solve part 1.</p>
-<div class="sourceCode" id="cb376"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb376-1"><a href="crab-cups.html#cb376-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
-<span id="cb376-2"><a href="crab-cups.html#cb376-2"></a>  <span class="co"># run the function on our input</span></span>
-<span id="cb376-3"><a href="crab-cups.html#cb376-3"></a>  r &lt;-<span class="st"> </span><span class="kw">play</span>(input, n)</span>
-<span id="cb376-4"><a href="crab-cups.html#cb376-4"></a>  <span class="co"># create an out vector the length of our input, excluding the &quot;1&quot; value</span></span>
-<span id="cb376-5"><a href="crab-cups.html#cb376-5"></a>  out &lt;-<span class="st"> </span><span class="kw">numeric</span>(<span class="kw">length</span>(input) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</span>
-<span id="cb376-6"><a href="crab-cups.html#cb376-6"></a>  <span class="co"># now, iterate from the &quot;1&quot; position through the linked list, adding the</span></span>
-<span id="cb376-7"><a href="crab-cups.html#cb376-7"></a>  <span class="co"># values to the output and selecting the next item in the linked list</span></span>
-<span id="cb376-8"><a href="crab-cups.html#cb376-8"></a>  j &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb376-9"><a href="crab-cups.html#cb376-9"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(out)) {</span>
-<span id="cb376-10"><a href="crab-cups.html#cb376-10"></a>    out[[i]] &lt;-<span class="st"> </span>r[[j]]</span>
-<span id="cb376-11"><a href="crab-cups.html#cb376-11"></a>    j &lt;-<span class="st"> </span>r[[j]]</span>
-<span id="cb376-12"><a href="crab-cups.html#cb376-12"></a>  }</span>
-<span id="cb376-13"><a href="crab-cups.html#cb376-13"></a>  <span class="co"># return as a string</span></span>
-<span id="cb376-14"><a href="crab-cups.html#cb376-14"></a>  <span class="kw">paste</span>(out, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
-<span id="cb376-15"><a href="crab-cups.html#cb376-15"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="crab-cups.html#cb377-1"></a>part_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input, n) {</span>
+<span id="cb377-2"><a href="crab-cups.html#cb377-2"></a>  <span class="co"># run the function on our input</span></span>
+<span id="cb377-3"><a href="crab-cups.html#cb377-3"></a>  r &lt;-<span class="st"> </span><span class="kw">play</span>(input, n)</span>
+<span id="cb377-4"><a href="crab-cups.html#cb377-4"></a>  <span class="co"># create an out vector the length of our input, excluding the &quot;1&quot; value</span></span>
+<span id="cb377-5"><a href="crab-cups.html#cb377-5"></a>  out &lt;-<span class="st"> </span><span class="kw">numeric</span>(<span class="kw">length</span>(input) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)</span>
+<span id="cb377-6"><a href="crab-cups.html#cb377-6"></a>  <span class="co"># now, iterate from the &quot;1&quot; position through the linked list, adding the</span></span>
+<span id="cb377-7"><a href="crab-cups.html#cb377-7"></a>  <span class="co"># values to the output and selecting the next item in the linked list</span></span>
+<span id="cb377-8"><a href="crab-cups.html#cb377-8"></a>  j &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb377-9"><a href="crab-cups.html#cb377-9"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">seq_along</span>(out)) {</span>
+<span id="cb377-10"><a href="crab-cups.html#cb377-10"></a>    out[[i]] &lt;-<span class="st"> </span>r[[j]]</span>
+<span id="cb377-11"><a href="crab-cups.html#cb377-11"></a>    j &lt;-<span class="st"> </span>r[[j]]</span>
+<span id="cb377-12"><a href="crab-cups.html#cb377-12"></a>  }</span>
+<span id="cb377-13"><a href="crab-cups.html#cb377-13"></a>  <span class="co"># return as a string</span></span>
+<span id="cb377-14"><a href="crab-cups.html#cb377-14"></a>  <span class="kw">paste</span>(out, <span class="dt">collapse =</span> <span class="st">&quot;&quot;</span>)</span>
+<span id="cb377-15"><a href="crab-cups.html#cb377-15"></a>}</span></code></pre></div>
 <p>We can test that our function works against the sample data:</p>
-<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="crab-cups.html#cb377-1"></a><span class="kw">part_1</span>(sample,  <span class="dv">10</span>) <span class="op">==</span><span class="st"> &quot;92658374&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb378-1"><a href="crab-cups.html#cb378-1"></a><span class="kw">part_1</span>(sample,  <span class="dv">10</span>) <span class="op">==</span><span class="st"> &quot;92658374&quot;</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb379"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb379-1"><a href="crab-cups.html#cb379-1"></a><span class="kw">part_1</span>(sample, <span class="dv">100</span>) <span class="op">==</span><span class="st"> &quot;67384529&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb380-1"><a href="crab-cups.html#cb380-1"></a><span class="kw">part_1</span>(sample, <span class="dv">100</span>) <span class="op">==</span><span class="st"> &quot;67384529&quot;</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>And we can run our function against the actual data:</p>
-<div class="sourceCode" id="cb381"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb381-1"><a href="crab-cups.html#cb381-1"></a><span class="kw">part_1</span>(actual, <span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb382-1"><a href="crab-cups.html#cb382-1"></a><span class="kw">part_1</span>(actual, <span class="dv">100</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;38925764&quot;</code></pre>
 </div>
 <div id="part-2-22" class="section level2">
 <h2><span class="header-section-number">23.2</span> Part 2</h2>
 <p>We don’t need to modify our play function, merely we need to add in the remaining cups from 10 to 1,000,000.</p>
-<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="crab-cups.html#cb383-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb383-2"><a href="crab-cups.html#cb383-2"></a>  input &lt;-<span class="st"> </span><span class="kw">c</span>(input, (<span class="kw">max</span>(input) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span><span class="dv">1000000</span>)</span>
-<span id="cb383-3"><a href="crab-cups.html#cb383-3"></a>  r &lt;-<span class="st"> </span><span class="kw">play</span>(input, <span class="dv">10000000</span>)</span>
-<span id="cb383-4"><a href="crab-cups.html#cb383-4"></a>  </span>
-<span id="cb383-5"><a href="crab-cups.html#cb383-5"></a>  a &lt;-<span class="st"> </span>r[[<span class="dv">1</span>]]</span>
-<span id="cb383-6"><a href="crab-cups.html#cb383-6"></a>  b &lt;-<span class="st"> </span>r[[a]]</span>
-<span id="cb383-7"><a href="crab-cups.html#cb383-7"></a>  </span>
-<span id="cb383-8"><a href="crab-cups.html#cb383-8"></a>  a <span class="op">*</span><span class="st"> </span>b</span>
-<span id="cb383-9"><a href="crab-cups.html#cb383-9"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="crab-cups.html#cb384-1"></a>part_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb384-2"><a href="crab-cups.html#cb384-2"></a>  input &lt;-<span class="st"> </span><span class="kw">c</span>(input, (<span class="kw">max</span>(input) <span class="op">+</span><span class="st"> </span><span class="dv">1</span>)<span class="op">:</span><span class="dv">1000000</span>)</span>
+<span id="cb384-3"><a href="crab-cups.html#cb384-3"></a>  r &lt;-<span class="st"> </span><span class="kw">play</span>(input, <span class="dv">10000000</span>)</span>
+<span id="cb384-4"><a href="crab-cups.html#cb384-4"></a>  </span>
+<span id="cb384-5"><a href="crab-cups.html#cb384-5"></a>  a &lt;-<span class="st"> </span>r[[<span class="dv">1</span>]]</span>
+<span id="cb384-6"><a href="crab-cups.html#cb384-6"></a>  b &lt;-<span class="st"> </span>r[[a]]</span>
+<span id="cb384-7"><a href="crab-cups.html#cb384-7"></a>  </span>
+<span id="cb384-8"><a href="crab-cups.html#cb384-8"></a>  a <span class="op">*</span><span class="st"> </span>b</span>
+<span id="cb384-9"><a href="crab-cups.html#cb384-9"></a>}</span></code></pre></div>
 <p>We can test that this function works on the provided sample:</p>
-<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="crab-cups.html#cb384-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">149245887792</span></span></code></pre></div>
+<div class="sourceCode" id="cb385"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb385-1"><a href="crab-cups.html#cb385-1"></a><span class="kw">part_2</span>(sample) <span class="op">==</span><span class="st"> </span><span class="dv">149245887792</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>And we can run the function on our actual data:</p>
-<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="crab-cups.html#cb386-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="crab-cups.html#cb387-1"></a><span class="kw">part_2</span>(actual)</span></code></pre></div>
 <pre><code>## [1] 131152940564</code></pre>
 <hr />
-<p><em>Elapsed Time: 9.744s</em></p>
+<p><em>Elapsed Time: 9.797s</em></p>
 
 </div>
 </div>

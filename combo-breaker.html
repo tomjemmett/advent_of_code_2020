@@ -24,7 +24,7 @@
 <meta name="author" content="Tom Jemmett" />
 
 
-<meta name="date" content="2021-01-08" />
+<meta name="date" content="2021-01-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -266,74 +266,74 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="combo-breaker" class="section level1">
 <h1><span class="header-section-number">Day 25</span> Combo Breaker</h1>
 <p>This is my attempt to solve <a href="https://adventofcode.com/2020/day/25">Day 25</a>.</p>
-<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="combo-breaker.html#cb400-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_25_sample.txt&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span>
-<span id="cb400-2"><a href="combo-breaker.html#cb400-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_25_input.txt&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="combo-breaker.html#cb401-1"></a>sample &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;samples/day_25_sample.txt&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span>
+<span id="cb401-2"><a href="combo-breaker.html#cb401-2"></a>actual &lt;-<span class="st"> </span><span class="kw">read_lines</span>(<span class="st">&quot;inputs/day_25_input.txt&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.numeric</span>()</span></code></pre></div>
 <div id="part-1-24" class="section level2">
 <h2><span class="header-section-number">25.1</span> Part 1</h2>
 <p>We can brute force the loops by simply iterating until we find the card/door values we expect</p>
-<div class="sourceCode" id="cb401"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb401-1"><a href="combo-breaker.html#cb401-1"></a>find_loops &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
-<span id="cb401-2"><a href="combo-breaker.html#cb401-2"></a>  card &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]]</span>
-<span id="cb401-3"><a href="combo-breaker.html#cb401-3"></a>  door &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]]</span>
-<span id="cb401-4"><a href="combo-breaker.html#cb401-4"></a>  </span>
-<span id="cb401-5"><a href="combo-breaker.html#cb401-5"></a>  value &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb401-6"><a href="combo-breaker.html#cb401-6"></a>  remainder &lt;-<span class="st"> </span><span class="dv">20201227</span></span>
-<span id="cb401-7"><a href="combo-breaker.html#cb401-7"></a>  </span>
-<span id="cb401-8"><a href="combo-breaker.html#cb401-8"></a>  i &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb401-9"><a href="combo-breaker.html#cb401-9"></a>  <span class="co"># initialise the loop values to a nonsense value so we can exit the loop once</span></span>
-<span id="cb401-10"><a href="combo-breaker.html#cb401-10"></a>  <span class="co"># we have found our values</span></span>
-<span id="cb401-11"><a href="combo-breaker.html#cb401-11"></a>  card_loop &lt;-<span class="st"> </span><span class="dv">-1</span></span>
-<span id="cb401-12"><a href="combo-breaker.html#cb401-12"></a>  door_loop &lt;-<span class="st"> </span><span class="dv">-1</span></span>
-<span id="cb401-13"><a href="combo-breaker.html#cb401-13"></a>  <span class="co"># we can calculate both values in a single loop to save repeated calculations</span></span>
-<span id="cb401-14"><a href="combo-breaker.html#cb401-14"></a>  <span class="cf">while</span> (card_loop <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">||</span><span class="st"> </span>door_loop <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
-<span id="cb401-15"><a href="combo-breaker.html#cb401-15"></a>    value &lt;-<span class="st"> </span>(value <span class="op">*</span><span class="st"> </span><span class="dv">7</span>) <span class="op">%%</span><span class="st"> </span>remainder</span>
-<span id="cb401-16"><a href="combo-breaker.html#cb401-16"></a>    <span class="cf">if</span> (card_loop <span class="op">==</span><span class="st"> </span><span class="dv">-1</span> <span class="op">&amp;&amp;</span><span class="st"> </span>value <span class="op">==</span><span class="st"> </span>card) {</span>
-<span id="cb401-17"><a href="combo-breaker.html#cb401-17"></a>      card_loop &lt;-<span class="st"> </span>i</span>
-<span id="cb401-18"><a href="combo-breaker.html#cb401-18"></a>    }</span>
-<span id="cb401-19"><a href="combo-breaker.html#cb401-19"></a>    </span>
-<span id="cb401-20"><a href="combo-breaker.html#cb401-20"></a>    <span class="cf">if</span> (door_loop <span class="op">==</span><span class="st"> </span><span class="dv">-1</span> <span class="op">&amp;&amp;</span><span class="st"> </span>value <span class="op">==</span><span class="st"> </span>door) {</span>
-<span id="cb401-21"><a href="combo-breaker.html#cb401-21"></a>      door_loop &lt;-<span class="st"> </span>i</span>
-<span id="cb401-22"><a href="combo-breaker.html#cb401-22"></a>    }</span>
-<span id="cb401-23"><a href="combo-breaker.html#cb401-23"></a>      </span>
-<span id="cb401-24"><a href="combo-breaker.html#cb401-24"></a>    i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb401-25"><a href="combo-breaker.html#cb401-25"></a>  }</span>
-<span id="cb401-26"><a href="combo-breaker.html#cb401-26"></a>  </span>
-<span id="cb401-27"><a href="combo-breaker.html#cb401-27"></a>  <span class="kw">c</span>(card_loop, door_loop)</span>
-<span id="cb401-28"><a href="combo-breaker.html#cb401-28"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="combo-breaker.html#cb402-1"></a>find_loops &lt;-<span class="st"> </span><span class="cf">function</span>(input) {</span>
+<span id="cb402-2"><a href="combo-breaker.html#cb402-2"></a>  card &lt;-<span class="st"> </span>input[[<span class="dv">1</span>]]</span>
+<span id="cb402-3"><a href="combo-breaker.html#cb402-3"></a>  door &lt;-<span class="st"> </span>input[[<span class="dv">2</span>]]</span>
+<span id="cb402-4"><a href="combo-breaker.html#cb402-4"></a>  </span>
+<span id="cb402-5"><a href="combo-breaker.html#cb402-5"></a>  value &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb402-6"><a href="combo-breaker.html#cb402-6"></a>  remainder &lt;-<span class="st"> </span><span class="dv">20201227</span></span>
+<span id="cb402-7"><a href="combo-breaker.html#cb402-7"></a>  </span>
+<span id="cb402-8"><a href="combo-breaker.html#cb402-8"></a>  i &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb402-9"><a href="combo-breaker.html#cb402-9"></a>  <span class="co"># initialise the loop values to a nonsense value so we can exit the loop once</span></span>
+<span id="cb402-10"><a href="combo-breaker.html#cb402-10"></a>  <span class="co"># we have found our values</span></span>
+<span id="cb402-11"><a href="combo-breaker.html#cb402-11"></a>  card_loop &lt;-<span class="st"> </span><span class="dv">-1</span></span>
+<span id="cb402-12"><a href="combo-breaker.html#cb402-12"></a>  door_loop &lt;-<span class="st"> </span><span class="dv">-1</span></span>
+<span id="cb402-13"><a href="combo-breaker.html#cb402-13"></a>  <span class="co"># we can calculate both values in a single loop to save repeated calculations</span></span>
+<span id="cb402-14"><a href="combo-breaker.html#cb402-14"></a>  <span class="cf">while</span> (card_loop <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">||</span><span class="st"> </span>door_loop <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>) {</span>
+<span id="cb402-15"><a href="combo-breaker.html#cb402-15"></a>    value &lt;-<span class="st"> </span>(value <span class="op">*</span><span class="st"> </span><span class="dv">7</span>) <span class="op">%%</span><span class="st"> </span>remainder</span>
+<span id="cb402-16"><a href="combo-breaker.html#cb402-16"></a>    <span class="cf">if</span> (card_loop <span class="op">==</span><span class="st"> </span><span class="dv">-1</span> <span class="op">&amp;&amp;</span><span class="st"> </span>value <span class="op">==</span><span class="st"> </span>card) {</span>
+<span id="cb402-17"><a href="combo-breaker.html#cb402-17"></a>      card_loop &lt;-<span class="st"> </span>i</span>
+<span id="cb402-18"><a href="combo-breaker.html#cb402-18"></a>    }</span>
+<span id="cb402-19"><a href="combo-breaker.html#cb402-19"></a>    </span>
+<span id="cb402-20"><a href="combo-breaker.html#cb402-20"></a>    <span class="cf">if</span> (door_loop <span class="op">==</span><span class="st"> </span><span class="dv">-1</span> <span class="op">&amp;&amp;</span><span class="st"> </span>value <span class="op">==</span><span class="st"> </span>door) {</span>
+<span id="cb402-21"><a href="combo-breaker.html#cb402-21"></a>      door_loop &lt;-<span class="st"> </span>i</span>
+<span id="cb402-22"><a href="combo-breaker.html#cb402-22"></a>    }</span>
+<span id="cb402-23"><a href="combo-breaker.html#cb402-23"></a>      </span>
+<span id="cb402-24"><a href="combo-breaker.html#cb402-24"></a>    i &lt;-<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb402-25"><a href="combo-breaker.html#cb402-25"></a>  }</span>
+<span id="cb402-26"><a href="combo-breaker.html#cb402-26"></a>  </span>
+<span id="cb402-27"><a href="combo-breaker.html#cb402-27"></a>  <span class="kw">c</span>(card_loop, door_loop)</span>
+<span id="cb402-28"><a href="combo-breaker.html#cb402-28"></a>}</span></code></pre></div>
 <p>We can test that this works against the provided sample:</p>
-<div class="sourceCode" id="cb402"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb402-1"><a href="combo-breaker.html#cb402-1"></a>sample_loops &lt;-<span class="st"> </span><span class="kw">find_loops</span>(sample)</span>
-<span id="cb402-2"><a href="combo-breaker.html#cb402-2"></a><span class="kw">all</span>(sample_loops <span class="op">==</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">11</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb403"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb403-1"><a href="combo-breaker.html#cb403-1"></a>sample_loops &lt;-<span class="st"> </span><span class="kw">find_loops</span>(sample)</span>
+<span id="cb403-2"><a href="combo-breaker.html#cb403-2"></a><span class="kw">all</span>(sample_loops <span class="op">==</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">8</span>, <span class="dv">11</span>))</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>And now we can run this function to find the loops for the actual data:</p>
-<div class="sourceCode" id="cb404"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb404-1"><a href="combo-breaker.html#cb404-1"></a>actual_loops &lt;-<span class="st"> </span><span class="kw">find_loops</span>(actual)</span>
-<span id="cb404-2"><a href="combo-breaker.html#cb404-2"></a>actual_loops</span></code></pre></div>
+<div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="combo-breaker.html#cb405-1"></a>actual_loops &lt;-<span class="st"> </span><span class="kw">find_loops</span>(actual)</span>
+<span id="cb405-2"><a href="combo-breaker.html#cb405-2"></a>actual_loops</span></code></pre></div>
 <pre><code>## [1]  8987376 14382089</code></pre>
 <p>Calculating the private key’s is very simple, we just need to run the multiply / remainder logic as above <code>loop</code> times.</p>
-<div class="sourceCode" id="cb406"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb406-1"><a href="combo-breaker.html#cb406-1"></a>find_key &lt;-<span class="st"> </span><span class="cf">function</span>(subject_number, loops) {</span>
-<span id="cb406-2"><a href="combo-breaker.html#cb406-2"></a>  value &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb406-3"><a href="combo-breaker.html#cb406-3"></a>  remainder &lt;-<span class="st"> </span><span class="dv">20201227</span></span>
-<span id="cb406-4"><a href="combo-breaker.html#cb406-4"></a>  </span>
-<span id="cb406-5"><a href="combo-breaker.html#cb406-5"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>loops) {</span>
-<span id="cb406-6"><a href="combo-breaker.html#cb406-6"></a>    value &lt;-<span class="st"> </span>(value <span class="op">*</span><span class="st"> </span>subject_number) <span class="op">%%</span><span class="st"> </span>remainder</span>
-<span id="cb406-7"><a href="combo-breaker.html#cb406-7"></a>  }</span>
-<span id="cb406-8"><a href="combo-breaker.html#cb406-8"></a>  </span>
-<span id="cb406-9"><a href="combo-breaker.html#cb406-9"></a>  value</span>
-<span id="cb406-10"><a href="combo-breaker.html#cb406-10"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="combo-breaker.html#cb407-1"></a>find_key &lt;-<span class="st"> </span><span class="cf">function</span>(subject_number, loops) {</span>
+<span id="cb407-2"><a href="combo-breaker.html#cb407-2"></a>  value &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb407-3"><a href="combo-breaker.html#cb407-3"></a>  remainder &lt;-<span class="st"> </span><span class="dv">20201227</span></span>
+<span id="cb407-4"><a href="combo-breaker.html#cb407-4"></a>  </span>
+<span id="cb407-5"><a href="combo-breaker.html#cb407-5"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>loops) {</span>
+<span id="cb407-6"><a href="combo-breaker.html#cb407-6"></a>    value &lt;-<span class="st"> </span>(value <span class="op">*</span><span class="st"> </span>subject_number) <span class="op">%%</span><span class="st"> </span>remainder</span>
+<span id="cb407-7"><a href="combo-breaker.html#cb407-7"></a>  }</span>
+<span id="cb407-8"><a href="combo-breaker.html#cb407-8"></a>  </span>
+<span id="cb407-9"><a href="combo-breaker.html#cb407-9"></a>  value</span>
+<span id="cb407-10"><a href="combo-breaker.html#cb407-10"></a>}</span></code></pre></div>
 <p>We can test that this function works as expected against the sample data:</p>
-<div class="sourceCode" id="cb407"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb407-1"><a href="combo-breaker.html#cb407-1"></a><span class="kw">find_key</span>(sample[[<span class="dv">1</span>]], sample_loops[[<span class="dv">2</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">14897079</span></span></code></pre></div>
+<div class="sourceCode" id="cb408"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb408-1"><a href="combo-breaker.html#cb408-1"></a><span class="kw">find_key</span>(sample[[<span class="dv">1</span>]], sample_loops[[<span class="dv">2</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">14897079</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode" id="cb409"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb409-1"><a href="combo-breaker.html#cb409-1"></a><span class="kw">find_key</span>(sample[[<span class="dv">2</span>]], sample_loops[[<span class="dv">1</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">14897079</span></span></code></pre></div>
+<div class="sourceCode" id="cb410"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb410-1"><a href="combo-breaker.html#cb410-1"></a><span class="kw">find_key</span>(sample[[<span class="dv">2</span>]], sample_loops[[<span class="dv">1</span>]]) <span class="op">==</span><span class="st"> </span><span class="dv">14897079</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>And we can run this function on the actual data:</p>
-<div class="sourceCode" id="cb411"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb411-1"><a href="combo-breaker.html#cb411-1"></a><span class="co"># the smaller loop size will be quicker to calculate</span></span>
-<span id="cb411-2"><a href="combo-breaker.html#cb411-2"></a>i &lt;-<span class="st"> </span><span class="kw">which.min</span>(actual_loops)</span>
-<span id="cb411-3"><a href="combo-breaker.html#cb411-3"></a><span class="kw">find_key</span>(actual[[<span class="dv">3</span> <span class="op">-</span><span class="st"> </span>i]], actual_loops[[i]])</span></code></pre></div>
+<div class="sourceCode" id="cb412"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb412-1"><a href="combo-breaker.html#cb412-1"></a><span class="co"># the smaller loop size will be quicker to calculate</span></span>
+<span id="cb412-2"><a href="combo-breaker.html#cb412-2"></a>i &lt;-<span class="st"> </span><span class="kw">which.min</span>(actual_loops)</span>
+<span id="cb412-3"><a href="combo-breaker.html#cb412-3"></a><span class="kw">find_key</span>(actual[[<span class="dv">3</span> <span class="op">-</span><span class="st"> </span>i]], actual_loops[[i]])</span></code></pre></div>
 <pre><code>## [1] 9620012</code></pre>
 </div>
 <div id="part-2-24" class="section level2">
 <h2><span class="header-section-number">25.2</span> Part 2</h2>
 <p>We are done for 2020! Hopefully this has been a useful resource for you!</p>
 <hr />
-<p><em>Elapsed Time: 6.314s</em></p>
+<p><em>Elapsed Time: 6.339s</em></p>
 
 </div>
 </div>
